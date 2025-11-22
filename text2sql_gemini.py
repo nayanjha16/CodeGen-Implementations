@@ -121,6 +121,51 @@ def preview_samples(dataset, n: int = 3) -> List[Dict]:
     return [dataset[i] for i in range(min(n, len(dataset)))]
 
 
+# -------- SQL normalization helper --------
+
+def normalize_sql(sql: str):
+    sql = sql.strip().rstrip(";").lower()
+    sql = " ".join(sql.split())  # collapse whitespace
+    return sql
+#-------------------
+
+
+def token_accuracy(predicted, gold):
+    p_tokens = set(normalize_sql(predicted).split())
+    g_tokens = set(normalize_sql(gold).split())
+    return len(p_tokens & g_tokens) / len(g_tokens)
+
+
+
+#-------- compare_sql--------
+
+
+def compare_sql(predicted: str, gold: str) -> bool:
+    """
+    Returns True if normalized predicted and gold SQL are exactly same.
+    """
+    return normalize_sql(predicted) == normalize_sql(gold)
+
+#-------- Markdown fence stripper --------
+
+def strip_markdown_fences(text: str) -> str:
+    """
+    Some models return SQL wrapped in ```sql ... ``` or ``` ... ```.
+    This cleans that up.
+    """
+    text = text.strip()
+    if text.startswith("```"):
+        # remove first ```sql or ```
+        first_newline = text.find("\n")
+        if first_newline != -1:
+            text = text[first_newline + 1 :]
+        # remove trailing ```
+        if text.endswith("```"):
+            text = text[:-3]
+    return text.strip()
+
+
+
 # -------- Main script --------
 
 def main():
@@ -135,7 +180,10 @@ def main():
     print("Gemini client ready.")
 
     # 3. Use a small subset for demo (e.g. first 5 examples)
-    num_examples = 5
+    #num_examples = 5
+    num_examples = 10
+    exact_match_count = 0   # <-- MUST be here
+    total = 0 
     print(f"\nGenerating SQL for first {num_examples} examples...\n")    
     print
 
@@ -166,14 +214,20 @@ def main():
         except Exception as e:
             print(f"[ERROR] Gemini call failed: {e}")
             continue
+        total += 1
 
         print("Gemini predicted SQL:")
         print(predicted_sql)
         print("=" * 80)
         print()
 
-    print("Done.")
+        print("Predicted SQL vs Gold SQL:")
+        # print(predicted_sql)
+        # print(gold_sql)
+        score = token_accuracy(predicted_sql, gold_sql) # calculate token accuracy
+        print("Token accuracy:", score)        
 
+       
 
 if __name__ == "__main__":
     main()
