@@ -11,7 +11,7 @@ Prereqs:
 
 import os
 from typing import List, Dict
-
+import google.generativeai as genai
 from datasets import load_dataset
 from google import genai
 from dotenv import load_dotenv
@@ -64,15 +64,13 @@ def init_gemini_client() -> genai.Client:
     The client reads GEMINI_API_KEY from the environment as per official docs.
     """
     # Make sure GEMINI_API_KEY is set
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError(
             "GEMINI_API_KEY environment variable is not set. "
             "Get an API key from Google AI Studio and set GEMINI_API_KEY."
         )
-
-    # With google-genai, you normally just need:
-    client = genai.Client()
+    client = genai.Client(api_key=api_key)
     return client
 
 
