@@ -11,10 +11,12 @@ Prereqs:
 
 import os
 from typing import List, Dict
-import google.generativeai as genai
+import random
+
 from datasets import load_dataset
 from google import genai
 from dotenv import load_dotenv
+import sqlite3
 load_dotenv()
 
 
@@ -64,13 +66,15 @@ def init_gemini_client() -> genai.Client:
     The client reads GEMINI_API_KEY from the environment as per official docs.
     """
     # Make sure GEMINI_API_KEY is set
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError(
             "GEMINI_API_KEY environment variable is not set. "
             "Get an API key from Google AI Studio and set GEMINI_API_KEY."
         )
-    client = genai.Client(api_key=api_key)
+
+    # With google-genai, you normally just need:
+    client = genai.Client()
     return client
 
 
@@ -163,6 +167,57 @@ def strip_markdown_fences(text: str) -> str:
     return text.strip()
 
 
+#-------- Semantic match helper --------
+
+
+
+def semantic_match(predicted_sql, gold_sql, schema_sql):
+    conn = sqlite3.connect(":memory:")
+    c = conn.cursor()
+
+    # Load schema
+    c.executescript(schema_sql)
+
+    try:
+        gold_result = c.execute(gold_sql).fetchall()
+        pred_result = c.execute(predicted_sql).fetchall()
+    except Exception as e:
+        return False  # invalid SQL
+
+    return gold_result == pred_result
+
+
+# -------- Evaluation helper --------
+
+def evaluate_sql(predicted_sql, gold_sql, db_schema, semantic=False):
+    gold_norm = normalize_sql(gold_sql)
+    pred_norm = normalize_sql(predicted_sql)
+
+    # 1. Exact match
+    exact_match = (gold_norm == pred_norm)
+
+    # 2. Token match
+    p_tokens = set(pred_norm.split())
+    g_tokens = set(gold_norm.split())
+    token_accuracy = len(p_tokens & g_tokens) / max(1, len(g_tokens))
+
+    # 3. Semantic match (optional)
+    if semantic:
+        try:
+            sem = semantic_match(predicted_sql, gold_sql, db_schema)
+        except:
+            sem = False
+    else:
+        sem = None
+
+    return {
+        "exact": exact_match,
+        "token_accuracy": token_accuracy,
+        "semantic": sem
+    }
+
+
+
 
 # -------- Main script --------
 
@@ -179,13 +234,16 @@ def main():
 
     # 3. Use a small subset for demo (e.g. first 5 examples)
     #num_examples = 5
-    num_examples = 10
+    num_examples = 15
     exact_match_count = 0   # <-- MUST be here
     total = 0 
-    print(f"\nGenerating SQL for first {num_examples} examples...\n")    
+    print(f"\nGenerating SQL for {num_examples} random examples...\n")    
     print
 
-    for idx in range(num_examples):
+    # Select random indices from the dataset
+    random_indices = random.sample(range(len(dataset)), num_examples)
+    
+    for idx in random_indices:
         example = dataset[idx]
         question = example["question"]
         db_id = example["db"]
@@ -222,8 +280,13 @@ def main():
         print("Predicted SQL vs Gold SQL:")
         # print(predicted_sql)
         # print(gold_sql)
+
+        #---Token accuracy calculation---
         score = token_accuracy(predicted_sql, gold_sql) # calculate token accuracy
-        print("Token accuracy:", score)        
+        print("Token accuracy:", score)    
+        print("Evaluation results:") 
+        result = evaluate_sql(predicted_sql, gold_sql, db_schema, semantic=True)
+        print(result)   
 
        
 
