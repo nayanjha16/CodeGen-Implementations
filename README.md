@@ -1,0 +1,1 @@
+A Comparative Benchmark of Text-to-SQL Architectures: Evaluating LSTM, Transformer (T5), and Graph-Based (RAT-SQL-Lite) Models on the challenging Spider dataset
