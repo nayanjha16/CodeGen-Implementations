@@ -8,3 +8,6 @@ scikit-learn
 sqlglot
 sentence-transformers
 bitsandbytes
+gdown
+tqdm
+trl

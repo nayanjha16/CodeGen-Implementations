@@ -1,0 +1,16 @@
+Evaluation Comparison
+=====================
+
+Baseline: 20 examples. Exact Match Accuracy: 20.00% (4/20)
+Improved (Fine-tuned): 3 examples. Exact Match Accuracy: 100.00% (3/3)
+
+Detailed Analysis (Intersection of first 3 examples):
+---------------------------------------------------
+
+[Example 3] Status: IMPROVED
+Question: Show name, country, age for all singers ordered by age from the oldest to the youngest.
+Gold: SELECT name ,  country ,  age FROM singer ORDER BY age DESC
+Baseline (0.5B): SELECT Name, Country, Age FROM singer ORDER BY Age ASC; (Incorrect)
+Improved (1.5B): SELECT name , country , age FROM singer ORDER BY age DESC (Correct)
+
+Note: Execution accuracy requires database access and was not computed in this summary.

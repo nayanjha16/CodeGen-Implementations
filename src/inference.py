@@ -18,7 +18,18 @@ def generate_sql(
     Returns:
         Generated SQL query as a string
     """
-    prompt = f"### Instruction:\n{query}\n\n### Context:\n{schema_context}\n\n### Response:\n"
+    prompt = f"""### Instruction:
+You are a text-to-SQL generator. Given the database schema and a natural language question, generate a valid SQL query.
+Return ONLY the SQL query, without any explanation or markdown formatting.
+
+### Schema:
+{schema_context}
+
+### Question:
+{query}
+
+### Response:
+"""
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
     
     outputs = model.generate(
@@ -29,8 +40,23 @@ def generate_sql(
     )
     
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Basic post-processing to extract SQL if needed (depending on model output format)
-    # For now, returning the full response or a substring after "Response:"
+    
+    # Extract response part
     if "### Response:" in response:
-        return response.split("### Response:")[-1].strip()
-    return response.strip()
+        response = response.split("### Response:")[-1].strip()
+        
+    # Clean up response
+    # 1. Remove markdown code blocks
+    if "```sql" in response:
+        response = response.split("```sql")[1].split("```")[0].strip()
+    elif "```" in response:
+        response = response.split("```")[1].split("```")[0].strip()
+        
+    # 2. Remove any leading/trailing whitespace or quotes
+    response = response.strip().strip('"').strip("'")
+    
+    # 3. Keep only the first statement if multiple are generated (simple heuristic)
+    if ";" in response:
+        response = response.split(";")[0] + ";"
+        
+    return response

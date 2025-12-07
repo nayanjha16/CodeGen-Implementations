@@ -1,0 +1,122 @@
+[
+  {
+    "question": "How many singers do we have?",
+    "gold_query": "SELECT count(*) FROM singer",
+    "generated_query": "SELECT COUNT(*) FROM singer",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the total number of singers?",
+    "gold_query": "SELECT count(*) FROM singer",
+    "generated_query": "SELECT COUNT(*) FROM singer",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "Show name, country, age for all singers ordered by age from the oldest to the youngest.",
+    "gold_query": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
+    "generated_query": "SELECT Name, Country, Age FROM singer ORDER BY Age ASC;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are the names, countries, and ages for every singer in descending order of age?",
+    "gold_query": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
+    "generated_query": "SELECT s.Name, s.Country, s.Age FROM singer s ORDER BY s.Age DESC;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the average, minimum, and maximum age of all singers from France?",
+    "gold_query": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
+    "generated_query": "SELECT AVG(Age) AS Average_Age, MIN(Age) AS Minimum_Age, MAX(Age) AS Maximum_Age FROM singer WHERE Country = 'France",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the average, minimum, and maximum age for all French singers?",
+    "gold_query": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
+    "generated_query": "SELECT AVG(Age) AS Average_Age, MIN(Age) AS Minimum_Age, MAX(Age) AS Maximum_Age FROM singer WHERE Country = 'France",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "Show the name and the release year of the song by the youngest singer.",
+    "gold_query": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
+    "generated_query": "SELECT s.Name, s.Song_release_year FROM singer s JOIN singer_in_concert si ON s.Singer_ID = si.Singer_ID ORDER BY si.Age ASC LIMIT 1;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are the names and release years for all the songs of the youngest singer?",
+    "gold_query": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
+    "generated_query": "SELECT s.Name, s.Song_release_year FROM singer s JOIN singer_in_concert si ON s.Singer_ID = si.Singer_ID WHERE s.Age = (SELECT MIN(Age) FROM singer)",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are all distinct countries where singers above age 20 are from?",
+    "gold_query": "SELECT DISTINCT country FROM singer WHERE age  >  20",
+    "generated_query": "SELECT DISTINCT T1.Country FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > 20",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are  the different countries with singers above age 20?",
+    "gold_query": "SELECT DISTINCT country FROM singer WHERE age  >  20",
+    "generated_query": "SELECT DISTINCT T1.Country FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > 20",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "Show all countries and the number of singers in each country.",
+    "gold_query": "SELECT country ,  count(*) FROM singer GROUP BY country",
+    "generated_query": "SELECT Country, COUNT(*) FROM singer GROUP BY Country;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "How many singers are from each country?",
+    "gold_query": "SELECT country ,  count(*) FROM singer GROUP BY country",
+    "generated_query": "SELECT Country, COUNT(*) FROM singer GROUP BY Country;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "List all song names by singers above the average age.",
+    "gold_query": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
+    "generated_query": "SELECT Song_Name FROM singer WHERE Age > (SELECT AVG(Age) FROM singer)",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are all the song names by singers who are older than average?",
+    "gold_query": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
+    "generated_query": "SELECT DISTINCT T2.Song_Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > (SELECT AVG(T1.Age) FROM singer)",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "Show location and name for all stadiums with a capacity between 5000 and 10000.",
+    "gold_query": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+    "generated_query": "SELECT LOCATION, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What are the locations and names of all stations with capacity between 5000 and 10000?",
+    "gold_query": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
+    "generated_query": "SELECT LOCATION, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the maximum capacity and the average of all stadiums ?",
+    "gold_query": "select max(capacity), average from stadium",
+    "generated_query": "SELECT MAX(Capacity), AVG(Average) FROM stadium;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the average and maximum capacities for all stadiums ?",
+    "gold_query": "select avg(capacity) ,  max(capacity) from stadium",
+    "generated_query": "SELECT AVG(Capacity) ,  MAX(Capacity) FROM stadium;",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the name and capacity for the stadium with highest average attendance?",
+    "gold_query": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+    "generated_query": "SELECT Name, Capacity FROM stadium ORDER BY Average Attendance DESC LIMIT 1",
+    "db_id": "concert_singer"
+  },
+  {
+    "question": "What is the name and capacity for the stadium with the highest average attendance?",
+    "gold_query": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+    "generated_query": "SELECT Name, Capacity FROM stadium ORDER BY Average Attendance DESC LIMIT 1",
+    "db_id": "concert_singer"
+  }
+]

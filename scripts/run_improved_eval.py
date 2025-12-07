@@ -8,19 +8,25 @@ from tqdm import tqdm
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src.model_loader import load_model
-from src.inference import generate_sql
+from src.inference_improved import generate_sql_improved
 from src.dataset_loader import load_spider_dataset, get_database_schema
 import src.config as config
 
 def main():
-    parser = argparse.ArgumentParser(description="Run Baseline Evaluation")
+    parser = argparse.ArgumentParser(description="Run Improved Evaluation")
     parser.add_argument("--limit", type=int, default=None, help="Limit number of examples")
     args = parser.parse_args()
 
-    print("Running Baseline Evaluation...")
+    print("Running Improved Evaluation (Fine-tuned)...")
     
-    # Load Baseline Model (no adapter, explicit baseline model)
-    model, tokenizer = load_model(adapter_path=None, model_name=config.BASELINE_MODEL_NAME)
+    # Path to adapter
+    adapter_path = os.path.join(config.TRAINING_ARGS["output_dir"], "final_checkpoint")
+    if not os.path.exists(adapter_path):
+        print(f"Warning: Adapter not found at {adapter_path}. Running in Zero-Shot mode with Base Model.")
+        adapter_path = None
+    
+    # Load Model (Adapter optional)
+    model, tokenizer = load_model(adapter_path=adapter_path, model_name=config.IMPROVED_MODEL_NAME)
     
     # Load Dev Set
     examples = load_spider_dataset(split='dev', limit=args.limit)
@@ -28,13 +34,13 @@ def main():
     
     results = []
     
-    output_file = os.path.join(config.OUTPUT_DIR, 'baseline_results.json')
+    output_file = os.path.join(config.OUTPUT_DIR, 'improved_results.json')
     
     for example in tqdm(examples, desc="Evaluating"):
         schema = get_database_schema(example.db_id)
         
         try:
-            generated_sql = generate_sql(model, tokenizer, example.question, schema)
+            generated_sql = generate_sql_improved(model, tokenizer, example.question, schema)
         except Exception as e:
             print(f"Error generating SQL for {example.question}: {e}")
             generated_sql = "SELECT * FROM error"
@@ -50,7 +56,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
         
-    print(f"Baseline results saved to {output_file}")
+    print(f"Improved results saved to {output_file}")
 
 if __name__ == "__main__":
     main()
