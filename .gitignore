@@ -1,0 +1,12 @@
+__pycache__/
+Data/Spider/database/
+Data/Spider/dev_gold.sql
+Data/Spider/readme.txt
+Data/Spider/dev_gold.sql 
+Data/Spider/dev.json 
+Data/Spider/README.txt 
+Data/Spider/tables.json 
+Data/Spider/train_spider.json 
+Data/Spider/train_others.json 
+Data/Spider/train_gold.sql
+WARP.md
