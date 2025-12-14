@@ -35,15 +35,25 @@ class SpiderExample:
         self.query = query
         self.db_id = db_id
         self.db_path = db_path
+        self.complexity = self._calculate_complexity()
+
+    def _calculate_complexity(self) -> str:
+        sql = self.query.lower()
+        if "select" in sql and sql.count("select") > 1:
+            return "complex" # Nested queries
+        if "join" in sql or "union" in sql or "intersect" in sql or "except" in sql:
+            return "complex"
+        return "simple"
     
     def __repr__(self) -> str:
-        return f"SpiderExample(db='{self.db_id}', question='{self.question[:50]}...')"
+        return f"SpiderExample(db='{self.db_id}', complexity='{self.complexity}', question='{self.question[:50]}...')"
 
 
 def load_spider_dataset(
     split: str = 'dev',
     spider_dir: Optional[str] = None,
-    limit: Optional[int] = None
+    limit: Optional[int] = None,
+    smart_filter: bool = False
 ) -> List[SpiderExample]:
     """
     Load the Spider dataset from JSON files.
@@ -52,6 +62,7 @@ def load_spider_dataset(
         split: Dataset split to load ('train' or 'dev')
         spider_dir: Path to spider directory. If None, uses default location.
         limit: Maximum number of examples to load (for testing)
+        smart_filter: If True, returns 100 examples with last 25 being complex (overrides normal limit logic if set)
         
     Returns:
         List of SpiderExample objects
@@ -95,10 +106,8 @@ def load_spider_dataset(
     examples = []
     database_dir = os.path.join(spider_dir, 'database')
     
+    all_examples = []
     for idx, item in enumerate(data):
-        if limit is not None and idx >= limit:
-            break
-        
         db_id = item['db_id']
         db_path = os.path.join(database_dir, db_id, f'{db_id}.sqlite')
         
@@ -108,7 +117,30 @@ def load_spider_dataset(
             db_id=db_id,
             db_path=db_path if os.path.exists(db_path) else None
         )
-        examples.append(example)
+        all_examples.append(example)
+
+    if smart_filter:
+        total_limit = limit if limit is not None else 100
+        # 25% complex, rest simple
+        n_complex = max(1, int(total_limit * 0.25))
+        n_simple = total_limit - n_complex
+        
+        print(f"Applying smart filter: {total_limit} examples ({n_simple} mixed, {n_complex} complex)...")
+        complex_examples = [e for e in all_examples if e.complexity == 'complex']
+        simple_examples = [e for e in all_examples if e.complexity == 'simple']
+        
+        # Take required amount
+        selected_simple = simple_examples[:n_simple]
+        selected_complex = complex_examples[:n_complex]
+        
+        examples = selected_simple + selected_complex
+        print(f"Selected {len(selected_simple)} simple/mixed and {len(selected_complex)} complex examples.")
+    else:
+        # Standard limit logic
+        if limit is not None:
+            examples = all_examples[:limit]
+        else:
+            examples = all_examples
     
     print(f"Loaded {len(examples)} examples from Spider {split} set")
     
@@ -189,9 +221,42 @@ def get_database_schema(db_id: str, spider_dir: Optional[str] = None) -> str:
         tables_columns[table_name].append(f"  {col_name} {col_type}")
     
     # Generate CREATE TABLE statements
-    for table_name, columns in tables_columns.items():
+    for table_idx, (table_name, columns) in enumerate(tables_columns.items()):
         schema_lines.append(f"CREATE TABLE {table_name} (")
-        schema_lines.append(",\n".join(columns))
+        
+        # Add columns
+        schema_lines.extend(columns)
+        
+        # Add Primary Keys
+        primary_keys = db_info.get('primary_keys', [])
+        pk_columns = []
+        for pk_idx in primary_keys:
+            # pk_idx is global column index
+            # Find which table and local column it belongs to
+            # We need to look up column_names with this index
+            if pk_idx < len(column_names):
+                pk_table_idx, pk_col_name = column_names[pk_idx]
+                if pk_table_idx == table_idx:
+                    pk_columns.append(pk_col_name)
+                    
+        if pk_columns:
+            schema_lines.append(f",\n  PRIMARY KEY ({', '.join(pk_columns)})")
+            
+        # Add Foreign Keys
+        foreign_keys = db_info.get('foreign_keys', [])
+        for fk_pair in foreign_keys:
+            # pair is [source_col_idx, target_col_idx]
+            source_idx, target_idx = fk_pair
+            
+            if source_idx < len(column_names) and target_idx < len(column_names):
+                source_table_idx, source_col = column_names[source_idx]
+                target_table_idx, target_col = column_names[target_idx]
+                
+                # If this FK belongs to current table
+                if source_table_idx == table_idx:
+                    target_table_name = table_names[target_table_idx]
+                    schema_lines.append(f",\n  FOREIGN KEY ({source_col}) REFERENCES {target_table_name}({target_col})")
+
         schema_lines.append(")")
         schema_lines.append("")
     

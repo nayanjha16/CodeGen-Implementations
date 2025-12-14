@@ -12,6 +12,8 @@ A Text-to-SQL system that converts natural language questions into SQL queries u
 
 ## Project Structure
 
+## Project Structure
+
 ```
 text-to-sql/
 ├── data/                    # Dataset directory (gitignored)
@@ -21,6 +23,7 @@ text-to-sql/
 │   ├── download_spider.py   # Download Spider dataset
 │   ├── run_eval.py          # Run baseline evaluation
 │   ├── run_improved_eval.py # Run improved evaluation (fine-tuned)
+│   ├── compare_results.py   # Compare baseline vs improved results
 │   └── run_finetuning.py    # Run fine-tuning
 ├── src/                     # Source code
 │   ├── config.py            # Central configuration
@@ -28,10 +31,12 @@ text-to-sql/
 │   ├── dataset_formatter.py # Dataset formatting for training
 │   ├── evaluate.py          # Evaluation logic
 │   ├── inference.py         # Inference logic
+│   ├── inference_improved.py # Improved inference with fuzzy matching
 │   ├── model_loader.py      # Model loading utilities
 │   ├── rag.py               # RAG implementation
 │   ├── train.py             # Training logic
 │   └── utils.py             # Helper utilities
+├── colab_runner.ipynb       # Jupyter Notebook for Google Colab
 ├── requirements.txt         # Python dependencies
 └── README.md                # This file
 ```
@@ -44,7 +49,7 @@ text-to-sql/
 - CUDA-capable GPU (recommended) or CPU
 - ~2GB disk space for model weights
 
-### Installation
+### Installation (Local)
 
 1. **Clone the repository**
    ```bash
@@ -81,20 +86,34 @@ text-to-sql/
    
    The Qwen2.5-Coder-0.5B-Instruct model will be automatically downloaded from HuggingFace on first run.
 
+### ☁️ Google Colab Setup (Recommended for 1.5B Model)
+
+Since the larger improved model requires a GPU, we provide a notebook for running evaluations on Google Colab (Free Tier T4 GPU).
+
+1. **Download the project**: Download this repository as a ZIP file (or clone and zip the `text-to-sql` folder).
+2. **Open Colab**: Go to [Google Colab](https://colab.research.google.com/).
+3. **Upload Notebook**: Upload `colab_runner.ipynb`.
+4. **Enable GPU**: Go to `Runtime` > `Change runtime type` > Select `T4 GPU`.
+5. **Upload Project Zip**: Follow the notebook instructions to upload your `text-to-sql.zip`.
+6. **Run**: Execute the cells to set up the environment and run the evaluation.
+
 ## Usage
-
-
 
 ### Run Evaluation
 
 Run baseline evaluation (pre-trained model):
 ```bash
-python scripts/run_eval.py
+python scripts/run_eval.py [--limit 100] [--complex-only]
 ```
 
 Run improved evaluation (fine-tuned model):
 ```bash
-python scripts/run_improved_eval.py
+python scripts/run_improved_eval.py [--limit 100] [--complex-only]
+```
+
+Compare results:
+```bash
+python scripts/compare_results.py
 ```
 
 ### Run Fine-tuning

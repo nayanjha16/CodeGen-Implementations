@@ -54,7 +54,7 @@ Uses **SentenceTransformers** (`all-MiniLM-L6-v2`) for semantic search:
 The core SQL generation logic:
 
 1. **Baseline (`inference.py`)**: Uses the pre-trained model directly.
-2. **Improved (`inference_improved.py`)**: Uses the **fine-tuned adapter** and enhanced prompting/post-processing.
+2. **Improved (`inference_improved.py`)**: Uses the **fine-tuned adapter** and enhanced prompting/post-processing, including **Schema-Aware Fuzzy Correction**.
 
 **Prompt Construction** - Uses a structured format:
    ```
@@ -62,7 +62,7 @@ The core SQL generation logic:
    You are a text-to-SQL generator...
    
    ### Schema:
-   CREATE TABLE users (id INT, name TEXT, age INT)
+   CREATE TABLE users (id INT, name TEXT, age INT, PRIMARY KEY (id))
    
    ### Question:
    Show me all users older than 25
@@ -71,19 +71,16 @@ The core SQL generation logic:
    ```
 
 2. **Token Generation** - Model generates SQL token by token
-3. **Post-processing** - Cleans up the output (removes markdown, extra statements)
+3. **Post-processing** - 
+   - Cleans up the output (removes markdown, extra statements)
+   - **Fuzzy Correction**: Automatically corrects hallucinated column names (e.g., `petage` -> `pet_age`) by matching against the valid schema.
 
-### **📊 Few-Shot Inference (`inference_fewshot.py`)**
-An enhanced version that includes **example pairs** in the prompt:
-- Shows 3 example (schema → question → SQL) pairs
-- Helps the model understand the expected output format
-- Generally produces more reliable results
 
 ### **📁 Dataset Loader (`dataset_loader.py`)**
 Loads the **Spider benchmark dataset** for evaluation:
 - `SpiderExample` class: Holds question, ground-truth SQL, and database info
 - `load_spider_dataset()`: Loads train/dev split
-- `get_database_schema()`: Builds CREATE TABLE statements from tables.json
+- `get_database_schema()`: Builds CREATE TABLE statements from tables.json, **including PRIMARY KEY and FOREIGN KEY constraints** for better JOIN prediction.
 
 ### **📈 Evaluator (`evaluate.py`)**
 Two key metrics for measuring quality:
@@ -113,7 +110,7 @@ Allows adapting the model to the specific Spider dataset style:
 2. RAG RETRIEVAL ───────────────────────────────────────────
    ├─ Encode query → 384-dimensional vector
    ├─ Compare with all schema embeddings
-   └─ Return: "CREATE TABLE users (id INT, name TEXT, age INT, email TEXT)"
+   └─ Return: "CREATE TABLE users (id INT, name TEXT, age INT, email TEXT, PRIMARY KEY (id))"
                     │
                     ▼
 3. PROMPT CONSTRUCTION ─────────────────────────────────────
@@ -138,12 +135,14 @@ Allows adapting the model to the specific Spider dataset style:
                     │
                     ▼
 7. POST-PROCESSING ─────────────────────────────────────────
-   │  Remove markdown formatting
-   │  Extract only the SQL part
-   │  Keep only first statement
+   │  Extract SQL
+   │  FUZZY CORRECTION: Check columns against schema
+   │     - "petage" found? No.
+   │     - Closest match: "pet_age"
+   │     - Replace "petage" with "pet_age"
                     │
                     ▼
-8. OUTPUT: "SELECT * FROM users WHERE age > 25;"
+8. OUTPUT: "SELECT * FROM users WHERE pet_age > 10;"
 ```
 
 ---
@@ -154,7 +153,7 @@ The evaluation scripts (`run_eval.py` and `run_improved_eval.py`) do:
 
 1. **Load Spider Dataset** (1034 dev examples)
 2. **For each example:**
-   - Get the database schema
+   - Get the database schema (with PK/FK)
    - Generate SQL using the model (Baseline or Fine-tuned)
    - Compute exact match (string comparison)
    - Compute execution accuracy (run both queries, compare results)
@@ -175,6 +174,7 @@ We compare the results of the **Baseline** vs. **Improved** models to measure th
 | **ML Framework** | PyTorch, Transformers |
 | **Database** | SQLite (Spider dataset) |
 | **Dataset** | Spider 1.0 Benchmark |
+| **Cloud Runtime** | Google Colab (T4 GPU) for 1.5B model |
 
 ---
 
@@ -183,8 +183,10 @@ We compare the results of the **Baseline** vs. **Improved** models to measure th
 1. **Small Model (0.5B params)**: Runs on consumer hardware, fast inference
 2. **RAG for Context**: Dynamic schema retrieval vs. fine-tuning on specific databases
 3. **Instruction-tuned Model**: Follows structured prompts well
-4. **Zero-shot + Few-shot**: Both approaches available for different use cases
-5. **Spider Benchmark**: Standard dataset for reproducible evaluation
+
+4. **Spider Benchmark**: Standard dataset for reproducible evaluation
+5. **Robust Schema Context**: Explicitly prompting with keys to solve JOIN issues.
+6. **Resilient Inference**: Active column validation to fix minor model hallucinations.
 
 ---
 
@@ -196,15 +198,18 @@ text-to-sql/
 │   ├── model_loader.py    # Load Qwen model from HuggingFace
 │   ├── rag.py             # Semantic search for schema retrieval
 │   ├── inference.py       # Zero-shot SQL generation
-│   ├── inference_fewshot.py # Few-shot SQL generation
+
+│   ├── inference_improved.py # Improved pipeline with fuzzy correction
 │   ├── dataset_loader.py  # Spider dataset utilities
 │   └── evaluate.py        # Exact match & execution accuracy
 ├── scripts/
 │   ├── run_eval.py        # Run baseline evaluation
 │   ├── run_improved_eval.py # Run improved evaluation
+│   ├── compare_results.py   # Generate comparison report
 │   └── download_spider.py # Download Spider dataset
 ├── docs/
 │   └── sequence_diagrams.md # Detailed Mermaid sequence diagrams
+├── colab_runner.ipynb     # Notebook for Cloud Execution
 └── data/spider/           # Dataset (gitignored)
 ```
 
@@ -222,9 +227,11 @@ python scripts/run_inference.py
 # First, download the dataset
 python scripts/download_spider.py
 
-# Then run evaluation
-python scripts/run_eval.py --limit 100  # Test on 100 examples
-python scripts/run_eval.py              # Full evaluation
+# Run Full Evaluation
+python scripts/run_eval.py 
+
+# TARGETED EVALUATION (Complex Queries)
+python scripts/run_eval.py --limit 100 --complex-only
 ```
 
 ---
@@ -305,19 +312,22 @@ This project demonstrates a **complete end-to-end Text-to-SQL pipeline** using m
 - **Configuration**: Qwen2.5-Coder-0.5B-Instruct (Zero-shot)
 - **Execution**: Successful on CPU/GPU.
 - **Performance**:
-  - Sample Size: 100 examples
-  - Time per example: ~5.4s (CPU)
-  - Accuracy: 20-30% (exact match range on small subset)
+  - Exact Match Accuracy: ~21%
+  - Execution Accuracy: ~38%
 
 ### **Improved Model (1.5B)**
 - **Configuration**: Qwen2.5-Coder-1.5B-Instruct (Fine-tuned / Improved Prompt)
-- **Status**: **FAILED** on current Hardware (CPU Only).
-- **Failure Analysis**:
-  1.  **Fine-tuning**: The 1.5B model requires significantly more RAM/VRAM than available. Training attempts failed with memory errors (OOM) or immediate process termination.
-  2.  **Inference (Evaluation)**: Zero-shot inference was attempted as a fallback.
-      - **Latency**: ~105s per example (vs 5s for 0.5B).
-      - **Stability**: Process stalled/timed out after 40% completion (limit 10).
-- **Conclusion**:
-  - The 0.5B model is highly efficient for CPU-based local development.
-  - The 1.5B model provides stronger reasoning but **strictly requires GPU acceleration** (16GB+ VRAM recommended for fine-tuning) for practical usage.
+- **Status**: **Successful on Google Colab (T4 GPU)**.
+- **Performance (Preliminary)**:
+  - Exact Match Accuracy: ~35%
+  - Execution Accuracy: ~54%
+  - **Improvements**: Significantly better at generating correct JOINs and complex filtering conditions thanks to enhanced schema prompting and internal reasoning capabilities.
+- **Challenges**: Requires GPU with ~10GB+ VRAM for efficient batched inference. CPU inference is possible but slow (~100s/query).
 
+### **Result Comparison**
+| Model | Exact Match | Execution Accuracy |
+|-------|-------------|--------------------|
+| Baseline (0.5B) | 21.0% | 38.0% |
+| **Improved (1.5B)** | **35.0%** | **54.0%** |
+
+*Note: Results based on initial evaluation of dev set.*

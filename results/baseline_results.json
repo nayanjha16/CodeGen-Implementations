@@ -1,122 +1,2252 @@
 [
   {
-    "question": "How many singers do we have?",
-    "gold_query": "SELECT count(*) FROM singer",
-    "generated_query": "SELECT COUNT(*) FROM singer",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What is the total number of singers?",
-    "gold_query": "SELECT count(*) FROM singer",
-    "generated_query": "SELECT COUNT(*) FROM singer",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "Show name, country, age for all singers ordered by age from the oldest to the youngest.",
-    "gold_query": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
-    "generated_query": "SELECT Name, Country, Age FROM singer ORDER BY Age ASC;",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What are the names, countries, and ages for every singer in descending order of age?",
-    "gold_query": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC",
-    "generated_query": "SELECT s.Name, s.Country, s.Age FROM singer s ORDER BY s.Age DESC;",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What is the average, minimum, and maximum age of all singers from France?",
-    "gold_query": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
-    "generated_query": "SELECT AVG(Age) AS Average_Age, MIN(Age) AS Minimum_Age, MAX(Age) AS Maximum_Age FROM singer WHERE Country = 'France",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What is the average, minimum, and maximum age for all French singers?",
-    "gold_query": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'",
-    "generated_query": "SELECT AVG(Age) AS Average_Age, MIN(Age) AS Minimum_Age, MAX(Age) AS Maximum_Age FROM singer WHERE Country = 'France",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "Show the name and the release year of the song by the youngest singer.",
-    "gold_query": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
-    "generated_query": "SELECT s.Name, s.Song_release_year FROM singer s JOIN singer_in_concert si ON s.Singer_ID = si.Singer_ID ORDER BY si.Age ASC LIMIT 1;",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What are the names and release years for all the songs of the youngest singer?",
-    "gold_query": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1",
-    "generated_query": "SELECT s.Name, s.Song_release_year FROM singer s JOIN singer_in_concert si ON s.Singer_ID = si.Singer_ID WHERE s.Age = (SELECT MIN(Age) FROM singer)",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What are all distinct countries where singers above age 20 are from?",
-    "gold_query": "SELECT DISTINCT country FROM singer WHERE age  >  20",
-    "generated_query": "SELECT DISTINCT T1.Country FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > 20",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "What are  the different countries with singers above age 20?",
-    "gold_query": "SELECT DISTINCT country FROM singer WHERE age  >  20",
-    "generated_query": "SELECT DISTINCT T1.Country FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > 20",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "Show all countries and the number of singers in each country.",
-    "gold_query": "SELECT country ,  count(*) FROM singer GROUP BY country",
-    "generated_query": "SELECT Country, COUNT(*) FROM singer GROUP BY Country;",
-    "db_id": "concert_singer"
-  },
-  {
-    "question": "How many singers are from each country?",
-    "gold_query": "SELECT country ,  count(*) FROM singer GROUP BY country",
-    "generated_query": "SELECT Country, COUNT(*) FROM singer GROUP BY Country;",
-    "db_id": "concert_singer"
-  },
-  {
     "question": "List all song names by singers above the average age.",
     "gold_query": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
     "generated_query": "SELECT Song_Name FROM singer WHERE Age > (SELECT AVG(Age) FROM singer)",
-    "db_id": "concert_singer"
+    "db_id": "concert_singer",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
   },
   {
     "question": "What are all the song names by singers who are older than average?",
     "gold_query": "SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer)",
     "generated_query": "SELECT DISTINCT T2.Song_Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > (SELECT AVG(T1.Age) FROM singer)",
-    "db_id": "concert_singer"
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
   },
   {
-    "question": "Show location and name for all stadiums with a capacity between 5000 and 10000.",
-    "gold_query": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
-    "generated_query": "SELECT LOCATION, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",
-    "db_id": "concert_singer"
+    "question": "Show the stadium name and the number of concerts in each stadium.",
+    "gold_query": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id",
+    "generated_query": "SELECT T1.Name, COUNT(T2.Stadium_ID) AS Concerts\nFROM stadium AS T1\nJOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID\nGROUP BY T1.Name;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
   },
   {
-    "question": "What are the locations and names of all stations with capacity between 5000 and 10000?",
-    "gold_query": "SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000",
-    "generated_query": "SELECT LOCATION, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",
-    "db_id": "concert_singer"
+    "question": "For each stadium, how many concerts play there?",
+    "gold_query": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id",
+    "generated_query": "SELECT T1.Stadium_ID, COUNT(T2.Concert_ID) AS Concerts\nFROM stadium AS T1\nJOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID\nGROUP BY T1.Stadium_ID;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
   },
   {
-    "question": "What is the maximum capacity and the average of all stadiums ?",
-    "gold_query": "select max(capacity), average from stadium",
-    "generated_query": "SELECT MAX(Capacity), AVG(Average) FROM stadium;",
-    "db_id": "concert_singer"
+    "question": "Show the stadium name and capacity with most number of concerts in year 2014 or after.",
+    "gold_query": "SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Name, T1.Capacity FROM stadium AS T1 JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.Year >= 2014 GROUP BY T1.Name, T1.Capacity ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
   },
   {
-    "question": "What is the average and maximum capacities for all stadiums ?",
-    "gold_query": "select avg(capacity) ,  max(capacity) from stadium",
-    "generated_query": "SELECT AVG(Capacity) ,  MAX(Capacity) FROM stadium;",
-    "db_id": "concert_singer"
+    "question": "What is the name and capacity of the stadium with the most concerts after 2013 ?",
+    "gold_query": "select t2.name ,  t2.capacity from concert as t1 join stadium as t2 on t1.stadium_id  =  t2.stadium_id where t1.year  >  2013 group by t2.stadium_id order by count(*) desc limit 1",
+    "generated_query": "SELECT Name, Capacity FROM stadium WHERE Stadium_ID IN (SELECT Stadium_ID FROM concert WHERE Year > 2013 GROUP BY Stadium_ID ORDER BY COUNT(*) DESC LIMIT 1)",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
   },
   {
-    "question": "What is the name and capacity for the stadium with highest average attendance?",
-    "gold_query": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
-    "generated_query": "SELECT Name, Capacity FROM stadium ORDER BY Average Attendance DESC LIMIT 1",
-    "db_id": "concert_singer"
+    "question": "Show the stadium names without any concert.",
+    "gold_query": "SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)",
+    "generated_query": "SELECT T1.Name FROM stadium AS T1 JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.Concert_ID IS NULL;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
   },
   {
-    "question": "What is the name and capacity for the stadium with the highest average attendance?",
-    "gold_query": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
-    "generated_query": "SELECT Name, Capacity FROM stadium ORDER BY Average Attendance DESC LIMIT 1",
-    "db_id": "concert_singer"
+    "question": "What are the names of the stadiums without any concerts?",
+    "gold_query": "SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)",
+    "generated_query": "SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM singer_in_concert)",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show countries where a singer above age 40 and a singer below 30 are from.",
+    "gold_query": "SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30",
+    "generated_query": "SELECT Country FROM singer WHERE Age > 40 AND Age < 30",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names for all stadiums except for stadiums having a concert in year 2014.",
+    "gold_query": "SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014",
+    "generated_query": "SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert WHERE Year = 2014)",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of all stadiums that did not have a concert in 2014?",
+    "gold_query": "SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014",
+    "generated_query": "SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert WHERE Year = '2014')",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show the name and theme for all concerts and the number of singers in each concert.",
+    "gold_query": "SELECT T2.concert_name ,  T2.theme ,  count(*) FROM singer_in_concert AS T1 JOIN concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T2.concert_id",
+    "generated_query": "SELECT concert.Name, concert.Theme, COUNT(singer.Singer_ID) as Singer_count\nFROM concert\nJOIN singer_in_concert ON concert.Concert_ID = singer_in_concert.Concert_ID\nJOIN singer ON singer_in_concert.Singer_ID = singer.Singer_ID\nGROUP BY concert.Concert_ID;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names , themes , and number of singers for every concert ?",
+    "gold_query": "select t2.concert_name ,  t2.theme ,  count(*) from singer_in_concert as t1 join concert as t2 on t1.concert_id  =  t2.concert_id group by t2.concert_id",
+    "generated_query": "SELECT concert.Name, concert.Theme, COUNT(singer.Singer_ID) as Number_of_Singers\nFROM concert\nJOIN singer_in_concert ON concert.Concert_ID = singer_in_concert.Concert_ID\nJOIN singer ON singer_in_concert.Singer_ID = singer.Singer_ID\nGROUP BY concert.Concert_ID;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "List singer names and number of concerts for each singer.",
+    "gold_query": "SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id",
+    "generated_query": "SELECT s.Name, COUNT(c.Singer_ID) AS Concerts\nFROM singer s\nJOIN singer_in_concert si ON s.Singer_ID = si.Singer_ID\nJOIN concert c ON si.Concert_ID = c.Concert_ID\nGROUP BY s.Name;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the singers and number of concerts for each person?",
+    "gold_query": "SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id",
+    "generated_query": "SELECT T1.Name, COUNT(T2.Singer_ID) AS Concerts\nFROM singer AS T1\nJOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID\nGROUP BY T1.Name;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "List all singer names in concerts in year 2014.",
+    "gold_query": "SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014",
+    "generated_query": "SELECT T2.Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T2.Concert_ID IN (SELECT concert_ID FROM concert WHERE YEAR(T2.Year) = 2014)",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the singers who performed in a concert in 2014?",
+    "gold_query": "SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014",
+    "generated_query": "SELECT T2.Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T2.Concert_ID IN (SELECT concert_ID FROM concert WHERE YEAR = '2014') AND T1.Country = 'USA",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.",
+    "gold_query": "SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015",
+    "generated_query": "SELECT T1.Name, T1.Location FROM stadium AS T1 JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.Year BETWEEN '2014' AND '2015",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?",
+    "gold_query": "SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015",
+    "generated_query": "SELECT T1.Name, T1.Location FROM stadium AS T1 JOIN concert AS T2 ON T1.Stadium_ID = T2.Stadium_ID WHERE T2.Year BETWEEN 2014 AND 2015;",
+    "db_id": "concert_singer",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of concerts happened in the stadium with the highest capacity .",
+    "gold_query": "select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1)",
+    "generated_query": "SELECT COUNT(*) FROM concert WHERE Stadium_ID = (SELECT Stadium_ID FROM stadium ORDER BY Capacity DESC LIMIT 1)",
+    "db_id": "concert_singer",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the number of concerts that occurred in the stadium with the largest capacity ?",
+    "gold_query": "select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1)",
+    "generated_query": "SELECT COUNT(*) FROM concert WHERE Stadium_ID = (SELECT Stadium_ID FROM stadium ORDER BY Capacity DESC LIMIT 1)",
+    "db_id": "concert_singer",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find number of pets owned by students who are older than 20.",
+    "gold_query": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+    "generated_query": "SELECT COUNT(*) FROM Pets WHERE PetID IN (SELECT PetID FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE Age > 20))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many pets are owned by students that have an age greater than 20?",
+    "gold_query": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20",
+    "generated_query": "SELECT COUNT(*) FROM Pets WHERE PetID IN (SELECT PetID FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE Age > 20))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of dog pets that are raised by female students (with sex F).",
+    "gold_query": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+    "generated_query": "SELECT COUNT(*) FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE Sex = 'F' AND Major = 10) AND PetType = 'Dog",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many dog pets are raised by female students?",
+    "gold_query": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+    "generated_query": "SELECT COUNT(*) FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE Sex = 'Female' AND Major = 10)",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name of students who have cat or dog pet.",
+    "gold_query": "SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog'",
+    "generated_query": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'cat' OR PetType = 'dog'))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the first names of every student who has a cat or dog as a pet?",
+    "gold_query": "SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog'",
+    "generated_query": "SELECT T1.fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType IN ('cat', 'dog')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name of students who have both cat and dog pets .",
+    "gold_query": "select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'cat' intersect select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'dog'",
+    "generated_query": "SELECT Fname FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'cat' OR PetType = 'dog'))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the students' first names who have both cats and dogs as pets?",
+    "gold_query": "SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog'",
+    "generated_query": "SELECT T1.fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType IN ('Cat', 'Dog')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the major and age of students who do not have a cat pet.",
+    "gold_query": "SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+    "generated_query": "SELECT major, age FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'Cat'))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What major is every student who does not own a cat as a pet, and also how old are they?",
+    "gold_query": "SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+    "generated_query": "SELECT T1.major, T2.age FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID WHERE T2.PetID IS NULL AND T1.Major != 10;",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the id of students who do not have a cat pet.",
+    "gold_query": "SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat'",
+    "generated_query": "SELECT StuID FROM Has_Pet WHERE PetID NOT IN (SELECT PetID FROM Pets WHERE PetType = 'Cat')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids of the students who do not own cats as pets?",
+    "gold_query": "SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat'",
+    "generated_query": "SELECT StuID FROM Student WHERE Major = 1 AND NOT EXISTS (SELECT PetID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'Cat'))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name and age of students who have a dog but do not have a cat as a pet.",
+    "gold_query": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+    "generated_query": "SELECT Fname, Age FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'Dog')) AND StuID NOT IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'Cat'))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the first name of every student who has a dog but does not have a cat?",
+    "gold_query": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+    "generated_query": "SELECT T1.Fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType = 'Dog' AND T3.PetID NOT IN (SELECT PetID FROM Has_Pet AS T4 ON T4.StuID = T1.StuID WHERE T4.PetID = T3.PetID AND T4.PetType = 'Cat')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name and age of students who have a pet.",
+    "gold_query": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+    "generated_query": "SELECT Fname, Age FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet)",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different first names and ages of the students who do have pets?",
+    "gold_query": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+    "generated_query": "SELECT DISTINCT Fname, Age FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet)",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the id of the pet owned by student whose last name is \u2018Smith\u2019.",
+    "gold_query": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+    "generated_query": "SELECT PetID FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE LName = 'Smith')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the id of the pet owned by the student whose last name is 'Smith'?",
+    "gold_query": "SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith'",
+    "generated_query": "SELECT PetID FROM Has_Pet WHERE StuID IN (SELECT StuID FROM Student WHERE LName = 'Smith')",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of pets for each student who has any pet and student id.",
+    "gold_query": "SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid",
+    "generated_query": "SELECT StuID, COUNT(*) as PetCount\nFROM Has_Pet\nJOIN Student ON Has_Pet.StuID = Student.StuID\nWHERE Student.Advisor IS NOT NULL\nGROUP BY StuID;",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For students who have pets , how many pets does each student have ? list their ids instead of names .",
+    "gold_query": "select count(*) ,  t1.stuid from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid group by t1.stuid",
+    "generated_query": "SELECT StuID, COUNT(*) as PetCount FROM Has_Pet GROUP BY StuID;",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name and gender of student who have more than one pet.",
+    "gold_query": "SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1",
+    "generated_query": "SELECT Fname, Sex FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet GROUP BY StuID HAVING COUNT(*) > 1)",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the first name and gender of the all the students who have more than one pet?",
+    "gold_query": "SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1",
+    "generated_query": "SELECT Fname, Sex FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet GROUP BY StuID HAVING COUNT(*) > 1)",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the last name of the student who has a cat that is age 3.",
+    "gold_query": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+    "generated_query": "SELECT LName FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'cat' AND PetAge = 3))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the last name of the student who has a cat that is 3 years old?",
+    "gold_query": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+    "generated_query": "SELECT LName FROM Student WHERE StuID IN (SELECT StuID FROM Has_Pet WHERE PetID IN (SELECT PetID FROM Pets WHERE PetType = 'cat' AND PetAge = 3))",
+    "db_id": "pets_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the average age of students who do not have any pet .",
+    "gold_query": "select avg(age) from student where stuid not in (select stuid from has_pet)",
+    "generated_query": "SELECT AVG(Age) FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet)",
+    "db_id": "pets_1",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the average age for all students who do not own any pets ?",
+    "gold_query": "select avg(age) from student where stuid not in (select stuid from has_pet)",
+    "generated_query": "SELECT AVG(Age) FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet)",
+    "db_id": "pets_1",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many countries does each continent have? List the continent id, continent name and the number of countries.",
+    "gold_query": "SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;",
+    "generated_query": "SELECT T2.Continent, T2.ContinentName, COUNT(T1.CountryId) FROM continents AS T1 JOIN countries AS T2 ON T1.Continent = T2.ContinentId GROUP BY T1.Continent, T2.ContinentName;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For each continent, list its id, name, and how many countries it has?",
+    "gold_query": "SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;",
+    "generated_query": "SELECT T1.Continent, T1.CountryName, COUNT(T2.CountryId) FROM continents AS T1 JOIN countries AS T2 ON T1.Continent = T2.Continent GROUP BY T1.Continent;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many models does each car maker produce? List maker full name, id and the number.",
+    "gold_query": "SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;",
+    "generated_query": "SELECT c.Maker, c.Id, COUNT(m.Model) as ModelCount\nFROM car_makers c\nJOIN model_list m ON c.Id = m.Maker\nGROUP BY c.Maker, c.Id;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the full name of each car maker, along with its id and how many models it produces?",
+    "gold_query": "SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;",
+    "generated_query": "SELECT FullName, Id, COUNT(*) FROM car_makers GROUP BY FullName;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which model of the car has the minimum horsepower?",
+    "gold_query": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;",
+    "generated_query": "SELECT Model FROM car_names WHERE Horsepower = (SELECT MIN(Horsepower) FROM car_names);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the model of the car with the smallest amount of horsepower?",
+    "gold_query": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;",
+    "generated_query": "SELECT Model FROM car_names WHERE Horsepower = (SELECT MIN(Horsepower) FROM car_names);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the model of the car whose weight is below the average weight.",
+    "gold_query": "SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA)",
+    "generated_query": "SELECT Model FROM model_list WHERE Weight < (SELECT AVG(Weight) FROM model_list)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the model for the car with a weight smaller than the average?",
+    "gold_query": "SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA)",
+    "generated_query": "SELECT Model FROM model_list WHERE Weight < (SELECT AVG(Weight) FROM model_list)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name of the makers that produced some cars in the year of 1970?",
+    "gold_query": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';",
+    "generated_query": "SELECT FullName FROM car_makers WHERE Id IN (SELECT Id FROM car_names WHERE Make = 'Toyota' AND Year = 1970)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of the different car makers who produced a car in 1970?",
+    "gold_query": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';",
+    "generated_query": "SELECT DISTINCT FullName FROM car_makers WHERE Country = 'USA' AND Year = 1970;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the make and production time of the cars that were produced in the earliest year?",
+    "gold_query": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA);",
+    "generated_query": "SELECT T1.Make, T1.Year FROM car_names AS T1 JOIN model_list AS T2 ON T1.Model = T2.Model WHERE T2.Year = (SELECT MIN(Year) FROM model_list);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the maker of the carr produced in the earliest year and what year was it?",
+    "gold_query": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA);",
+    "generated_query": "SELECT T1.Maker, T1.Year FROM car_names AS T1 JOIN model_list AS T2 ON T1.Model = T2.Model WHERE T2.Year = (SELECT MIN(Year) FROM model_list);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which distinct car models are the produced after 1980?",
+    "gold_query": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.model  =  T2.model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.id WHERE T3.year  >  1980;",
+    "generated_query": "SELECT DISTINCT Model FROM car_names WHERE Model LIKE '%1980%",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different models for the cards produced after 1980?",
+    "gold_query": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.model  =  T2.model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.id WHERE T3.year  >  1980;",
+    "generated_query": "SELECT DISTINCT Model FROM car_names WHERE Model LIKE '%1980%",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many car makers are there in each continents? List the continent name and the count.",
+    "gold_query": "SELECT T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.continent JOIN car_makers AS T3 ON T2.CountryId  =  T3.Country GROUP BY T1.Continent;",
+    "generated_query": "SELECT T2.Continent, COUNT(T1.Id) AS CarCount\nFROM car_makers AS T1\nJOIN countries AS T2 ON T1.Country = T2.CountryId\nGROUP BY T2.Continent;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of each continent and how many car makers are there in each one?",
+    "gold_query": "SELECT T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.continent JOIN car_makers AS T3 ON T2.CountryId  =  T3.Country GROUP BY T1.Continent;",
+    "generated_query": "SELECT T1.Continent, COUNT(T2.Id) AS CarMakers\nFROM continents AS T1\nJOIN car_makers AS T2 ON T1.Continent = T2.Country\nGROUP BY T1.Continent;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which of the countries has the most car makers? List the country name.",
+    "gold_query": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1;",
+    "generated_query": "SELECT T2.CountryName FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker\nGROUP BY T2.CountryName\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of the country with the most car makers?",
+    "gold_query": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1;",
+    "generated_query": "SELECT T2.CountryName FROM car_makers AS T1 JOIN countries AS T2 ON T1.Country = T2.CountryId GROUP BY T2.Country ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many car models are produced by each maker ? Only list the count and the maker full name .",
+    "gold_query": "select count(*) ,  t2.fullname from model_list as t1 join car_makers as t2 on t1.maker  =  t2.id group by t2.id;",
+    "generated_query": "SELECT COUNT(*) AS ModelCount, FullName FROM car_names GROUP BY FullName;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the number of car models that are produced by each maker and what is the id and full name of each maker?",
+    "gold_query": "SELECT Count(*) ,  T2.FullName ,  T2.id FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id GROUP BY T2.id;",
+    "generated_query": "SELECT c.Make, m.FullName, c.Id, m.Id FROM car_names c JOIN model_list m ON c.Model = m.ModelId GROUP BY c.Make, m.FullName;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the accelerate of the car make amc hornet sportabout (sw)?",
+    "gold_query": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)';",
+    "generated_query": "SELECT Accelerate FROM car_names WHERE Make = 'AMC' AND Model = 'Hornet Sport About",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How much does the car accelerate that makes amc hornet sportabout (sw)?",
+    "gold_query": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)';",
+    "generated_query": "SELECT SUM(CarNames.Horsepower) AS Horsepower\nFROM CarNames\nJOIN Model_list ON CarNames.Model = Model_list.Model\nJOIN car_makers ON Model_list.Maker = car_makers.Id\nWHERE car_makers.Maker = 'AMC' AND car_makers.Model = 'Hornet Sport About'\nAND car_names.Make = 'Sw';",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many car makers are there in france?",
+    "gold_query": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId WHERE T2.CountryName  =  'france';",
+    "generated_query": "SELECT COUNT(Id) FROM car_makers WHERE Country = 'France",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the number of makers of care in France?",
+    "gold_query": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId WHERE T2.CountryName  =  'france';",
+    "generated_query": "SELECT COUNT(Id) FROM car_makers WHERE Country = 'France",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many car models are produced in the usa?",
+    "gold_query": "SELECT count(*) FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id JOIN COUNTRIES AS T3 ON T2.Country  =  T3.CountryId WHERE T3.CountryName  =  'usa';",
+    "generated_query": "SELECT COUNT(*) FROM model_list WHERE Country = 'USA",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the count of the car models produced in the United States?",
+    "gold_query": "SELECT count(*) FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id JOIN COUNTRIES AS T3 ON T2.Country  =  T3.CountryId WHERE T3.CountryName  =  'usa';",
+    "generated_query": "SELECT COUNT(Id) FROM car_names WHERE Country = 'United States",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the countries having at least one car maker? List name and id.",
+    "gold_query": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1;",
+    "generated_query": "SELECT T2.CountryName, T2.CountryId FROM car_makers AS T1 JOIN countries AS T2 ON T1.Country = T2.CountryId GROUP BY T2.CountryName HAVING COUNT(*) > 0;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names and ids of all countries with at least one car maker?",
+    "gold_query": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1;",
+    "generated_query": "SELECT T2.CountryName, T2.Id FROM countries AS T1 JOIN car_makers AS T2 ON T1.Country = T2.Country WHERE T2.Id IN (SELECT Id FROM car_makers)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which countries in europe have at least 3 car manufacturers?",
+    "gold_query": "SELECT T1.CountryName FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.Continent  =  T2.ContId JOIN CAR_MAKERS AS T3 ON T1.CountryId  =  T3.Country WHERE T2.Continent  =  'europe' GROUP BY T1.CountryName HAVING count(*)  >=  3;",
+    "generated_query": "SELECT T2.CountryName FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.Maker WHERE T1.Country = 'Estonia' AND COUNT(T1.Id) >= 3;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of all European countries with at least 3 manufacturers?",
+    "gold_query": "SELECT T1.CountryName FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.Continent  =  T2.ContId JOIN CAR_MAKERS AS T3 ON T1.CountryId  =  T3.Country WHERE T2.Continent  =  'europe' GROUP BY T1.CountryName HAVING count(*)  >=  3;",
+    "generated_query": "SELECT T2.CountryName FROM countries AS T1 JOIN car_makers AS T2 ON T1.Country = T2.Country WHERE T1.Continent = 'Europe' AND T2.Id IN (SELECT Id FROM car_makers GROUP BY Id HAVING COUNT(*) >= 3)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the maximum horsepower and the make of the car models with 3 cylinders?",
+    "gold_query": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1;",
+    "generated_query": "SELECT MAX(Horsepower), Make FROM model_list WHERE Cylinders = 3",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the largest amount of horsepower for the models with 3 cylinders and what make is it?",
+    "gold_query": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1;",
+    "generated_query": "SELECT MakeId, Horsepower FROM model_list WHERE Cylinders = 3 ORDER BY Horsepower DESC LIMIT 1",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which model saves the most gasoline? That is to say, have the maximum miles per gallon.",
+    "gold_query": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.mpg DESC LIMIT 1;",
+    "generated_query": "SELECT Model FROM model_list ORDER BY MPG DESC LIMIT 1",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the car model with the highest mpg ?",
+    "gold_query": "select t1.model from car_names as t1 join cars_data as t2 on t1.makeid  =  t2.id order by t2.mpg desc limit 1;",
+    "generated_query": "SELECT Model FROM car_names ORDER BY MPG DESC LIMIT 1",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the average edispl of the cars of model volvo?",
+    "gold_query": "SELECT avg(T2.edispl) FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T1.Model  =  'volvo';",
+    "generated_query": "SELECT AVG(Cylinders) FROM car_names WHERE Model = 'Volvo",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the average edispl for all volvos?",
+    "gold_query": "SELECT avg(T2.edispl) FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T1.Model  =  'volvo';",
+    "generated_query": "SELECT AVG(Cylinders) FROM car_names WHERE Make = 'Volvo",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many car models were produced by the maker with full name American Motor Company?",
+    "gold_query": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company';",
+    "generated_query": "SELECT COUNT(*) FROM car_names WHERE Make = 'American Motor Company",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the number of car models created by the car maker American Motor Company?",
+    "gold_query": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company';",
+    "generated_query": "SELECT COUNT(*) FROM car_names WHERE Make = 'American Motor Company",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which makers designed more than 3 car models? List full name and the id.",
+    "gold_query": "SELECT T1.FullName ,  T1.Id FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >  3;",
+    "generated_query": "SELECT FullName, Id FROM car_makers WHERE Id IN (SELECT Id FROM car_names WHERE Model IN (SELECT Model FROM model_list WHERE Horsepower > 3))",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names and ids of all makers with more than 3 models?",
+    "gold_query": "SELECT T1.FullName ,  T1.Id FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >  3;",
+    "generated_query": "SELECT T1.Maker, T1.MakeId FROM car_makers AS T1 JOIN model_list AS T2 ON T1.Id = T2.MakerId GROUP BY T1.Maker HAVING COUNT(T2.Model) > 3;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which distinctive models are produced by maker with the full name General Motors or weighing more than 3500?",
+    "gold_query": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500;",
+    "generated_query": "SELECT DISTINCT Model FROM car_names WHERE Make = 'General Motors' OR Weight > 3500;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different models created by either the car maker General Motors or weighed more than 3500?",
+    "gold_query": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500;",
+    "generated_query": "SELECT DISTINCT Model FROM car_names WHERE Make = 'General Motors' OR Weight > 3500;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For model volvo, how many cylinders does the car with the least accelerate have?",
+    "gold_query": "SELECT T1.cylinders FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Model  =  'volvo' ORDER BY T1.accelerate ASC LIMIT 1;",
+    "generated_query": "SELECT cylinders FROM model_list WHERE make = 'Volvo' ORDER BY accelerate ASC LIMIT 1;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For a volvo model, how many cylinders does the version with least accelerate have?",
+    "gold_query": "SELECT T1.cylinders FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Model  =  'volvo' ORDER BY T1.accelerate ASC LIMIT 1;",
+    "generated_query": "SELECT COUNT(Cylinders) FROM model_list WHERE Model = 'Volvo Model' AND Accelerate = 'Least Accelerate';",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many cars have a larger accelerate than the car with the largest horsepower?",
+    "gold_query": "SELECT COUNT(*) FROM CARS_DATA WHERE Accelerate  >  ( SELECT Accelerate FROM CARS_DATA ORDER BY Horsepower DESC LIMIT 1 );",
+    "generated_query": "SELECT COUNT(*) FROM cars_data WHERE Accelerate > (SELECT MAX(Horsepower) FROM cars_data);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the number of cars with a greater accelerate than the one with the most horsepower?",
+    "gold_query": "SELECT COUNT(*) FROM CARS_DATA WHERE Accelerate  >  ( SELECT Accelerate FROM CARS_DATA ORDER BY Horsepower DESC LIMIT 1 );",
+    "generated_query": "SELECT COUNT(*) FROM cars_data WHERE Accelerate > (SELECT MAX(Horsepower) FROM cars_data)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many countries has more than 2 car makers ?",
+    "gold_query": "select count(*) from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  2",
+    "generated_query": "SELECT COUNT(*) FROM countries WHERE Id IN (SELECT Id FROM car_makers GROUP BY Id HAVING COUNT(*) > 2)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the number of countries with more than 2 car makers ?",
+    "gold_query": "select count(*) from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  2",
+    "generated_query": "SELECT COUNT(*) FROM countries WHERE Id IN (SELECT Id FROM car_makers GROUP BY Id HAVING COUNT(*) > 2)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For the cars with 4 cylinders, which model has the largest horsepower?",
+    "gold_query": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Cylinders  =  4 ORDER BY T2.horsepower DESC LIMIT 1;",
+    "generated_query": "SELECT Model FROM model_list WHERE Cylinders = 4 ORDER BY Horsepower DESC LIMIT 1",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For all of the 4 cylinder cars, which model has the most horsepower?",
+    "gold_query": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Cylinders  =  4 ORDER BY T2.horsepower DESC LIMIT 1;",
+    "generated_query": "SELECT Model FROM model_list WHERE Id IN (SELECT Id FROM car_names WHERE Model = '4 cylinder car' AND Horsepower > (SELECT MAX(Horsepower) FROM car_names))",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Among the cars with more than lowest horsepower, which ones do not have more than 3 cylinders? List the car makeid and make name.",
+    "gold_query": "SELECT T2.MakeId ,  T2.Make FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Horsepower  >  (SELECT min(Horsepower) FROM CARS_DATA) AND T1.Cylinders  <=  3;",
+    "generated_query": "SELECT T1.MakeId, T1.MakeName FROM car_names AS T1 JOIN model_list AS T2 ON T1.Model = T2.Model WHERE T1.Horsepower > 3 AND T2.Cylinders <= 3",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Among the cars that do not have the minimum horsepower , what are the make ids and names of all those with less than 4 cylinders ?",
+    "gold_query": "select t2.makeid ,  t2.make from cars_data as t1 join car_names as t2 on t1.id  =  t2.makeid where t1.horsepower  >  (select min(horsepower) from cars_data) and t1.cylinders  <  4;",
+    "generated_query": "SELECT Id, Make FROM car_names WHERE Horsepower < 4 AND Id < (SELECT MIN(Id) FROM car_names)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which models are lighter than 3500 but not built by the 'Ford Motor Company'?",
+    "gold_query": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company';",
+    "generated_query": "SELECT Model FROM model_list WHERE Model < 3500 AND Id NOT IN (SELECT Id FROM car_names WHERE Make = 'Ford Motor Company')",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different models wthat are lighter than 3500 but were not built by the Ford Motor Company?",
+    "gold_query": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company';",
+    "generated_query": "SELECT DISTINCT Model FROM model_list WHERE MPG < 3500 AND Model NOT IN (SELECT Model FROM car_names WHERE Make = 'Ford' AND Model NOT LIKE '%F%')",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the name of the countries where there is not a single car maker?",
+    "gold_query": "SELECT CountryName FROM countries EXCEPT SELECT T1.CountryName FROM countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.countryId  =  T2.Country;",
+    "generated_query": "SELECT T2.CountryName FROM car_names AS T1 JOIN countries AS T2 ON T1.MakeId = T2.CountryId WHERE COUNT(T1.Id) = 1;",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the countries with no car makers?",
+    "gold_query": "SELECT CountryName FROM countries EXCEPT SELECT T1.CountryName FROM countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.countryId  =  T2.Country;",
+    "generated_query": "SELECT CountryName FROM countries WHERE CountryId NOT IN (SELECT Id FROM car_makers)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which are the car makers which produce at least 2 models and more than 3 car makers ? List the id and the maker .",
+    "gold_query": "select t1.id ,  t1.maker from car_makers as t1 join model_list as t2 on t1.id  =  t2.maker group by t1.id having count(*)  >=  2 intersect select t1.id ,  t1.maker from car_makers as t1 join model_list as t2 on t1.id  =  t2.maker join car_names as t3 on t2.model  =  t3.model group by t1.id having count(*)  >  3;",
+    "generated_query": "SELECT Id, Maker FROM car_makers WHERE Id IN (SELECT Id FROM model_list GROUP BY Id HAVING COUNT(*) >= 2 AND COUNT(*) > 3)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids and makers of all car makers that produce at least 2 models and make more than 3 cars?",
+    "gold_query": "SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >=  2 INTERSECT SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model GROUP BY T1.Id HAVING count(*)  >  3;",
+    "generated_query": "SELECT Id, Maker FROM car_makers WHERE Id IN (SELECT Id FROM model_list GROUP BY Id HAVING COUNT(*) >= 2 AND COUNT(*) > 3)",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the id and names of the countries which have more than 3 car makers or produce the 'fiat' model?",
+    "gold_query": "SELECT T1.countryId ,  T1.CountryName FROM Countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.countryId HAVING count(*)  >  3 UNION SELECT T1.countryId ,  T1.CountryName FROM Countries AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country JOIN MODEL_LIST AS T3 ON T2.Id  =  T3.Maker WHERE T3.Model  =  'fiat';",
+    "generated_query": "SELECT Id, Name FROM countries WHERE Id IN (SELECT Country FROM car_makers GROUP BY Country HAVING COUNT(*) > 3) AND Model = 'fiat';",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids and names of all countries that either have more than 3 car makers or produce fiat model ?",
+    "gold_query": "select t1.countryid ,  t1.countryname from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country group by t1.countryid having count(*)  >  3 union select t1.countryid ,  t1.countryname from countries as t1 join car_makers as t2 on t1.countryid  =  t2.country join model_list as t3 on t2.id  =  t3.maker where t3.model  =  'fiat';",
+    "generated_query": "SELECT Id, Name FROM countries WHERE Id IN (SELECT Id FROM car_makers GROUP BY Id HAVING COUNT(*) > 3) OR Id IN (SELECT Id FROM model_list GROUP BY Id HAVING COUNT(*) = 1);",
+    "db_id": "car_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights depart from City Aberdeen?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE SourceAirport = 'City Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the number of flights departing from Aberdeen.",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights arriving in Aberdeen city?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the number of flights arriving in Aberdeen.",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights depart from City 'Aberdeen' and have destination City 'Ashley'?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE SourceAirport = 'Aberdeen' AND DestAirport = 'Ashley",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights fly from Aberdeen to Ashley?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE SourceAirport = 'Aberdeen' AND DestAirport = 'Ashley",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights does airline 'JetBlue Airways' have?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T1.Airline  =  T2.uid WHERE T2.Airline = \"JetBlue Airways\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'JetBlue Airways",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Give the number of Jetblue Airways flights.",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T1.Airline  =  T2.uid WHERE T2.Airline = \"JetBlue Airways\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'JetBlue",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many 'United Airlines' flights go to Airport 'ASY'?",
+    "gold_query": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.DestAirport  =  \"ASY\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND DestAirport = 'ASY",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Count the number of United Airlines flights arriving in ASY Airport.",
+    "gold_query": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.DestAirport  =  \"ASY\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND SourceAirport = 'ASY",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many 'United Airlines' flights depart from Airport 'AHD'?",
+    "gold_query": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND SourceAirport = 'AHD",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the number of United Airlines flights leaving from AHD Airport.",
+    "gold_query": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND SourceAirport = 'AHD",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many United Airlines flights go to City 'Aberdeen'?",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Count the number of United Airlines flights that arrive in Aberdeen.",
+    "gold_query": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE Airline = 'United Airlines' AND DestAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which city has most number of arriving flights?",
+    "gold_query": "SELECT T1.City FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport GROUP BY T1.City ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT City FROM airports ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which city has the most frequent destination airport?",
+    "gold_query": "SELECT T1.City FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport GROUP BY T1.City ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT City FROM airports GROUP BY City ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which city has most number of departing flights?",
+    "gold_query": "SELECT T1.City FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.SourceAirport GROUP BY T1.City ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT City FROM airports GROUP BY City ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which city is the most frequent source airport?",
+    "gold_query": "SELECT T1.City FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.SourceAirport GROUP BY T1.City ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT City FROM airports GROUP BY City ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the code of airport that has the highest number of flights?",
+    "gold_query": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT AirportCode FROM airports ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the airport code of the airport with the most flights?",
+    "gold_query": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T2.AirportCode FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.SourceAirport GROUP BY T1.AirportCode ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the code of airport that has fewest number of flights?",
+    "gold_query": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) LIMIT 1",
+    "generated_query": "SELECT AirportCode FROM airports ORDER BY COUNT(*) ASC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Give the code of the airport with the least flights.",
+    "gold_query": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) LIMIT 1",
+    "generated_query": "SELECT T1.AirportCode FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.SourceAirport GROUP BY T1.AirportCode ORDER BY COUNT(*) ASC LIMIT 1;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airline has most number of flights?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Airline FROM airlines GROUP BY Airline ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What airline serves the most flights?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline GROUP BY T1.Airline ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "flight_2",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the abbreviation and country of the airline that has fewest number of flights?",
+    "gold_query": "SELECT T1.Abbreviation ,  T1.Country FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) LIMIT 1",
+    "generated_query": "SELECT T2.Abbreviation, T2.Country FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline GROUP BY T1.Abbreviation, T1.Country ORDER BY COUNT(*) ASC LIMIT 1;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the abbreviation of the airilne has the fewest flights and what country is it in?",
+    "gold_query": "SELECT T1.Abbreviation ,  T1.Country FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) LIMIT 1",
+    "generated_query": "SELECT T2.Abbreviation, T1.Country FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline GROUP BY T1.Abbreviation ORDER BY COUNT(*) ASC LIMIT 1;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are airlines that have some flight departing from airport 'AHD'?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"AHD\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline WHERE T2.SourceAirport = 'AHD",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have a flight with source airport AHD?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"AHD\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline JOIN airports AS T3 ON T2.SourceAirport = T3.AirportCode WHERE T3.Country = 'United States' AND T3.CountryAbbrev = 'ADH",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are airlines that have flights arriving at airport 'AHD'?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.DestAirport  =  \"AHD\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline WHERE T2.SourceAirport = 'AHD",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have a flight with destination airport AHD?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.DestAirport  =  \"AHD\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline JOIN airports AS T3 ON T2.DestAirport = T3.AirportCode WHERE T3.Country = 'United States' AND T3.CountryAbbrev = 'ADH",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find all airlines that have flights from both airports 'APG' and 'CVO'.",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"APG\" INTERSECT SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"CVO\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline WHERE T2.SourceAirport = 'APG' AND T2.DestAirport = 'CVO",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have departing flights from both APG and CVO airports?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"APG\" INTERSECT SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"CVO\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline JOIN airports AS T3 ON T2.SourceAirport = T3.AirportCode WHERE T3.Country = 'APG' AND T3.CountryAbbrev = 'CVO",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find all airlines that have flights from airport 'CVO' but not from 'APG'.",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"CVO\" EXCEPT SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"APG\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline WHERE T2.SourceAirport = 'CVO' AND T2.DestAirport != 'APG",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have departures from CVO but not from APG airports?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"CVO\" EXCEPT SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"APG\"",
+    "generated_query": "SELECT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline JOIN airports AS T3 ON T2.SourceAirport = T3.AirportCode WHERE T3.Country = 'CVO' AND T3.CountryAbbrev != 'APG",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find all airlines that have at least 10 flights.",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  >  10",
+    "generated_query": "SELECT DISTINCT T1.Airline FROM airlines AS T1 JOIN flights AS T2 ON T1.uid = T2.Airline GROUP BY T1.Airline HAVING COUNT(*) >= 10;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have at least 10 flights?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  >  10",
+    "generated_query": "SELECT A.Airline, COUNT(*) AS FlightCount\nFROM Airlines A\nJOIN Flights F ON A.uid = F.Airline\nGROUP BY A.Airline\nHAVING FlightCount >= 10;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find all airlines that have fewer than 200 flights.",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  <  200",
+    "generated_query": "SELECT Airline FROM airlines WHERE COUNT(*) < 200",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airlines have less than 200 flights?",
+    "gold_query": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  <  200",
+    "generated_query": "SELECT A.Airline, COUNT(*) AS FlightCount\nFROM airlines A\nJOIN flights F ON A.uid = F.Airline\nGROUP BY A.Airline\nHAVING FlightCount < 200;",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are flight numbers of Airline \"United Airlines\"?",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T2.uid  =  T1.Airline WHERE T2.Airline  =  \"United Airlines\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE Airline = 'United Airlines",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which flight numbers correspond to United Airlines flights?",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T2.uid  =  T1.Airline WHERE T2.Airline  =  \"United Airlines\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE Airline = 'United Airlines",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are flight numbers of flights departing from City \"Aberdeen \"?",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Give the flight numbers of flights leaving from Aberdeen.",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.SourceAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are flight numbers of flights arriving at City \"Aberdeen\"?",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Give the flight numbers of flights arriving in Aberdeen.",
+    "gold_query": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport   =  T2.AirportCode WHERE T2.City  =  \"Aberdeen\"",
+    "generated_query": "SELECT FlightNo FROM flights WHERE SourceAirport = 'Aberdeen",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of flights landing in the city of Aberdeen or Abilene.",
+    "gold_query": "SELECT count(*) FROM Flights AS T1 JOIN Airports AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.city  =  \"Aberdeen\" OR T2.city  =  \"Abilene\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE DestAirport = 'Aberdeen' OR DestAirport = 'Abilene",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many flights land in Aberdeen or Abilene?",
+    "gold_query": "SELECT count(*) FROM Flights AS T1 JOIN Airports AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.city  =  \"Aberdeen\" OR T2.city  =  \"Abilene\"",
+    "generated_query": "SELECT COUNT(*) FROM flights WHERE SourceAirport = 'Aberdeen' OR DestAirport = 'Abilene",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name of airports which do not have any flight in and out.",
+    "gold_query": "SELECT AirportName FROM Airports WHERE AirportCode NOT IN (SELECT SourceAirport FROM Flights UNION SELECT DestAirport FROM Flights)",
+    "generated_query": "SELECT T2.AirportName FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.SourceAirport UNION SELECT T2.AirportName FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.DestAirport",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which airports do not have departing or arriving flights?",
+    "gold_query": "SELECT AirportName FROM Airports WHERE AirportCode NOT IN (SELECT SourceAirport FROM Flights UNION SELECT DestAirport FROM Flights)",
+    "generated_query": "SELECT T2.City FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.SourceAirport UNION SELECT T2.City FROM airports AS T1 JOIN flights AS T2 ON T1.AirportCode = T2.DestAirport",
+    "db_id": "flight_2",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the names of stores whose number products is more than the average number of products.",
+    "gold_query": "SELECT name FROM shop WHERE number_products  >  (SELECT avg(number_products) FROM shop)",
+    "generated_query": "SELECT Name FROM shop WHERE Number_products > (SELECT AVG(Number_products) FROM shop)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which shops' number products is above the average? Give me the shop names.",
+    "gold_query": "SELECT name FROM shop WHERE number_products  >  (SELECT avg(number_products) FROM shop)",
+    "generated_query": "SELECT T2.Name FROM shop AS T1 JOIN employee AS T2 ON T1.Shop_ID = T2.Shop_ID GROUP BY T1.Name HAVING AVG(T2.Number_products) > (SELECT AVG(T2.Number_products) FROM employee AS T2)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "find the name of employee who was awarded the most times in the evaluation.",
+    "gold_query": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID GROUP BY t2.Employee_ID ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Name FROM employee WHERE Employee_ID IN (SELECT Employee_ID FROM evaluation GROUP BY Employee_ID ORDER BY COUNT(*) DESC LIMIT 1)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which employee received the most awards in evaluations? Give me the employee name.",
+    "gold_query": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID GROUP BY t2.Employee_ID ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Name FROM employee AS T1 JOIN evaluation AS T2 ON T1.Employee_ID = T2.Employee_ID GROUP BY T1.Employee_ID ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name of the employee who got the highest one time bonus.",
+    "gold_query": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID ORDER BY t2.bonus DESC LIMIT 1",
+    "generated_query": "SELECT Name FROM employee WHERE Employee_ID IN (SELECT Employee_ID FROM evaluation ORDER BY Bonus DESC LIMIT 1)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which employee received the biggest bonus? Give me the employee name.",
+    "gold_query": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID ORDER BY t2.bonus DESC LIMIT 1",
+    "generated_query": "SELECT T1.Name FROM employee AS T1 JOIN evaluation AS T2 ON T1.Employee_ID = T2.Employee_ID ORDER BY T2.Bonus DESC LIMIT 1",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the names of employees who never won any award in the evaluation.",
+    "gold_query": "SELECT name FROM employee WHERE Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+    "generated_query": "SELECT Name FROM employee WHERE Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the employees who never received any evaluation?",
+    "gold_query": "SELECT name FROM employee WHERE Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+    "generated_query": "SELECT Name FROM employee WHERE Employee_ID NOT IN (SELECT Employee_ID FROM evaluation)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of the shop that is hiring the largest number of employees?",
+    "gold_query": "SELECT t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t1.shop_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Name FROM shop WHERE Shop_ID IN (SELECT Shop_ID FROM hiring ORDER BY COUNT(*) DESC LIMIT 1)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which shop has the most employees? Give me the shop name.",
+    "gold_query": "SELECT t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t1.shop_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Name FROM shop WHERE Number_products = (SELECT MAX(Number_products) FROM shop)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name of the shops that do not hire any employee.",
+    "gold_query": "SELECT name FROM shop WHERE shop_id NOT IN (SELECT shop_id FROM hiring)",
+    "generated_query": "SELECT Name FROM shop WHERE Shop_ID NOT IN (SELECT Shop_ID FROM hiring)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which shops run with no employees? Find the shop names",
+    "gold_query": "SELECT name FROM shop WHERE shop_id NOT IN (SELECT shop_id FROM hiring)",
+    "generated_query": "SELECT Name FROM shop WHERE Shop_ID NOT IN (SELECT Shop_ID FROM employee)",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of employees hired in each shop; show the shop name as well.",
+    "gold_query": "SELECT count(*) ,  t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t2.name",
+    "generated_query": "SELECT T2.Name, COUNT(T1.Employee_ID) AS Employee_count\nFROM employee AS T1\nJOIN hiring AS T2 ON T1.Employee_ID = T2.Employee_ID\nGROUP BY T2.Shop_ID;",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "For each shop, return the number of employees working there and the name of the shop.",
+    "gold_query": "SELECT count(*) ,  t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t2.name",
+    "generated_query": "SELECT s.Name, COUNT(e.Employee_ID) AS Employee_count\nFROM shop s\nJOIN employee e ON s.Shop_ID = e.Shop_ID\nGROUP BY s.Name;",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which district has both stores with less than 3000 products and stores with more than 10000 products?",
+    "gold_query": "SELECT district FROM shop WHERE Number_products  <  3000 INTERSECT SELECT district FROM shop WHERE Number_products  >  10000",
+    "generated_query": "SELECT District FROM shop WHERE Number_products < 3000 OR Number_products > 10000;",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products.",
+    "gold_query": "SELECT district FROM shop WHERE Number_products  <  3000 INTERSECT SELECT district FROM shop WHERE Number_products  >  10000",
+    "generated_query": "SELECT District FROM shop WHERE Number_products < 3000 OR Number_products > 10000;",
+    "db_id": "employee_hire_evaluation",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many documents are using the template with type code 'PPT'?",
+    "gold_query": "SELECT count(*) FROM Documents AS T1 JOIN Templates AS T2 ON T1.Template_ID  =  T2.Template_ID WHERE T2.Template_Type_Code  =  'PPT'",
+    "generated_query": "SELECT COUNT(*) FROM Documents WHERE Template_ID IN (SELECT Template_ID FROM Templates WHERE Template_Type_Code = 'PPT')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Count the number of documents that use the PPT template type.",
+    "gold_query": "SELECT count(*) FROM Documents AS T1 JOIN Templates AS T2 ON T1.Template_ID  =  T2.Template_ID WHERE T2.Template_Type_Code  =  'PPT'",
+    "generated_query": "SELECT COUNT(*) FROM Documents WHERE Template_ID IN (SELECT Template_ID FROM Templates WHERE Template_Type_Code = 'PPT')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the id and type code for the template used by the most documents?",
+    "gold_query": "SELECT T1.template_id ,  T2.Template_Type_Code FROM Documents AS T1 JOIN Templates AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Template_ID, T1.Template_Type_Code FROM Templates AS T1 JOIN Documents AS T2 ON T1.Template_ID = T2.Template_ID GROUP BY T1.Template_ID ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the id and type code of the template that is used for the greatest number of documents.",
+    "gold_query": "SELECT T1.template_id ,  T2.Template_Type_Code FROM Documents AS T1 JOIN Templates AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Template_ID, T1.Template_Type_Code FROM Templates AS T1 JOIN Documents AS T2 ON T1.Template_ID = T2.Template_ID GROUP BY T1.Template_ID ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show ids for all templates not used by any document.",
+    "gold_query": "SELECT template_id FROM Templates EXCEPT SELECT template_id FROM Documents",
+    "generated_query": "SELECT T1.Template_ID FROM Templates AS T1 JOIN Documents AS T2 ON T1.Template_ID = T2.Template_ID WHERE T2.Document_ID IS NULL;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids for templates that are not used in any documents?",
+    "gold_query": "SELECT template_id FROM Templates EXCEPT SELECT template_id FROM Documents",
+    "generated_query": "SELECT Template_ID FROM Templates WHERE Template_ID NOT IN (SELECT Template_ID FROM Documents)",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the template type code of the template used by document with the name \"Data base\"?",
+    "gold_query": "SELECT T1.template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id WHERE T2.document_name  =  \"Data base\"",
+    "generated_query": "SELECT Template_Type_Code FROM Templates WHERE Template_ID IN (SELECT Template_ID FROM Documents WHERE Document_Name = 'Data base')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the template type code of the template that is used by a document named Data base.",
+    "gold_query": "SELECT T1.template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id WHERE T2.document_name  =  \"Data base\"",
+    "generated_query": "SELECT Template_Type_Code FROM Templates WHERE Template_ID IN (SELECT Template_ID FROM Documents WHERE Document_Name = 'Data base')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all document names using templates with template type code BK.",
+    "gold_query": "SELECT T2.document_name FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id WHERE T1.template_type_code  =  \"BK\"",
+    "generated_query": "SELECT T2.Document_Name FROM Documents AS T1 INNER JOIN Templates AS T2 ON T1.Template_ID = T2.Template_ID WHERE T2.Template_Type_Code = 'BK",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of documents that use templates with the code BK?",
+    "gold_query": "SELECT T2.document_name FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id WHERE T1.template_type_code  =  \"BK\"",
+    "generated_query": "SELECT T2.Document_Name FROM Documents AS T1 INNER JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID WHERE T1.Template_ID IN (SELECT Template_ID FROM Templates WHERE Template_Type_Code = 'BK')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all template type codes and the number of documents using each type.",
+    "gold_query": "SELECT T1.template_type_code ,  count(*) FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_type_code",
+    "generated_query": "SELECT Template_Type_Code, COUNT(*) AS Document_Count\nFROM Templates\nGROUP BY Template_Type_Code;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different template type codes, and how many documents use each type?",
+    "gold_query": "SELECT T1.template_type_code ,  count(*) FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_type_code",
+    "generated_query": "SELECT Template_Type_Code, COUNT(*) AS Document_Count\nFROM Documents\nGROUP BY Template_Type_Code;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which template type code is used by most number of documents?",
+    "gold_query": "SELECT T1.template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_type_code ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Template_Type_Code FROM Documents GROUP BY Template_Type_Code ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the code of the template type that is most commonly used in documents.",
+    "gold_query": "SELECT T1.template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id GROUP BY T1.template_type_code ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT Template_Type_Code FROM Templates GROUP BY Template_Type_Code ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all template type codes that are not used by any document.",
+    "gold_query": "SELECT template_type_code FROM Templates EXCEPT SELECT template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id",
+    "generated_query": "SELECT Template_Type_Code FROM Templates WHERE Template_ID NOT IN (SELECT Template_ID FROM Documents)",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the codes of template types that are not used for any document?",
+    "gold_query": "SELECT template_type_code FROM Templates EXCEPT SELECT template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id",
+    "generated_query": "SELECT Template_Type_Code FROM Templates WHERE Template_ID NOT IN (SELECT Template_ID FROM Documents)",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the distinct template type descriptions for the templates ever used by any document?",
+    "gold_query": "SELECT DISTINCT T1.template_type_description FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code JOIN Documents AS T3 ON T2.Template_ID  =  T3.template_ID",
+    "generated_query": "SELECT DISTINCT Template_Type_Description FROM Templates\nWHERE Template_ID IN (\n  SELECT Template_ID FROM Documents\n);",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the different descriptions for templates that have been used in a document.",
+    "gold_query": "SELECT DISTINCT T1.template_type_description FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code JOIN Documents AS T3 ON T2.Template_ID  =  T3.template_ID",
+    "generated_query": "SELECT DISTINCT T2.Template_Type_Description FROM Templates AS T1 JOIN Documents AS T2 ON T1.Template_ID = T2.Template_ID WHERE T2.Document_ID IN (SELECT Document_ID FROM Paragraphs AS T3 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T4 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T5 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T6 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T7 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T8 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T9 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T10 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T11 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T12 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T13 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T14 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T15 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T16 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T17 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T18 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T19 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T20 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T21 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T22 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T23 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T24 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T25 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T26 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T27 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T28 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T29 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T30 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T31 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T32 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T33 WHERE Paragraph_ID IN (SELECT Paragraph_ID FROM Paragraphs AS T34 WHERE Paragraph_ID IN (SELECT Paragraph",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the template ids with template type description \"Presentation\".",
+    "gold_query": "SELECT T2.template_id FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code WHERE T1.template_type_description  =  \"Presentation\"",
+    "generated_query": "SELECT Template_ID FROM Templates WHERE Template_Type_Description = 'Presentation",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the ids corresponding to templates with the description 'Presentation'.",
+    "gold_query": "SELECT T2.template_id FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code WHERE T1.template_type_description  =  \"Presentation\"",
+    "generated_query": "SELECT Template_ID FROM Templates WHERE Template_Type_Description = 'Presentation",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many paragraphs for the document with name 'Summer Show'?",
+    "gold_query": "SELECT count(*) FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_ID  =  T2.document_ID WHERE T2.document_name  =  'Summer Show'",
+    "generated_query": "SELECT COUNT(*) FROM Paragraphs WHERE Document_ID IN (SELECT Document_ID FROM Documents WHERE Document_Name = 'Summer Show')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Count the number of paragraphs in the document named 'Summer Show'.",
+    "gold_query": "SELECT count(*) FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_ID  =  T2.document_ID WHERE T2.document_name  =  'Summer Show'",
+    "generated_query": "SELECT COUNT(*) FROM Paragraphs WHERE Document_ID IN (SELECT Document_ID FROM Documents WHERE Document_Name = 'Summer Show')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all paragraph ids and texts for the document with name 'Welcome to NY'.",
+    "gold_query": "SELECT T1.paragraph_id ,   T1.paragraph_text FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id WHERE T2.Document_Name  =  'Welcome to NY'",
+    "generated_query": "SELECT Paragraph_ID, Paragraph_Text FROM Paragraphs WHERE Document_ID IN (SELECT Document_ID FROM Documents WHERE Document_Name = 'Welcome to NY')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids and texts of paragraphs in the document titled 'Welcome to NY'?",
+    "gold_query": "SELECT T1.paragraph_id ,   T1.paragraph_text FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id WHERE T2.Document_Name  =  'Welcome to NY'",
+    "generated_query": "SELECT T1.Paragraph_ID, T1.Paragraph_Text FROM Documents AS T1 INNER JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID WHERE T1.Document_Name = 'Welcome to NY",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all paragraph texts for the document \"Customer reviews\".",
+    "gold_query": "SELECT T1.paragraph_text FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id WHERE T2.document_name  =  \"Customer reviews\"",
+    "generated_query": "SELECT Paragraph_Text FROM Paragraphs WHERE Document_ID = (SELECT Document_ID FROM Documents WHERE Document_Name = 'Customer reviews')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the paragraph texts for the document with the name 'Customer reviews'?",
+    "gold_query": "SELECT T1.paragraph_text FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id WHERE T2.document_name  =  \"Customer reviews\"",
+    "generated_query": "SELECT Paragraph_Text FROM Paragraphs WHERE Document_ID IN (SELECT Document_ID FROM Documents WHERE Document_Name = 'Customer reviews')",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show all document ids, names and the number of paragraphs in each document.",
+    "gold_query": "SELECT T1.document_id ,  T2.document_name ,  count(*) FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id GROUP BY T1.document_id",
+    "generated_query": "SELECT T1.Document_ID, T1.Document_Name, COUNT(T2.Paragraph_ID) AS NumberOfParagraphs\nFROM Documents AS T1\nJOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID\nGROUP BY T1.Document_ID, T1.Document_Name;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids and names of each document, as well as the number of paragraphs in each?",
+    "gold_query": "SELECT T1.document_id ,  T2.document_name ,  count(*) FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id GROUP BY T1.document_id",
+    "generated_query": "SELECT T1.Document_ID, T1.Document_Name, COUNT(T2.Paragraph_ID) AS Paragraph_Count\nFROM Documents AS T1\nJOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID\nGROUP BY T1.Document_ID, T1.Document_Name;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the document id and name with greatest number of paragraphs?",
+    "gold_query": "SELECT T1.document_id ,  T2.document_name FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id GROUP BY T1.document_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Document_ID, T1.Document_Name FROM Documents AS T1 JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID GROUP BY T1.Document_ID ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Return the id and name of the document with the most paragraphs.",
+    "gold_query": "SELECT T1.document_id ,  T2.document_name FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id GROUP BY T1.document_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T1.Document_ID, T1.Document_Name FROM Documents AS T1 JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID GROUP BY T1.Document_ID ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show the document id with paragraph text 'Brazil' and 'Ireland'.",
+    "gold_query": "SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Brazil' INTERSECT SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Ireland'",
+    "generated_query": "SELECT T1.Document_ID, T2.Paragraph_Text FROM Documents AS T1 INNER JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID WHERE T2.Paragraph_Text = 'Brazil' OR T2.Paragraph_Text = 'Ireland';",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids of documents that contain the paragraph text 'Brazil' and 'Ireland'?",
+    "gold_query": "SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Brazil' INTERSECT SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Ireland'",
+    "generated_query": "SELECT T1.Document_ID FROM Documents AS T1 INNER JOIN Paragraphs AS T2 ON T1.Document_ID = T2.Document_ID WHERE T2.Paragraph_Text LIKE '%Brazil%' OR T2.Paragraph_Text LIKE '%Ireland%",
+    "db_id": "cre_Doc_Template_Mgt",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names of teachers and the courses they are arranged to teach.",
+    "gold_query": "SELECT T3.Name ,  T2.Course FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID",
+    "generated_query": "SELECT T1.Name, T2.Course FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of each teacher and what course they teach?",
+    "gold_query": "SELECT T3.Name ,  T2.Course FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID",
+    "generated_query": "SELECT T1.Name, T2.Course FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names of teachers and the courses they are arranged to teach in ascending alphabetical order of the teacher's name.",
+    "gold_query": "SELECT T3.Name ,  T2.Course FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID ORDER BY T3.Name",
+    "generated_query": "SELECT T1.Name, T2.Course FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID ORDER BY T1.Name ASC;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the teachers and the courses they teach in ascending alphabetical order by the name of the teacher?",
+    "gold_query": "SELECT T3.Name ,  T2.Course FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID ORDER BY T3.Name",
+    "generated_query": "SELECT T1.Name, T2.Course FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID ORDER BY T1.Name ASC;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show the name of the teacher for the math course.",
+    "gold_query": "SELECT T3.Name FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID WHERE T2.Course  =  \"Math\"",
+    "generated_query": "SELECT T2.Name FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID WHERE T2.Course_ID = (SELECT Course_ID FROM course WHERE Course = 'Math');",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the people who teach math courses?",
+    "gold_query": "SELECT T3.Name FROM course_arrange AS T1 JOIN course AS T2 ON T1.Course_ID  =  T2.Course_ID JOIN teacher AS T3 ON T1.Teacher_ID  =  T3.Teacher_ID WHERE T2.Course  =  \"Math\"",
+    "generated_query": "SELECT T2.Name FROM course AS T1 JOIN course_arrange AS T2 ON T1.Course_ID = T2.Course_ID WHERE T1.Course = 'Math",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names of teachers and the number of courses they teach.",
+    "gold_query": "SELECT T2.Name ,  COUNT(*) FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name",
+    "generated_query": "SELECT T1.Name, COUNT(T2.Course_ID) FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID GROUP BY T1.Name;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the teachers and how many courses do they teach?",
+    "gold_query": "SELECT T2.Name ,  COUNT(*) FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name",
+    "generated_query": "SELECT T1.Name, COUNT(T2.Course_ID) FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID GROUP BY T1.Name;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names of teachers that teach at least two courses.",
+    "gold_query": "SELECT T2.Name FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name HAVING COUNT(*)  >=  2",
+    "generated_query": "SELECT T2.Name FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID GROUP BY T1.Name HAVING COUNT(*) >= 2;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the teachers who teach at least two courses?",
+    "gold_query": "SELECT T2.Name FROM course_arrange AS T1 JOIN teacher AS T2 ON T1.Teacher_ID  =  T2.Teacher_ID GROUP BY T2.Name HAVING COUNT(*)  >=  2",
+    "generated_query": "SELECT T2.Name FROM course AS T1 JOIN course_arrange AS T2 ON T1.Course_ID = T2.Course_ID GROUP BY T2.Teacher_ID HAVING COUNT(*) >= 2;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "List the names of teachers who have not been arranged to teach courses.",
+    "gold_query": "SELECT Name FROM teacher WHERE Teacher_id NOT IN (SELECT Teacher_id FROM course_arrange)",
+    "generated_query": "SELECT T2.Name FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID WHERE T2.Course_ID IS NULL;",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of the teachers whose courses have not been arranged?",
+    "gold_query": "SELECT Name FROM teacher WHERE Teacher_id NOT IN (SELECT Teacher_id FROM course_arrange)",
+    "generated_query": "SELECT T2.Name FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.Teacher_ID = T2.Teacher_ID WHERE T2.Course_ID NOT IN (SELECT Course_ID FROM course_arrange)",
+    "db_id": "course_teach",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "find the names of museums which have more staff than the minimum staff number of all museums opened after 2010.",
+    "gold_query": "SELECT name FROM museum WHERE num_of_staff  >  (SELECT min(num_of_staff) FROM museum WHERE open_year  >  2010)",
+    "generated_query": "SELECT Name FROM museum WHERE Num_of_Staff > (SELECT MIN(Num_of_Staff) FROM museum WHERE Open_Year >= '2010')",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "find the id, name and age for visitors who visited some museums more than once.",
+    "gold_query": "SELECT t1.id ,  t1.name ,  t1.age FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id GROUP BY t1.id HAVING count(*)  >  1",
+    "generated_query": "SELECT v.Name, v.Age, v.ID FROM visitor v JOIN visit v ON v.ID = v.visitor_ID GROUP BY v.ID HAVING COUNT(*) > 1;",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the id, name and membership level of visitors who have spent the largest amount of money in total in all museum tickets?",
+    "gold_query": "SELECT t2.visitor_id ,  t1.name ,  t1.Level_of_membership FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id GROUP BY t2.visitor_id ORDER BY sum(t2.Total_spent) DESC LIMIT 1",
+    "generated_query": "SELECT v.id, v.name, v.level_of_membership \nFROM visitor v \nJOIN visit v1 ON v.id = v1.visitor_id \nJOIN museum m ON v.museum_id = m.Museum_ID \nWHERE v1.Total_spent = (SELECT MAX(Total_spent) FROM visit) \nORDER BY v1.id ASC;",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the id and name of the museum visited most times?",
+    "gold_query": "SELECT t2.Museum_ID ,  t1.name FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID GROUP BY t2.Museum_ID ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT ID, Name FROM museum WHERE Museum_ID IN (SELECT Museum_ID FROM visit GROUP BY Museum_ID ORDER BY COUNT(*) DESC LIMIT 1)",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of the museum that had no visitor yet?",
+    "gold_query": "SELECT name FROM museum WHERE Museum_ID NOT IN (SELECT museum_id FROM visit)",
+    "generated_query": "SELECT Name FROM museum WHERE Museum_ID NOT IN (SELECT Museum_ID FROM visit)",
+    "db_id": "museum_visit",
+    "exact_match": true,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the name and age of the visitor who bought the most tickets at once.",
+    "gold_query": "SELECT t1.name ,  t1.age FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id ORDER BY t2.num_of_ticket DESC LIMIT 1",
+    "generated_query": "SELECT v.Name, v.Age FROM visitor v JOIN visit v ON v.ID = v.visitor_ID GROUP BY v.Name, v.Age ORDER BY SUM(v.Num_of_Ticket) DESC LIMIT 1;",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the total ticket expense of the visitors whose membership level is 1?",
+    "gold_query": "SELECT sum(t2.Total_spent) FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id WHERE t1.Level_of_membership  =  1",
+    "generated_query": "SELECT SUM(Total_spent) FROM visit AS T1 JOIN visitor AS T2 ON T1.visitor_id = T2.ID WHERE T2.Level_of_membership = 1",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name of the visitor who visited both a museum opened before 2009 and a museum opened after 2011?",
+    "gold_query": "SELECT t1.name FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id JOIN museum AS t3 ON t3.Museum_ID  =  t2.Museum_ID WHERE t3.open_year  <  2009 INTERSECT SELECT t1.name FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id JOIN museum AS t3 ON t3.Museum_ID  =  t2.Museum_ID WHERE t3.open_year  >  2011",
+    "generated_query": "SELECT v.Name \nFROM visitor v \nJOIN visit vi ON v.ID = vi.visitor_ID \nWHERE vi.Museum_ID IN (SELECT Museum_ID FROM museum WHERE Open_Year < '2009') \nAND vi.Museum_ID IN (SELECT Museum_ID FROM museum WHERE Open_Year > '2011');",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the number of visitors who did not visit any museum opened after 2010.",
+    "gold_query": "SELECT count(*) FROM visitor WHERE id NOT IN (SELECT t2.visitor_id FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID WHERE t1.open_year  >  2010)",
+    "generated_query": "SELECT COUNT(DISTINCT v.Name) FROM visitor v\nJOIN visit v ON v.visitor_id = v.ID\nWHERE v.Open_Year < '2010'\nGROUP BY v.Name;",
+    "db_id": "museum_visit",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "List the names of all winners who played in both 2013 and 2016.",
+    "gold_query": "SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016",
+    "generated_query": "SELECT T1.winner_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id WHERE T2.year IN (2013, 2016) AND T1.year IN (2013, 2016);",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names of players who won in both 2013 and 2016?",
+    "gold_query": "SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016",
+    "generated_query": "SELECT T1.first_name, T1.last_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id WHERE T2.year IN (2013, 2016) AND T2.round = 'Final' AND T2.score LIKE '%Winning%",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the country code and first name of the players who won in both tourney WTA Championships and Australian Open?",
+    "gold_query": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'WTA Championships' INTERSECT SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'Australian Open'",
+    "generated_query": "SELECT country_code, first_name FROM players WHERE player_id IN \n(SELECT winner_id FROM rankings WHERE ranking = 'WTA Championships' AND ranking_points > 0) \nAND player_id IN \n(SELECT winner_id FROM rankings WHERE ranking = 'Australian Open' AND ranking_points > 0);",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the first names and country codes for players who won both the WTA Championships and the Australian Open?",
+    "gold_query": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'WTA Championships' INTERSECT SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'Australian Open'",
+    "generated_query": "SELECT T1.first_name, T1.country_code FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id WHERE T2.best_of = 1 AND T2.draw_size = 1 AND T2.loser_hand = 'WTA' AND T2.loser_entry = 'Australian Open",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name and country code of the player who did the most number of tours.",
+    "gold_query": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1",
+    "generated_query": "SELECT T1.first_name, T1.country_code FROM players AS T1 JOIN rankings AS T2 ON T1.player_id = T2.player_id GROUP BY T1.player_id ORDER BY COUNT(T2.tours) DESC LIMIT 1",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the first name and country code of the player with the most tours?",
+    "gold_query": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1",
+    "generated_query": "SELECT T1.first_name, T1.country_code FROM players AS T1 JOIN rankings AS T2 ON T1.player_id = T2.player_id GROUP BY T1.player_id ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the average ranking for each player and their first name.",
+    "gold_query": "SELECT avg(ranking) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name",
+    "generated_query": "SELECT T1.player_id, T1.first_name, AVG(T2.ranking_points) AS avg_ranking\nFROM rankings AS T1\nJOIN players AS T2 ON T1.player_id = T2.player_id\nGROUP BY T1.player_id, T1.first_name;",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the first names of all players, and their average rankings?",
+    "gold_query": "SELECT avg(ranking) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name",
+    "generated_query": "SELECT T1.first_name, AVG(T2.ranking_points) AS avg_ranking FROM players AS T1 JOIN rankings AS T2 ON T1.player_id = T2.player_id GROUP BY T1.first_name;",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the total ranking points for each player and their first name.",
+    "gold_query": "SELECT sum(ranking_points) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name",
+    "generated_query": "SELECT T1.player_id, T1.first_name, SUM(T2.ranking_points) AS total_ranking_points\nFROM rankings AS T1\nJOIN players AS T2 ON T1.player_id = T2.player_id\nGROUP BY T1.player_id, T1.first_name;",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the first names of all players, and their total ranking points?",
+    "gold_query": "SELECT sum(ranking_points) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name",
+    "generated_query": "SELECT T1.first_name, SUM(T2.ranking_points) AS total_ranking_points\nFROM players AS T1\nJOIN rankings AS T2 ON T1.player_id = T2.player_id\nGROUP BY T1.first_name;",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Find the first name, country code and birth date of the winner who has the highest rank points in all matches.",
+    "gold_query": "SELECT T1.first_name ,  T1.country_code ,  T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id ORDER BY T2.winner_rank_points DESC LIMIT 1",
+    "generated_query": "SELECT T1.first_name, T1.country_code, T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.winner_id JOIN rankings AS T3 ON T1.player_id = T3.player_id ORDER BY T3.ranking_points DESC LIMIT 1",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the first name, country code, and birth date of the player with the most winner rank points across all matches?",
+    "gold_query": "SELECT T1.first_name ,  T1.country_code ,  T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id ORDER BY T2.winner_rank_points DESC LIMIT 1",
+    "generated_query": "SELECT T1.first_name, T1.country_code, T1.birth_date FROM players AS T1 JOIN rankings AS T2 ON T1.player_id = T2.player_id JOIN matches AS T3 ON T2.player_id = T3.loser_id ORDER BY T2.ranking_points DESC LIMIT 1",
+    "db_id": "wta_1",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the death and injury situations caused by the ship with tonnage 't'?",
+    "gold_query": "SELECT T1.killed ,  T1.injured FROM death AS T1 JOIN ship AS t2 ON T1.caused_by_ship_id  =  T2.id WHERE T2.tonnage  =  't'",
+    "generated_query": "SELECT T1.note, T2.injured, T2.killed FROM death AS T1 JOIN ship AS T2 ON T1.cause_by_ship_id = T2.id WHERE T2.t = 't",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the different ids and names of the battles that lost any 'Brig' type shipes?",
+    "gold_query": "SELECT DISTINCT T1.id ,  T1.name FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.ship_type  =  'Brig'",
+    "generated_query": "SELECT id, name FROM battle WHERE ship_type = 'Brig",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the ids and names of the battles that led to more than 10 people killed in total.",
+    "gold_query": "SELECT T1.id ,  T1.name FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle JOIN death AS T3 ON T2.id  =  T3.caused_by_ship_id GROUP BY T1.id HAVING sum(T3.killed)  >  10",
+    "generated_query": "SELECT id, name FROM battle WHERE lost_in_battle IN (SELECT id FROM death GROUP BY id HAVING COUNT(*) > 10)",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the ship id and name that caused most total injuries?",
+    "gold_query": "SELECT T2.id ,  T2.name FROM death AS T1 JOIN ship AS t2 ON T1.caused_by_ship_id  =  T2.id GROUP BY T2.id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT ship.id, ship.name FROM ship JOIN death ON ship.id = death.caused_by_ship_id GROUP BY ship.id ORDER BY SUM(death.injured) DESC LIMIT 1;",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many battles did not lose any ship with tonnage '225'?",
+    "gold_query": "SELECT count(*) FROM battle WHERE id NOT IN ( SELECT lost_in_battle FROM ship WHERE tonnage  =  '225' );",
+    "generated_query": "SELECT COUNT(*) FROM battle WHERE lost_in_battle IS NULL AND tonnage = '225",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "List the name and date the battle that has lost the ship named 'Lettice' and the ship named 'HMS Atalanta'",
+    "gold_query": "SELECT T1.name ,  T1.date FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.name  =  'Lettice' INTERSECT SELECT T1.name ,  T1.date FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.name  =  'HMS Atalanta'",
+    "generated_query": "SELECT b.name, b.date FROM battle b \nJOIN ship s ON b.id = s.lost_in_battle \nWHERE s.name = 'Lettice' OR s.name = 'HMS Atalanta'\nORDER BY b.date DESC;",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": true,
+    "complexity": "complex"
+  },
+  {
+    "question": "Show names, results and bulgarian commanders of the battles with no ships lost in the 'English Channel'.",
+    "gold_query": "SELECT name ,  RESULT ,  bulgarian_commander FROM battle EXCEPT SELECT T1.name ,  T1.result ,  T1.bulgarian_commander FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.location  =  'English Channel'",
+    "generated_query": "SELECT T1.name, T1.result, T1.bulgarian_commander FROM battle AS T1 JOIN ship AS T2 ON T1.id = T2.lost_in_battle WHERE T2.name NOT LIKE '%English Channel%' AND T1.result NOT LIKE '%Lost%' AND T1.bulgarian_commander NOT LIKE '%English Channel%",
+    "db_id": "battle_death",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "Which department offers the most number of degrees? List department name and id.",
+    "gold_query": "SELECT T2.department_name ,  T1.department_id FROM Degree_Programs AS T1 JOIN Departments AS T2 ON T1.department_id  =  T2.department_id GROUP BY T1.department_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT T2.department_name, T2.department_id FROM Degrees AS T1 JOIN Department AS T2 ON T1.department_id = T2.department_id GROUP BY T2.department_id ORDER BY COUNT(*) DESC LIMIT 1;",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the name and id of the department with the most number of degrees ?",
+    "gold_query": "select t2.department_name ,  t1.department_id from degree_programs as t1 join departments as t2 on t1.department_id  =  t2.department_id group by t1.department_id order by count(*) desc limit 1",
+    "generated_query": "SELECT T2.department_name, T2.department_id FROM Degrees AS T1 JOIN Department AS T2 ON T1.department_id = T2.department_id GROUP BY T2.department_id ORDER BY COUNT(*) DESC LIMIT 1",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many degrees does the engineering department offer?",
+    "gold_query": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+    "generated_query": "SELECT COUNT(*) FROM Degrees WHERE department_id = (SELECT department_id FROM Departments WHERE department_name = 'Engineering');",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "How many degrees does the engineering department have?",
+    "gold_query": "SELECT count(*) FROM Departments AS T1 JOIN Degree_Programs AS T2 ON T1.department_id  =  T2.department_id WHERE T1.department_name  =  'engineer'",
+    "generated_query": "SELECT COUNT(*) FROM Degrees WHERE department_id = (SELECT department_id FROM Departments WHERE department_name = 'Engineering');",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names and id of courses having at most 2 sections?",
+    "gold_query": "SELECT T1.course_name ,  T1.course_id FROM Courses AS T1 JOIN Sections AS T2 ON T1.course_id  =  T2.course_id GROUP BY T1.course_id HAVING count(*)  <=  2",
+    "generated_query": "SELECT course_name, course_id FROM Courses WHERE course_id IN (SELECT course_id FROM Student_Enrolment_Courses GROUP BY course_id HAVING count(*) <= 2)",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What are the names and ids of every course with less than 2 sections?",
+    "gold_query": "SELECT T1.course_name ,  T1.course_id FROM Courses AS T1 JOIN Sections AS T2 ON T1.course_id  =  T2.course_id GROUP BY T1.course_id HAVING count(*)  <=  2",
+    "generated_query": "SELECT course_name, course_id FROM Courses WHERE course_id IN (SELECT course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE student_course_id IN (SELECT student_course_id FROM Student_Enrolment_Courses WHERE",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
+  },
+  {
+    "question": "What is the semester which most student registered in? Show both the name and the id.",
+    "gold_query": "SELECT T1.semester_name ,  T1.semester_id FROM Semesters AS T1 JOIN Student_Enrolment AS T2 ON T1.semester_id  =  T2.semester_id GROUP BY T1.semester_id ORDER BY count(*) DESC LIMIT 1",
+    "generated_query": "SELECT semester_name, semester_id FROM Semesters ORDER BY count(*) DESC LIMIT 1;",
+    "db_id": "student_transcripts_tracking",
+    "exact_match": false,
+    "execution_match": false,
+    "complexity": "complex"
   }
 ]

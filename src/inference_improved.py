@@ -9,6 +9,7 @@ Key improvements:
 """
 
 import re
+import difflib
 from transformers import PreTrainedModel, PreTrainedTokenizer
 
 
@@ -69,6 +70,96 @@ You are a text-to-SQL generator. Given the schema and question, output ONLY the 
     # Validate and clean
     sql = clean_sql(sql)
     
+    # Correct column names using fuzzy matching
+    sql = correct_sql_columns(sql, schema_context)
+    
+    return sql
+
+
+def correct_sql_columns(sql: str, schema: str) -> str:
+    """
+    Corrects invalid column names in SQL using fuzzy matching against schema.
+    """
+    # Extract valid column names and table names from schema
+    # Pattern now handles lines with PK/FK too, but main interest is column defs
+    schema_columns = set()
+    schema_tables = set()
+    
+    # Extract table names: CREATE TABLE table_name
+    table_pattern = r'^\s*CREATE\s+TABLE\s+([a-zA-Z0-9_]+)'
+    
+    # Extract column names: col_name type
+    # A more robust way based on our dataset_loader output format:
+    # "  col_name type"
+    column_pattern = r'^\s*([a-zA-Z0-9_]+)\s+(?:INT|TEXT|number|text|DECIMAL|DATE|REAL|INTEGER|double|float)'
+    
+    for line in schema.split('\n'):
+        # Check for table
+        table_match = re.match(table_pattern, line, re.IGNORECASE)
+        if table_match:
+            schema_tables.add(table_match.group(1).lower())
+            continue
+            
+        # Check for column
+        match = re.match(column_pattern, line, re.IGNORECASE)
+        if match:
+             schema_columns.add(match.group(1).lower())
+             
+    if not schema_columns:
+        return sql
+        
+    # Extract potential column tokens from SQL
+    # We try to identify identifiers that match invalid columns
+    
+    # Split by standard SQL delimiters to find candidates
+    # This is a heuristic; a full SQL parser would be better but overkill here
+    tokens = re.findall(r'\b[a-zA-Z0-9_]+\b', sql)
+    
+    keywords = {
+        'select', 'from', 'where', 'and', 'or', 'order', 'by', 'group',
+        'having', 'limit', 'join', 'on', 'as', 'asc', 'desc', 'count',
+        'avg', 'sum', 'min', 'max', 'distinct', 'between', 'like', 'in',
+        'not', 'null', 'is', 'true', 'false', 'case', 'when', 'then',
+        'else', 'end', 'cast', 'inner', 'left', 'right', 'outer', 'full',
+        'create', 'table', 'primary', 'key', 'foreign', 'references',
+        'int', 'text', 'date', 'year', 'month', 'day'
+    }
+    
+    # Identify replacements
+    replacements = {}
+    
+    for token in tokens:
+        lower_token = token.lower()
+        
+        # Skip keywords, numbers (often years/values), and T1/T2 aliases
+        if (lower_token in keywords or 
+            token.isdigit() or 
+            re.match(r'^t\d+$', lower_token)):
+            continue
+            
+        # If token is already a valid column OR A TABLE, skip
+        if lower_token in schema_columns or lower_token in schema_tables:
+            continue
+            
+        # Find closest match
+        matches = difflib.get_close_matches(lower_token, schema_columns, n=1, cutoff=0.8)
+        
+        if matches:
+            best_match = matches[0]
+            # Heuristic: only replace if length difference is small to avoid over-correction
+            # e.g. "age" shouldn't replace "language" just because it's the only match
+            if abs(len(best_match) - len(lower_token)) <= 3:
+                # Store original token -> best match (preserving case of match if needed, but SQL is case insensitive mostly)
+                # We use the schema's casing (often lower)
+                replacements[token] = best_match
+                
+    # Apply replacements
+    # Sort by length descending to replace longer words first if overlapping
+    for bad_col, good_col in sorted(replacements.items(), key=lambda x: len(x[0]), reverse=True):
+        # Use regex to replace whole word only
+        pattern = r'\b' + re.escape(bad_col) + r'\b'
+        sql = re.sub(pattern, good_col, sql)
+        
     return sql
 
 

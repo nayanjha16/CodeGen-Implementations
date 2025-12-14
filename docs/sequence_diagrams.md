@@ -304,55 +304,11 @@ sequenceDiagram
     deactivate Script
 ```
 
-## 6. Few-Shot Inference Flow
 
-This diagram shows the enhanced few-shot prompting approach.
-
-```mermaid
-sequenceDiagram
-    participant Caller as Caller
-    participant FewShot as inference_fewshot.py
-    participant Tokenizer as PreTrainedTokenizer
-    participant Model as Qwen2.5-Coder
-    
-    Caller->>FewShot: generate_sql_fewshot model tokenizer query schema
-    activate FewShot
-    
-    FewShot->>FewShot: Load FEW_SHOT_EXAMPLES 3 examples
-    
-    Note over FewShot: Build prompt with examples
-    
-    FewShot->>FewShot: Construct full prompt with examples plus target query
-    
-    FewShot->>Tokenizer: tokenizer prompt return_tensors pt
-    activate Tokenizer
-    Tokenizer-->>FewShot: inputs
-    deactivate Tokenizer
-    
-    FewShot->>Model: model.generate max_new_tokens=256 do_sample=False
-    activate Model
-    Model-->>FewShot: outputs
-    deactivate Model
-    
-    FewShot->>Tokenizer: tokenizer.decode outputs
-    activate Tokenizer
-    Tokenizer-->>FewShot: response_text
-    deactivate Tokenizer
-    
-    FewShot->>FewShot: Extract SQL after last SQL marker
-    FewShot->>FewShot: Remove markdown formatting
-    FewShot->>FewShot: Remove explanatory text
-    FewShot->>FewShot: Keep first statement only
-    
-    FewShot-->>Caller: cleaned_sql
-    deactivate FewShot
-    FewShot-->>Caller: cleaned_sql
-    deactivate FewShot
-```
 
 ## 7. Improved Inference Flow (Fine-tuned)
 
-This diagram shows the inference flow using the fine-tuned adapter.
+This diagram shows the inference flow using the fine-tuned adapter, including the active column validation mechanism.
 
 ```mermaid
 sequenceDiagram
@@ -368,7 +324,7 @@ sequenceDiagram
     Loader-->>Script: model (wrapped)
     deactivate Loader
     
-    Script->>Inference: generate_sql_improved(model, ...)
+    Script->>Inference: generate_sql_improved(model, ..., schema)
     activate Inference
     Inference->>Model: generate()
     activate Model
@@ -376,12 +332,20 @@ sequenceDiagram
     Model-->>Inference: output tokens
     deactivate Model
     
-    Inference->>Inference: Enhanced post-processing
-    Inference-->>Script: SQL query
+    Note over Inference: Post-processing & Validation
+    
+    Inference->>Inference: Extract SQL
+    Inference->>Inference: validate_sql_columns(sql, schema)
+    alt Invalid Columns Found
+        Inference->>Inference: correct_sql_columns(sql, schema)
+        Note right of Inference: Fuzzy match "petage" -> "pet_age"
+    end
+    
+    Inference-->>Script: Validated SQL query
     deactivate Inference
 ```
 
-## 7. Fine-tuning Flow
+## 8. Fine-tuning Flow
 
 This diagram shows the process of fine-tuning the model on the Spider dataset using QLoRA.
 
@@ -443,9 +407,9 @@ sequenceDiagram
     deactivate Script
 ```
 
-## 8. Dataset Loading Flow
+## 9. Dataset Loading Flow
 
-This diagram shows how the Spider dataset is loaded and processed.
+This diagram shows how the Spider dataset is loaded and processed, including the enhanced schema extraction.
 
 ```mermaid
 sequenceDiagram
@@ -492,17 +456,19 @@ sequenceDiagram
     deactivate FS
     
     Loader->>Loader: Find db_id in tables
-    Loader->>Loader: Extract table_names column_names column_types
+    Loader->>Loader: Extract table_names, column_names, column_types, keys
     
     loop For each table
-        Loader->>Loader: Build CREATE TABLE statement
+        Loader->>Loader: Extract PRIMARY KEYs
+        Loader->>Loader: Extract FOREIGN KEYs
+        Loader->>Loader: Build CREATE TABLE statement with constraints
     end
     
-    Loader-->>Caller: schema_string
+    Loader-->>Caller: schema_string (with PK/FK)
     deactivate Loader
 ```
 
-## 9. Error Handling Flow
+## 10. Error Handling Flow
 
 This diagram shows error scenarios and how they are handled.
 
@@ -545,7 +511,7 @@ sequenceDiagram
     deactivate Loader
 ```
 
-## 10. SQL Normalization and Comparison Flow
+## 11. SQL Normalization and Comparison Flow
 
 This diagram shows how SQL queries are normalized for exact match comparison.
 
@@ -588,7 +554,7 @@ sequenceDiagram
 3. **rag.py** - Retrieves relevant database schemas using semantic search
 4. **model_loader.py** - Downloads and initializes the Qwen2.5-Coder-0.5B-Instruct model
 5. **inference.py** - Zero-shot SQL generation logic
-6. **inference_fewshot.py** - Few-shot SQL generation with example prompts
+
 7. **dataset_loader.py** - Loads Spider dataset and database schemas
 8. **evaluate.py** - Metrics computation exact match and execution accuracy
 
