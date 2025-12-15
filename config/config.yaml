@@ -1,0 +1,4 @@
+# Configuration placeholder for text-to-nosql project
+project_name: text_to_nosql
+version: 0.1.0
+# Add configuration keys here (datasources, embeddings, mongo, etc.)
