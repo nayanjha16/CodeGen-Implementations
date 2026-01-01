@@ -1,0 +1,725 @@
+2026-01-01 19:50:24,535 - __main__ - INFO - ================================================================================
+2026-01-01 19:50:24,535 - __main__ - INFO - SMART Pipeline Evaluation - Spider Dev MongoDB Dataset
+2026-01-01 19:50:24,535 - __main__ - INFO - ================================================================================
+2026-01-01 19:50:24,535 - __main__ - INFO - Loading data from data/samples/spider_dev_mongo.json
+2026-01-01 19:50:24,538 - __main__ - INFO - Limited to 10 samples
+2026-01-01 19:50:24,538 - __main__ - INFO - Loaded 10 test cases
+2026-01-01 19:50:24,538 - __main__ - INFO - Extracted 1 database schemas
+2026-01-01 19:50:24,538 - __main__ - INFO - Initializing SMART framework...
+2026-01-01 19:50:24,551 - utils.llm_client - INFO - Initialized Ollama client with model: llama3.2:latest
+2026-01-01 19:50:26,394 - utils.embeddings - INFO - Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 19:50:26,411 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: mps
+2026-01-01 19:50:26,411 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 19:50:29,010 - utils.embeddings - INFO - Embedding model loaded successfully
+2026-01-01 19:50:29,010 - smart.smart_pipeline - INFO - SMART Framework initialized successfully
+2026-01-01 19:50:29,010 - __main__ - INFO - Indexing 10 training examples for RAG...
+2026-01-01 19:50:29,010 - utils.embeddings - INFO - Indexing 10 examples...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  4.39it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  4.38it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  3.76it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  3.76it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 176.39it/s]
+2026-01-01 19:50:29,520 - utils.embeddings - INFO - Indexing complete
+2026-01-01 19:50:29,520 - smart.smart_pipeline - INFO - Indexed 10 training examples
+2026-01-01 19:50:29,520 - __main__ - INFO - RAG indexing complete: None examples indexed
+2026-01-01 19:50:29,520 - __main__ - INFO - 
+Running pipeline on 10 samples...
+2026-01-01 19:50:29,520 - __main__ - INFO - ================================================================================
+2026-01-01 19:50:29,520 - __main__ - INFO - 
+[1/10] Database: concert_singer
+2026-01-01 19:50:29,520 - __main__ - INFO - Question: How many singers do we have?
+2026-01-01 19:50:29,520 - __main__ - INFO - Gold Query: db.singer.count({})
+2026-01-01 19:50:29,520 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:29,520 - smart.smart_pipeline - INFO - Translating NLQ: How many singers do we have?
+2026-01-01 19:50:29,520 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:31,303 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['singer_name', 'genre', 'nationality'], 'collection': None, 'raw_response': 'singer_name, genre, nationality'}
+2026-01-01 19:50:31,303 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:31,541 - smart.query_generator - INFO - Generated query: db.singer.countDocuments();
+2026-01-01 19:50:31,541 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 11.48it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  7.10it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  7.09it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 27.79it/s]
+2026-01-01 19:50:31,810 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:31,810 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:31,810 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:31,820 - utils.mongo_client - INFO - Successfully connected to MongoDB at mongodb://localhost:27017/
+2026-01-01 19:50:31,821 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:31,821 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.countDocuments();
+2026-01-01 19:50:31,821 - __main__ - INFO - Predicted Query: db.singer.countDocuments();
+2026-01-01 19:50:31,821 - __main__ - INFO - Success: True
+2026-01-01 19:50:31,821 - __main__ - INFO - 
+[2/10] Database: concert_singer
+2026-01-01 19:50:31,821 - __main__ - INFO - Question: What is the total number of singers?
+2026-01-01 19:50:31,821 - __main__ - INFO - Gold Query: db.singer.count({})
+2026-01-01 19:50:31,821 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:31,821 - smart.smart_pipeline - INFO - Translating NLQ: What is the total number of singers?
+2026-01-01 19:50:31,821 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:32,096 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['singer_name', 'genre', 'age'], 'collection': None, 'raw_response': 'singer_name, genre, age'}
+2026-01-01 19:50:32,096 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:32,332 - smart.query_generator - INFO - Generated query: db.singer.countDocuments();
+2026-01-01 19:50:32,332 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.03it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 162.95it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 191.23it/s]
+2026-01-01 19:50:32,398 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:32,398 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:32,398 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:32,401 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:32,401 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.countDocuments();
+2026-01-01 19:50:32,401 - __main__ - INFO - Predicted Query: db.singer.countDocuments();
+2026-01-01 19:50:32,401 - __main__ - INFO - Success: True
+2026-01-01 19:50:32,401 - __main__ - INFO - 
+[3/10] Database: concert_singer
+2026-01-01 19:50:32,401 - __main__ - INFO - Question: Show name, country, age for all singers ordered by age from the oldest to the youngest.
+2026-01-01 19:50:32,401 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1,
+  "age": 1
+}).sort({
+  "age": -1
+})
+2026-01-01 19:50:32,401 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:32,401 - smart.smart_pipeline - INFO - Translating NLQ: Show name, country, age for all singers ordered by age from the oldest to the youngest.
+2026-01-01 19:50:32,401 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:32,604 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'country', 'age'], 'collection': None, 'raw_response': 'name, country, age'}
+2026-01-01 19:50:32,604 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:33,142 - smart.query_generator - INFO - Generated query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:33,142 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 24.45it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.18it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  7.04it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  7.04it/s]
+2026-01-01 19:50:33,356 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:33,356 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:33,356 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:33,357 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:33,357 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:33,357 - __main__ - INFO - Predicted Query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:33,357 - __main__ - INFO - Success: True
+2026-01-01 19:50:33,357 - __main__ - INFO - 
+[4/10] Database: concert_singer
+2026-01-01 19:50:33,357 - __main__ - INFO - Question: What are the names, countries, and ages for every singer in descending order of age?
+2026-01-01 19:50:33,358 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1,
+  "age": 1
+}).sort({
+  "age": -1
+})
+2026-01-01 19:50:33,358 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:33,358 - smart.smart_pipeline - INFO - Translating NLQ: What are the names, countries, and ages for every singer in descending order of age?
+2026-01-01 19:50:33,358 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:33,606 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['names', 'countries', 'ages'], 'collection': None, 'raw_response': 'names, countries, ages'}
+2026-01-01 19:50:33,606 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:34,146 - smart.query_generator - INFO - Generated query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:34,147 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 31.20it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 199.80it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 198.01it/s]
+2026-01-01 19:50:34,194 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:34,194 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:34,194 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:34,196 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:34,196 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:34,196 - __main__ - INFO - Predicted Query: db.singer.find({}, {"name": 1, "country": 1, "age": 1}).sort({age: -1});
+2026-01-01 19:50:34,196 - __main__ - INFO - Success: True
+2026-01-01 19:50:34,197 - __main__ - INFO - 
+[5/10] Database: concert_singer
+2026-01-01 19:50:34,197 - __main__ - INFO - Question: What is the average, minimum, and maximum age of all singers from France?
+2026-01-01 19:50:34,197 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$match": {
+    "country": "France"
+  }
+},{
+  "$group": {
+    "_id": {},
+    "avg_age": {
+      "$avg": "$age"
+    },
+    "min_age": {
+      "$min": "$age"
+    },
+    "max_age": {
+      "$max": "$age"
+    }
+  }
+},{
+  "$project": {
+    "avg_age": 1,
+    "min_age": 1,
+    "max_age": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:50:34,197 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:34,197 - smart.smart_pipeline - INFO - Translating NLQ: What is the average, minimum, and maximum age of all singers from France?
+2026-01-01 19:50:34,197 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:34,407 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['age', 'country', 'name'], 'collection': None, 'raw_response': 'age, country, name'}
+2026-01-01 19:50:34,407 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:35,471 - smart.query_generator - INFO - Generated query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:35,471 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 20.85it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 14.39it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 176.55it/s]
+2026-01-01 19:50:35,598 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:35,598 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:35,598 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:35,598 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:35,598 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:36,853 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:36,853 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 19:50:36,853 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:36,853 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:37,843 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:37,843 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 19:50:37,844 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:37,844 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:38,839 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:38,839 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 19:50:38,840 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:38,840 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:39,829 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:39,829 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 19:50:39,829 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:39,829 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:39,829 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 19:50:39,829 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:39,829 - __main__ - INFO - Predicted Query: db.singer.aggregate([
+  {
+    $match: { country: "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:39,829 - __main__ - INFO - Success: False
+2026-01-01 19:50:39,829 - __main__ - INFO - 
+[6/10] Database: concert_singer
+2026-01-01 19:50:39,829 - __main__ - INFO - Question: What is the average, minimum, and maximum age for all French singers?
+2026-01-01 19:50:39,829 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$match": {
+    "country": "France"
+  }
+},{
+  "$group": {
+    "_id": {},
+    "avg_age": {
+      "$avg": "$age"
+    },
+    "min_age": {
+      "$min": "$age"
+    },
+    "max_age": {
+      "$max": "$age"
+    }
+  }
+},{
+  "$project": {
+    "avg_age": 1,
+    "min_age": 1,
+    "max_age": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:50:39,829 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:39,829 - smart.smart_pipeline - INFO - Translating NLQ: What is the average, minimum, and maximum age for all French singers?
+2026-01-01 19:50:39,829 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:40,005 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['age', 'nationality'], 'collection': None, 'raw_response': 'age, nationality'}
+2026-01-01 19:50:40,005 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:41,090 - smart.query_generator - INFO - Generated query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:41,090 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.96it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 23.08it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 252.65it/s]
+2026-01-01 19:50:41,191 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:41,191 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:41,191 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:41,192 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:41,192 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:42,443 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:42,443 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 19:50:42,443 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:42,443 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:43,458 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:43,458 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 19:50:43,458 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:43,458 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:44,470 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:44,470 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 19:50:44,471 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:44,471 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:45,486 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:45,486 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 19:50:45,487 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:50:45,487 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:50:45,487 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 19:50:45,487 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:45,487 - __main__ - INFO - Predicted Query: db.singer.aggregate([
+  {
+    $match: { "country": "France" }
+  },
+  {
+    $group: {
+      _id: null,
+      averageAge: { $avg: "$age" },
+      minAge: { $min: "$age" },
+      maxAge: { $max: "$age" }
+    }
+  }
+]);
+2026-01-01 19:50:45,487 - __main__ - INFO - Success: False
+2026-01-01 19:50:45,487 - __main__ - INFO - 
+[7/10] Database: concert_singer
+2026-01-01 19:50:45,487 - __main__ - INFO - Question: Show the name and the release year of the song by the youngest singer.
+2026-01-01 19:50:45,487 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "song_name": 1,
+  "song_release_year": 1
+}).sort({
+  "age": 1
+}).limit(1)
+2026-01-01 19:50:45,487 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:45,487 - smart.smart_pipeline - INFO - Translating NLQ: Show the name and the release year of the song by the youngest singer.
+2026-01-01 19:50:45,487 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:45,666 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'age'], 'collection': None, 'raw_response': 'name, age'}
+2026-01-01 19:50:45,666 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:46,201 - smart.query_generator - INFO - Generated query: db.singer.find({}, {"name": 1, "releaseYear": 1}).sort({age: -1}).limit(1);
+2026-01-01 19:50:46,201 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.81it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 183.02it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 190.15it/s]
+2026-01-01 19:50:46,240 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:46,241 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:46,241 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:46,244 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:46,244 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.find({}, {"name": 1, "releaseYear": 1}).sort({age: -1}).limit(1);
+2026-01-01 19:50:46,244 - __main__ - INFO - Predicted Query: db.singer.find({}, {"name": 1, "releaseYear": 1}).sort({age: -1}).limit(1);
+2026-01-01 19:50:46,244 - __main__ - INFO - Success: True
+2026-01-01 19:50:46,244 - __main__ - INFO - 
+[8/10] Database: concert_singer
+2026-01-01 19:50:46,244 - __main__ - INFO - Question: What are the names and release years for all the songs of the youngest singer?
+2026-01-01 19:50:46,244 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "song_name": 1,
+  "song_release_year": 1
+}).sort({
+  "age": 1
+}).limit(1)
+2026-01-01 19:50:46,244 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:46,244 - smart.smart_pipeline - INFO - Translating NLQ: What are the names and release years for all the songs of the youngest singer?
+2026-01-01 19:50:46,244 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:46,439 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'age'], 'collection': None, 'raw_response': 'name, age'}
+2026-01-01 19:50:46,439 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:47,918 - smart.query_generator - INFO - Generated query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: "$songs.name"
+    }
+  }
+]);
+2026-01-01 19:50:47,919 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.30it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 15.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 175.97it/s]
+2026-01-01 19:50:48,015 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:48,015 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:48,015 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:48,017 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:48,017 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:49,833 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:49,833 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 19:50:49,839 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:49,839 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:51,538 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:51,538 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 19:50:51,541 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:51,541 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:53,094 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:53,094 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 19:50:53,096 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:53,096 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:54,648 - smart.execution_optimizer - INFO - Generated corrected query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:54,648 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 19:50:54,652 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:54,652 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:50:54,652 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 19:50:54,652 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:54,652 - __main__ - INFO - Predicted Query: db.singer.aggregate([
+  {
+    $match: { age: { $min: "$age" } }
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "_id",
+      foreignField: "singer_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      name: 1,
+      release_year: 1,
+      songs: { $concat: ["$", "$songs.name", "$"] }
+    }
+  }
+]);
+2026-01-01 19:50:54,652 - __main__ - INFO - Success: False
+2026-01-01 19:50:54,652 - __main__ - INFO - 
+[9/10] Database: concert_singer
+2026-01-01 19:50:54,652 - __main__ - INFO - Question: What are all distinct countries where singers above age 20 are from?
+2026-01-01 19:50:54,652 - __main__ - INFO - Gold Query: db.singer.distinct("country" , {
+  "age": {
+    "$gt": 20
+  }
+})
+2026-01-01 19:50:54,653 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:54,653 - smart.smart_pipeline - INFO - Translating NLQ: What are all distinct countries where singers above age 20 are from?
+2026-01-01 19:50:54,653 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:54,812 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['country'], 'collection': None, 'raw_response': 'country'}
+2026-01-01 19:50:54,813 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:55,232 - smart.query_generator - INFO - Generated query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:55,232 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 20.97it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 41.10it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 28.51it/s]
+2026-01-01 19:50:55,344 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:55,344 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:55,344 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:55,346 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:55,346 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:55,346 - __main__ - INFO - Predicted Query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:55,346 - __main__ - INFO - Success: True
+2026-01-01 19:50:55,346 - __main__ - INFO - 
+[10/10] Database: concert_singer
+2026-01-01 19:50:55,346 - __main__ - INFO - Question: What are  the different countries with singers above age 20?
+2026-01-01 19:50:55,346 - __main__ - INFO - Gold Query: db.singer.distinct("country" , {
+  "age": {
+    "$gt": 20
+  }
+})
+2026-01-01 19:50:55,346 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:50:55,346 - smart.smart_pipeline - INFO - Translating NLQ: What are  the different countries with singers above age 20?
+2026-01-01 19:50:55,346 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:50:55,581 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['country', 'name', 'age'], 'collection': None, 'raw_response': 'country, name, age'}
+2026-01-01 19:50:55,582 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:50:56,003 - smart.query_generator - INFO - Generated query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:56,004 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 97.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 111.23it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 153.94it/s]
+2026-01-01 19:50:56,036 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:50:56,036 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:50:56,036 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:50:56,039 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:50:56,039 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:56,040 - __main__ - INFO - Predicted Query: db.singer.distinct("country", { age: { $gt: 20 } });
+2026-01-01 19:50:56,040 - __main__ - INFO - Success: True
+2026-01-01 19:50:56,040 - __main__ - INFO - 
+================================================================================
+2026-01-01 19:50:56,040 - __main__ - INFO - Pipeline execution: 7 successful, 3 failed
+2026-01-01 19:50:56,040 - __main__ - INFO - ================================================================================
+2026-01-01 19:50:56,040 - __main__ - INFO - 
+Computing metrics...
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 1/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 2/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 3/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 4/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 5/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 6/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 7/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 8/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 9/10
+2026-01-01 19:50:56,040 - evaluation.evaluator - INFO - Evaluating query 10/10
+2026-01-01 19:50:56,041 - __main__ - INFO - 
+Results saved to results/spider_eval/spider_eval_pipeline_10samples.json
+2026-01-01 19:50:56,041 - __main__ - INFO - 
+================================================================================
+2026-01-01 19:50:56,041 - __main__ - INFO - EVALUATION SUMMARY
+2026-01-01 19:50:56,041 - __main__ - INFO - ================================================================================
+2026-01-01 19:50:56,041 - __main__ - INFO - 
+Total Queries: 10
+2026-01-01 19:50:56,041 - __main__ - INFO - 
+Metrics:
+2026-01-01 19:50:56,041 - __main__ - INFO -   Exact Match:       0.00%
+2026-01-01 19:50:56,041 - __main__ - INFO -   Collection Match:  100.00%
+2026-01-01 19:50:56,041 - __main__ - INFO -   Operation Match:   70.00%
+2026-01-01 19:50:56,041 - __main__ - INFO - 
+================================================================================

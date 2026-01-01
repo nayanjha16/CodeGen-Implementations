@@ -1,0 +1,111 @@
+{
+  "databases": {
+    "Students": {
+      "collection": "Students",
+      "fields": [
+        "_id",
+        "name",
+        "age",
+        "grade",
+        "courses"
+      ],
+      "documents": [
+        {
+          "_id": 1,
+          "name": "Emma Wilson",
+          "age": 20,
+          "grade": "Sophomore",
+          "courses": [
+            {
+              "course_id": 101,
+              "course_name": "Mathematics",
+              "credits": 3
+            },
+            {
+              "course_id": 102,
+              "course_name": "Physics",
+              "credits": 4
+            }
+          ]
+        },
+        {
+          "_id": 2,
+          "name": "Liam Davis",
+          "age": 19,
+          "grade": "Freshman",
+          "courses": [
+            {
+              "course_id": 103,
+              "course_name": "Chemistry",
+              "credits": 4
+            }
+          ]
+        },
+        {
+          "_id": 3,
+          "name": "Olivia Martinez",
+          "age": 21,
+          "grade": "Junior",
+          "courses": [
+            {
+              "course_id": 101,
+              "course_name": "Mathematics",
+              "credits": 3
+            },
+            {
+              "course_id": 104,
+              "course_name": "Biology",
+              "credits": 4
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "queries": [
+    {
+      "question": "Find all students who are Freshmen",
+      "query": "db.Students.find({\"grade\": \"Freshman\"}, {\"name\": 1, \"age\": 1, \"_id\": 0});",
+      "schema": "Collection: Students\nFields: grade, name, age",
+      "predicted_fields": "grade, name, age",
+      "collection": "Students"
+    },
+    {
+      "question": "Count total number of students",
+      "query": "db.Students.countDocuments({});",
+      "schema": "Collection: Students\nFields: (all)",
+      "predicted_fields": "(all)",
+      "collection": "Students"
+    },
+    {
+      "question": "Find students older than 20",
+      "query": "db.Students.find({\"age\": {\"$gt\": 20}}, {\"name\": 1, \"age\": 1, \"_id\": 0});",
+      "schema": "Collection: Students\nFields: age, name",
+      "predicted_fields": "age, name",
+      "collection": "Students"
+    },
+    {
+      "question": "Get the average age of all students",
+      "query": "db.Students.aggregate([{\"$group\": {\"_id\": null, \"avgAge\": {\"$avg\": \"$age\"}}}, {\"$project\": {\"_id\": 0, \"avgAge\": 1}}]);",
+      "schema": "Collection: Students\nFields: age",
+      "predicted_fields": "age",
+      "collection": "Students"
+    },
+    {
+      "question": "Count total courses enrolled across all students",
+      "query": "db.Students.aggregate([{\"$unwind\": \"$courses\"}, {\"$group\": {\"_id\": null, \"count\": {\"$sum\": 1}}}, {\"$project\": {\"_id\": 0, \"count\": 1}}]);",
+      "schema": "Collection: Students\nFields: courses",
+      "predicted_fields": "courses",
+      "collection": "Students"
+    }
+  ],
+  "schema_summary": {
+    "Students": [
+      "_id",
+      "name",
+      "age",
+      "grade",
+      "courses"
+    ]
+  }
+}

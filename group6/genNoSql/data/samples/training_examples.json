@@ -1,0 +1,107 @@
+[
+  {
+    "question": "Find all products in the Electronics category",
+    "query": "db.Products.find({\"category\": \"Electronics\"}, {\"_id\": 0, \"name\": 1, \"price\": 1});",
+    "schema": "Collection: Products\nFields: category, name, price",
+    "predicted_fields": "category, name, price",
+    "collection": "Products"
+  },
+  {
+    "question": "Count the total number of products",
+    "query": "db.Products.countDocuments({});",
+    "schema": "Collection: Products\nFields: (all)",
+    "predicted_fields": "(all)",
+    "collection": "Products"
+  },
+  {
+    "question": "Find customers who live in New York",
+    "query": "db.Customers.find({\"city\": \"New York\"}, {\"name\": 1, \"email\": 1, \"_id\": 0});",
+    "schema": "Collection: Customers\nFields: city, name, email",
+    "predicted_fields": "city, name, email",
+    "collection": "Customers"
+  },
+  {
+    "question": "Get the average price of all products",
+    "query": "db.Products.aggregate([{\"$group\": {\"_id\": null, \"avgPrice\": {\"$avg\": \"$price\"}}}, {\"$project\": {\"_id\": 0, \"avgPrice\": 1}}]);",
+    "schema": "Collection: Products\nFields: price",
+    "predicted_fields": "price",
+    "collection": "Products"
+  },
+  {
+    "question": "Find products with price less than $100",
+    "query": "db.Products.find({\"price\": {\"$lt\": 100}}, {\"name\": 1, \"price\": 1, \"_id\": 0});",
+    "schema": "Collection: Products\nFields: price, name",
+    "predicted_fields": "price, name",
+    "collection": "Products"
+  },
+  {
+    "question": "Count total number of reviews across all products",
+    "query": "db.Products.aggregate([{\"$unwind\": \"$reviews\"}, {\"$group\": {\"_id\": null, \"count\": {\"$sum\": 1}}}, {\"$project\": {\"_id\": 0, \"count\": 1}}]);",
+    "schema": "Collection: Products\nFields: reviews",
+    "predicted_fields": "reviews",
+    "collection": "Products"
+  },
+  {
+    "question": "Get all product categories",
+    "query": "db.Products.distinct(\"category\");",
+    "schema": "Collection: Products\nFields: category",
+    "predicted_fields": "category",
+    "collection": "Products"
+  },
+  {
+    "question": "Find customers with email containing 'alice'",
+    "query": "db.Customers.find({\"email\": {\"$regex\": \"alice\"}}, {\"name\": 1, \"email\": 1, \"_id\": 0});",
+    "schema": "Collection: Customers\nFields: email, name",
+    "predicted_fields": "email, name",
+    "collection": "Customers"
+  },
+  {
+    "question": "Count how many customers are in each city",
+    "query": "db.Customers.aggregate([{\"$group\": {\"_id\": \"$city\", \"count\": {\"$sum\": 1}}}, {\"$project\": {\"city\": \"$_id\", \"count\": 1, \"_id\": 0}}]);",
+    "schema": "Collection: Customers\nFields: city",
+    "predicted_fields": "city",
+    "collection": "Customers"
+  },
+  {
+    "question": "Find the most expensive product",
+    "query": "db.Products.find({}, {\"name\": 1, \"price\": 1, \"_id\": 0}).sort({\"price\": -1}).limit(1);",
+    "schema": "Collection: Products\nFields: name, price",
+    "predicted_fields": "name, price",
+    "collection": "Products"
+  },
+  {
+    "question": "Find all students who are Freshmen",
+    "query": "db.Students.find({\"grade\": \"Freshman\"}, {\"name\": 1, \"age\": 1, \"_id\": 0});",
+    "schema": "Collection: Students\nFields: grade, name, age",
+    "predicted_fields": "grade, name, age",
+    "collection": "Students"
+  },
+  {
+    "question": "Count total number of students",
+    "query": "db.Students.countDocuments({});",
+    "schema": "Collection: Students\nFields: (all)",
+    "predicted_fields": "(all)",
+    "collection": "Students"
+  },
+  {
+    "question": "Find students older than 20",
+    "query": "db.Students.find({\"age\": {\"$gt\": 20}}, {\"name\": 1, \"age\": 1, \"_id\": 0});",
+    "schema": "Collection: Students\nFields: age, name",
+    "predicted_fields": "age, name",
+    "collection": "Students"
+  },
+  {
+    "question": "Get the average age of all students",
+    "query": "db.Students.aggregate([{\"$group\": {\"_id\": null, \"avgAge\": {\"$avg\": \"$age\"}}}, {\"$project\": {\"_id\": 0, \"avgAge\": 1}}]);",
+    "schema": "Collection: Students\nFields: age",
+    "predicted_fields": "age",
+    "collection": "Students"
+  },
+  {
+    "question": "Count total courses enrolled across all students",
+    "query": "db.Students.aggregate([{\"$unwind\": \"$courses\"}, {\"$group\": {\"_id\": null, \"count\": {\"$sum\": 1}}}, {\"$project\": {\"_id\": 0, \"count\": 1}}]);",
+    "schema": "Collection: Students\nFields: courses",
+    "predicted_fields": "courses",
+    "collection": "Students"
+  }
+]

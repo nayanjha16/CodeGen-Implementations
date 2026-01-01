@@ -1,0 +1,46 @@
+# Text-to-NoSQL Configuration File
+
+# MongoDB Configuration
+mongodb:
+  uri: "mongodb://localhost:27017/"
+  database_name: "tend_db"
+  timeout_ms: 5000
+
+# Model Configuration
+models:
+  use_fine_tuned: false  # Use fine-tuned SLMs or API-based LLMs
+  llm_provider: "ollama"  # openai, anthropic, ollama, local
+  llm_model: "mistral:latest"  # Using Mistral 7B as requested
+  temperature: 0.0
+  max_tokens: 2000
+  
+  # For fine-tuned models (if use_fine_tuned: true)
+  schema_predictor_path: "models/schema_predictor"
+  query_generator_path: "models/query_generator"
+
+# RAG Configuration
+rag:
+  enabled: true
+  num_examples: 3
+  nlq_weight: 0.4
+  query_weight: 0.3
+  schema_weight: 0.3
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+# Data Paths
+data:
+  spider_path: "data/raw/spider"
+  tend_path: "data/processed/tend"
+  samples_path: "data/samples"
+  training_examples_path: "data/processed/training_examples.json"
+
+# Evaluation
+evaluation:
+  test_size: 50  # Number of samples to test
+  metrics: ["exact_match", "execution_accuracy", "valid_execution"]
+  output_dir: "results"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/text_to_nosql.log"

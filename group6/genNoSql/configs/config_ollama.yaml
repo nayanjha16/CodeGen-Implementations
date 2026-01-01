@@ -1,0 +1,42 @@
+# Text-to-NoSQL Configuration File (Ollama + MongoDB Docker)
+
+# MongoDB Configuration (Docker container)
+mongodb:
+  uri: "mongodb://localhost:27017/"
+  database_name: "text2nosql_db"
+  timeout_ms: 5000
+
+# Model Configuration (Ollama with Llama 3.1)
+models:
+  use_fine_tuned: false
+  llm_provider: "ollama"  # Using Ollama instead of OpenAI
+  llm_model: "llama3.1:8b"  # Llama 3.1 8B model
+  temperature: 0.0
+  max_tokens: 2000
+
+# RAG Configuration
+rag:
+  enabled: true
+  num_examples: 3
+  nlq_weight: 0.4
+  query_weight: 0.3
+  schema_weight: 0.3
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+# Data Paths
+data:
+  spider_path: "data/raw/spider"
+  tend_path: "data/processed/tend"
+  samples_path: "data/samples"
+  training_examples_path: "data/samples/training_examples.json"
+
+# Evaluation
+evaluation:
+  test_size: 50
+  metrics: ["exact_match", "execution_accuracy", "valid_execution"]
+  output_dir: "results"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/text_to_nosql.log"

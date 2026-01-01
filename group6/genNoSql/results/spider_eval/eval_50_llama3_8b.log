@@ -1,0 +1,5008 @@
+2026-01-01 21:51:55,700 - __main__ - INFO - ================================================================================
+2026-01-01 21:51:55,700 - __main__ - INFO - SMART Pipeline Evaluation - Spider Dev MongoDB Dataset
+2026-01-01 21:51:55,700 - __main__ - INFO - ================================================================================
+2026-01-01 21:51:55,700 - __main__ - INFO - Loading data from data/samples/spider_dev_mongo.json
+2026-01-01 21:51:55,703 - __main__ - INFO - Loaded 1034 test cases
+2026-01-01 21:51:55,703 - __main__ - INFO - Testing on 50 random samples from indices 200+
+2026-01-01 21:51:55,703 - __main__ - INFO - Sample indices: [206, 225, 227, 230, 232, 289, 294, 295, 299, 304]...
+2026-01-01 21:51:55,703 - __main__ - INFO - Extracted 14 database schemas
+2026-01-01 21:51:55,703 - __main__ - INFO - Initializing SMART framework...
+2026-01-01 21:51:55,715 - utils.llm_client - INFO - Initialized Ollama client with model: llama3.1:8b
+2026-01-01 21:51:57,528 - utils.embeddings - INFO - Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 21:51:57,545 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: mps
+2026-01-01 21:51:57,545 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 21:51:59,816 - utils.embeddings - INFO - Embedding model loaded successfully
+2026-01-01 21:51:59,816 - smart.smart_pipeline - INFO - SMART Framework initialized successfully
+2026-01-01 21:51:59,816 - __main__ - INFO - Loading data from data/samples/spider_dev_mongo.json
+2026-01-01 21:51:59,820 - __main__ - INFO - Loaded 1034 test cases
+2026-01-01 21:51:59,820 - __main__ - INFO - Indexing 100 training examples for RAG...
+2026-01-01 21:51:59,820 - utils.embeddings - INFO - Indexing 100 examples...
+Batches:   0%|          | 0/4 [00:00<?, ?it/s]Batches:  50%|█████     | 2/4 [00:00<00:00, 19.36it/s]Batches: 100%|██████████| 4/4 [00:00<00:00, 25.95it/s]
+Batches:   0%|          | 0/4 [00:00<?, ?it/s]Batches:  50%|█████     | 2/4 [00:00<00:00, 18.08it/s]Batches: 100%|██████████| 4/4 [00:00<00:00, 25.92it/s]
+Batches:   0%|          | 0/4 [00:00<?, ?it/s]Batches: 100%|██████████| 4/4 [00:00<00:00, 133.54it/s]
+2026-01-01 21:52:00,171 - utils.embeddings - INFO - Indexing complete
+2026-01-01 21:52:00,171 - smart.smart_pipeline - INFO - Indexed 100 training examples
+2026-01-01 21:52:00,171 - __main__ - INFO - RAG indexing complete: None examples indexed
+2026-01-01 21:52:00,171 - __main__ - INFO - Train samples: 0-99
+2026-01-01 21:52:00,171 - __main__ - INFO - Test samples: Starting from index 50 in full dataset
+2026-01-01 21:52:00,171 - __main__ - INFO - 
+Running pipeline on 50 samples...
+2026-01-01 21:52:00,171 - __main__ - INFO - ================================================================================
+2026-01-01 21:52:00,171 - __main__ - INFO - 
+[1/50] Database: flight_2
+2026-01-01 21:52:00,171 - __main__ - INFO - Question: Count the number of flights into ATO.
+2026-01-01 21:52:00,171 - __main__ - INFO - Gold Query: db.FLIGHTS.count({
+  "DestAirport": "ATO"
+})
+2026-01-01 21:52:00,171 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:00,171 - smart.smart_pipeline - INFO - Translating NLQ: Count the number of flights into ATO.
+2026-01-01 21:52:00,171 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:03,977 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['FLIGHTS', 'origin', 'destination'], 'collection': None, 'raw_response': 'FLIGHTS, origin, destination'}
+2026-01-01 21:52:03,977 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:04,621 - smart.query_generator - INFO - Generated query: db.FLIGHTS.countDocuments({"destination_airport_code": "ATO"});
+2026-01-01 21:52:04,621 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  8.96it/s]Batches: 100%|██████████| 1/1 [00:00<00:00,  8.96it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 45.65it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 41.29it/s]
+2026-01-01 21:52:05,865 - smart.rag_refiner - INFO - Refined query: db.FLIGHTS.countDocuments({"destination_airport_code": "ATO"});
+2026-01-01 21:52:05,865 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:05,865 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:05,865 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:05,875 - utils.mongo_client - INFO - Successfully connected to MongoDB at mongodb://localhost:27017/
+2026-01-01 21:52:05,877 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:05,877 - smart.smart_pipeline - INFO - Translation complete. Final query: db.FLIGHTS.countDocuments({"destination_airport_code": "ATO"});
+2026-01-01 21:52:05,877 - __main__ - INFO - Predicted Query: db.FLIGHTS.countDocuments({"destination_airport_code": "ATO"});
+2026-01-01 21:52:05,878 - __main__ - INFO - Success: True
+2026-01-01 21:52:05,878 - __main__ - INFO - 
+[2/50] Database: flight_2
+2026-01-01 21:52:05,878 - __main__ - INFO - Question: What is the code of airport that has the highest number of flights?
+2026-01-01 21:52:05,878 - __main__ - INFO - Gold Query: db.AIRPORTS.aggregate([{
+  "$lookup": {
+    "from": "FLIGHTS",
+    "let": {
+      "airportcode": "$AirportCode"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$or": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$airportcode",
+                  "$DestAirport"
+                ]
+              }
+            },
+            {
+              "$expr": {
+                "$eq": [
+                  "$$airportcode",
+                  "$SourceAirport"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$AirportCode"
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "AirportCode": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:05,878 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:05,878 - smart.smart_pipeline - INFO - Translating NLQ: What is the code of airport that has the highest number of flights?
+2026-01-01 21:52:05,878 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:06,413 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['airport_code', 'airport_id', 'name', 'city', 'country', 'flights'], 'collection': None, 'raw_response': 'airport_code, airport_id, name, city, country, flights'}
+2026-01-01 21:52:06,413 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:08,251 - smart.query_generator - INFO - Generated query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      airportCode: "$_id"
+    }
+  }
+]);
+2026-01-01 21:52:08,251 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.26it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.84it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 50.74it/s]
+2026-01-01 21:52:10,793 - smart.rag_refiner - INFO - Refined query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport_code",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      airportCode: "$_id"
+    }
+  }
+]);
+2026-01-01 21:52:10,793 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:10,793 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:10,793 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:10,798 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:10,798 - smart.smart_pipeline - INFO - Translation complete. Final query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport_code",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      airportCode: "$_id"
+    }
+  }
+]);
+2026-01-01 21:52:10,798 - __main__ - INFO - Predicted Query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport_code",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      airportCode: "$_id"
+    }
+  }
+]);
+2026-01-01 21:52:10,798 - __main__ - INFO - Success: True
+2026-01-01 21:52:10,798 - __main__ - INFO - 
+[3/50] Database: flight_2
+2026-01-01 21:52:10,798 - __main__ - INFO - Question: What is the code of airport that has fewest number of flights?
+2026-01-01 21:52:10,798 - __main__ - INFO - Gold Query: db.AIRPORTS.aggregate([{
+  "$lookup": {
+    "from": "FLIGHTS",
+    "let": {
+      "airportcode": "$AirportCode"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$or": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$airportcode",
+                  "$DestAirport"
+                ]
+              }
+            },
+            {
+              "$expr": {
+                "$eq": [
+                  "$$airportcode",
+                  "$SourceAirport"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$AirportCode"
+  }
+},{
+  "$sort": {
+    "count": 1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "AirportCode": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:10,798 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:10,799 - smart.smart_pipeline - INFO - Translating NLQ: What is the code of airport that has fewest number of flights?
+2026-01-01 21:52:10,799 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:11,693 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['AIRPORTS', 'iata_code', 'FLIGHTS', 'Airport_ID', 'AIRPORTS', 'airport_name', 'FLIGHTS', 'Departure_Airport_ID'], 'collection': None, 'raw_response': 'AIRPORTS,iata_code,FLIGHTS,Airport_ID,AIRPORTS,airport_name,FLIGHTS,Departure_Airport_ID'}
+2026-01-01 21:52:11,693 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:15,112 - smart.query_generator - INFO - Generated query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      minCount: { $min: "$count" }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "_id",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $match: {
+      "airport.code": { $ne: null }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      code: "$airport.code"
+    }
+  }
+]);
+2026-01-01 21:52:15,112 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.72it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 33.35it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.34it/s]
+2026-01-01 21:52:21,093 - smart.rag_refiner - INFO - Refined query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $group: {
+      _id: null,
+      minCount: { $min: "$count" }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $match: {
+      "airport.code": { $ne: null },
+      "airport.Airport_ID": { $eq: "$_id" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      code: "$airport.code"
+    }
+  }
+]);
+2026-01-01 21:52:21,093 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:21,093 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:21,093 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:21,102 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:21,102 - smart.smart_pipeline - INFO - Translation complete. Final query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $group: {
+      _id: null,
+      minCount: { $min: "$count" }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $match: {
+      "airport.code": { $ne: null },
+      "airport.Airport_ID": { $eq: "$_id" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      code: "$airport.code"
+    }
+  }
+]);
+2026-01-01 21:52:21,102 - __main__ - INFO - Predicted Query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airport",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $group: {
+      _id: null,
+      minCount: { $min: "$count" }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRPORTS",
+      localField: "_id",
+      foreignField: "Airport_ID",
+      as: "airport"
+    }
+  },
+  {
+    $unwind: "$airport"
+  },
+  {
+    $match: {
+      "airport.code": { $ne: null },
+      "airport.Airport_ID": { $eq: "$_id" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      code: "$airport.code"
+    }
+  }
+]);
+2026-01-01 21:52:21,102 - __main__ - INFO - Success: True
+2026-01-01 21:52:21,102 - __main__ - INFO - 
+[4/50] Database: flight_2
+2026-01-01 21:52:21,102 - __main__ - INFO - Question: What airline serves the most flights?
+2026-01-01 21:52:21,102 - __main__ - INFO - Gold Query: db.AIRLINES.aggregate([{
+  "$lookup": {
+    "from": "FLIGHTS",
+    "let": {
+      "uid": "$uid"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$uid",
+              "$Airline"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$Airline"
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "Airline": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:21,102 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:21,102 - smart.smart_pipeline - INFO - Translating NLQ: What airline serves the most flights?
+2026-01-01 21:52:21,102 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:21,889 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['AIRLINES', 'name', 'country', 'flights_served\nFLIGHTS', 'airline_id', 'departure_airport_id', 'arrival_airport_id'], 'collection': None, 'raw_response': 'AIRLINES, name, country, flights_served\nFLIGHTS, airline_id, departure_airport_id, arrival_airport_id'}
+2026-01-01 21:52:21,889 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:23,477 - smart.query_generator - INFO - Generated query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airline",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 1
+  }
+]);
+2026-01-01 21:52:23,477 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.69it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 46.29it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 46.31it/s]
+2026-01-01 21:52:28,157 - smart.rag_refiner - INFO - Refined query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airline_id",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRLINES",
+      localField: "_id",
+      foreignField: "_id",
+      as: "airline"
+    }
+  },
+  {
+    $unwind: "$airline"
+  },
+  {
+    $group: {
+      _id: null,
+      count: { $max: "$count" },
+      airline: { $first: "$airline" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      "airline.name": 1,
+      "airline.country": 1
+    }
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 1
+  }
+]);
+2026-01-01 21:52:28,157 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:28,157 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:28,157 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:28,162 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:28,162 - smart.smart_pipeline - INFO - Translation complete. Final query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airline_id",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRLINES",
+      localField: "_id",
+      foreignField: "_id",
+      as: "airline"
+    }
+  },
+  {
+    $unwind: "$airline"
+  },
+  {
+    $group: {
+      _id: null,
+      count: { $max: "$count" },
+      airline: { $first: "$airline" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      "airline.name": 1,
+      "airline.country": 1
+    }
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 1
+  }
+]);
+2026-01-01 21:52:28,162 - __main__ - INFO - Predicted Query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airline_id",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: "AIRLINES",
+      localField: "_id",
+      foreignField: "_id",
+      as: "airline"
+    }
+  },
+  {
+    $unwind: "$airline"
+  },
+  {
+    $group: {
+      _id: null,
+      count: { $max: "$count" },
+      airline: { $first: "$airline" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      "airline.name": 1,
+      "airline.country": 1
+    }
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 1
+  }
+]);
+2026-01-01 21:52:28,162 - __main__ - INFO - Success: True
+2026-01-01 21:52:28,162 - __main__ - INFO - 
+[5/50] Database: flight_2
+2026-01-01 21:52:28,163 - __main__ - INFO - Question: What is the abbreviation of the airilne has the fewest flights and what country is it in?
+2026-01-01 21:52:28,163 - __main__ - INFO - Gold Query: db.AIRLINES.aggregate([{
+  "$lookup": {
+    "from": "FLIGHTS",
+    "let": {
+      "uid": "$uid"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$uid",
+              "$Airline"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "Abbreviation": "$Abbreviation",
+      "Country": "$Country"
+    }
+  }
+},{
+  "$sort": {
+    "count": 1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "Abbreviation": "$_id.Abbreviation",
+    "Country": "$_id.Country",
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:28,163 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:28,163 - smart.smart_pipeline - INFO - Translating NLQ: What is the abbreviation of the airilne has the fewest flights and what country is it in?
+2026-01-01 21:52:28,163 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:28,863 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['airlineName', 'abbreviation', 'countryCode \ncountryCode', 'airlineName \nairlineID', 'frequency'], 'collection': None, 'raw_response': 'airlineName,abbreviation,countryCode \ncountryCode,airlineName \nairlineID,frequency'}
+2026-01-01 21:52:28,863 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:30,831 - smart.query_generator - INFO - Generated query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airline",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      abbreviation: 1,
+      airline: 1
+    }
+  }
+]);
+2026-01-01 21:52:30,831 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 20.89it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 45.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 236.39it/s]
+2026-01-01 21:52:34,493 - smart.rag_refiner - INFO - Refined query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: ["$", "$abbreviation", " is in ", "$countryCode"] }
+    }
+  }
+]);
+2026-01-01 21:52:34,493 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:34,493 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:34,493 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:34,498 - utils.mongo_client - ERROR - Query execution failed: Invalid $project :: caused by :: '$' by itself is not a valid FieldPath, full error: {'ok': 0.0, 'errmsg': "Invalid $project :: caused by :: '$' by itself is not a valid FieldPath", 'code': 16872, 'codeName': 'Location16872'}
+2026-01-01 21:52:34,498 - smart.execution_optimizer - WARNING - Query failed: Invalid $project :: caused by :: '$' by itself is not a valid FieldPath, full error: {'ok': 0.0, 'errmsg': "Invalid $project :: caused by :: '$' by itself is not a valid FieldPath", 'code': 16872, 'codeName': 'Location16872'}
+2026-01-01 21:52:37,777 - smart.execution_optimizer - INFO - Generated corrected query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: ["$abbreviation", " is in ", "$countryCode"] } // Removed leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:37,777 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:52:37,778 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:37,778 - smart.execution_optimizer - WARNING - Query failed: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:40,752 - smart.execution_optimizer - INFO - Generated corrected query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: [ "$abbreviation", " is in ", "$countryCode" ] } // Added leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:40,752 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 21:52:40,752 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:40,752 - smart.execution_optimizer - WARNING - Query failed: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:43,724 - smart.execution_optimizer - INFO - Generated corrected query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: [ "$abbreviation", " is in ", "$countryCode" ] } // Removed leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:43,725 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 21:52:43,725 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:43,725 - smart.execution_optimizer - WARNING - Query failed: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:46,704 - smart.execution_optimizer - INFO - Generated corrected query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: [ "$abbreviation", " is in ", "$countryCode" ] } // Added leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:46,704 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 21:52:46,705 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:46,705 - smart.execution_optimizer - WARNING - Query failed: invalid syntax. Perhaps you forgot a comma? (<string>, line 1)
+2026-01-01 21:52:46,705 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 21:52:46,705 - smart.smart_pipeline - INFO - Translation complete. Final query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: [ "$abbreviation", " is in ", "$countryCode" ] } // Added leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:46,705 - __main__ - INFO - Predicted Query: db.FLIGHTS.aggregate([
+  {
+    $group: {
+      _id: "$airlineID",
+      count: { $sum: 1 },
+      abbreviation: { $first: "$abbreviation" }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      _id: 0,
+      airlineID: "$_id",
+      abbreviation: 1,
+      country: { $concat: [ "$abbreviation", " is in ", "$countryCode" ] } // Added leading '$'
+    }
+  }
+]);
+2026-01-01 21:52:46,705 - __main__ - INFO - Success: False
+2026-01-01 21:52:46,705 - __main__ - INFO - 
+[6/50] Database: employee_hire_evaluation
+2026-01-01 21:52:46,705 - __main__ - INFO - Question: What is total bonus given in all evaluations?
+2026-01-01 21:52:46,705 - __main__ - INFO - Gold Query: db.evaluation.aggregate([{
+  "$group": {
+    "_id": {},
+    "sum_bonus": {
+      "$sum": "$bonus"
+    }
+  }
+},{
+  "$project": {
+    "sum_bonus": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:46,705 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 21:52:46,705 - smart.smart_pipeline - INFO - Translating NLQ: What is total bonus given in all evaluations?
+2026-01-01 21:52:46,705 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:47,013 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['bonus', 'evaluation'], 'collection': None, 'raw_response': 'bonus,evaluation'}
+2026-01-01 21:52:47,013 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:47,980 - smart.query_generator - INFO - Generated query: db.shop.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalBonus: { $sum: "$bonus" }
+    }
+  }
+]);
+2026-01-01 21:52:47,980 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.32it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.41it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.05it/s]
+2026-01-01 21:52:50,062 - smart.rag_refiner - INFO - Refined query: db.evaluation.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalBonus: { $sum: "$bonus" }
+    }
+  },
+  {
+    $project: {
+      totalBonus: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:50,062 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:50,062 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:50,062 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:50,065 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:50,066 - smart.smart_pipeline - INFO - Translation complete. Final query: db.evaluation.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalBonus: { $sum: "$bonus" }
+    }
+  },
+  {
+    $project: {
+      totalBonus: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:50,066 - __main__ - INFO - Predicted Query: db.evaluation.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalBonus: { $sum: "$bonus" }
+    }
+  },
+  {
+    $project: {
+      totalBonus: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:50,066 - __main__ - INFO - Success: True
+2026-01-01 21:52:50,066 - __main__ - INFO - 
+[7/50] Database: employee_hire_evaluation
+2026-01-01 21:52:50,066 - __main__ - INFO - Question: Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products.
+2026-01-01 21:52:50,066 - __main__ - INFO - Gold Query: 
+2026-01-01 21:52:50,066 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 21:52:50,066 - smart.smart_pipeline - INFO - Translating NLQ: Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products.
+2026-01-01 21:52:50,066 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:50,414 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['districts', 'products_sold'], 'collection': None, 'raw_response': 'districts, products_sold'}
+2026-01-01 21:52:50,415 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:52,601 - smart.query_generator - INFO - Generated query: db.shop.aggregate([
+  {
+    $group: {
+      _id: "$district",
+      minProducts: { $min: "$products" },
+      maxProducts: { $max: "$products" }
+    }
+  },
+  {
+    $match: {
+      $and: [
+        { "minProducts": { $lt: 3000 } },
+        { "maxProducts": { $gt: 10000 } }
+      ]
+    }
+  }
+]);
+2026-01-01 21:52:52,601 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 21.41it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.47it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 248.63it/s]
+2026-01-01 21:52:56,182 - smart.rag_refiner - INFO - Refined query: db.shop.aggregate([
+  {
+    $group: {
+      _id: "$district",
+      minProducts: { $min: "$products" },
+      maxProducts: { $max: "$products" }
+    }
+  },
+  {
+    $match: {
+      $and: [
+        { "minProducts": { $lt: 3000 } },
+        { "maxProducts": { $gt: 10000 } }
+      ]
+    }
+  },
+  {
+    $project: {
+      district: "$_id",
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:56,182 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:56,183 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:56,183 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:56,187 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:56,187 - smart.smart_pipeline - INFO - Translation complete. Final query: db.shop.aggregate([
+  {
+    $group: {
+      _id: "$district",
+      minProducts: { $min: "$products" },
+      maxProducts: { $max: "$products" }
+    }
+  },
+  {
+    $match: {
+      $and: [
+        { "minProducts": { $lt: 3000 } },
+        { "maxProducts": { $gt: 10000 } }
+      ]
+    }
+  },
+  {
+    $project: {
+      district: "$_id",
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:56,187 - __main__ - INFO - Predicted Query: db.shop.aggregate([
+  {
+    $group: {
+      _id: "$district",
+      minProducts: { $min: "$products" },
+      maxProducts: { $max: "$products" }
+    }
+  },
+  {
+    $match: {
+      $and: [
+        { "minProducts": { $lt: 3000 } },
+        { "maxProducts": { $gt: 10000 } }
+      ]
+    }
+  },
+  {
+    $project: {
+      district: "$_id",
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:52:56,187 - __main__ - INFO - Success: True
+2026-01-01 21:52:56,187 - __main__ - INFO - 
+[8/50] Database: employee_hire_evaluation
+2026-01-01 21:52:56,187 - __main__ - INFO - Question: How many different store locations are there?
+2026-01-01 21:52:56,187 - __main__ - INFO - Gold Query: db.shop.aggregate([{
+  "$group": {
+    "_id": {},
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:52:56,187 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 21:52:56,187 - smart.smart_pipeline - INFO - Translating NLQ: How many different store locations are there?
+2026-01-01 21:52:56,187 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:56,477 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['store_location'], 'collection': None, 'raw_response': 'store_location'}
+2026-01-01 21:52:56,477 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:56,910 - smart.query_generator - INFO - Generated query: db.shop.distinct("location");
+2026-01-01 21:52:56,910 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.02it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.20it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 234.04it/s]
+2026-01-01 21:52:57,746 - smart.rag_refiner - INFO - Refined query: db.shop.distinct("store_location");
+2026-01-01 21:52:57,746 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:52:57,746 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:52:57,746 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:52:57,749 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:52:57,749 - smart.smart_pipeline - INFO - Translation complete. Final query: db.shop.distinct("store_location");
+2026-01-01 21:52:57,750 - __main__ - INFO - Predicted Query: db.shop.distinct("store_location");
+2026-01-01 21:52:57,750 - __main__ - INFO - Success: True
+2026-01-01 21:52:57,750 - __main__ - INFO - 
+[9/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:52:57,750 - __main__ - INFO - Question: List document IDs, document names, and document descriptions for all documents.
+2026-01-01 21:52:57,750 - __main__ - INFO - Gold Query: db.Documents.find({} , {
+  "_id": 0,
+  "document_id": 1,
+  "document_name": 1,
+  "document_description": 1
+})
+2026-01-01 21:52:57,750 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:52:57,750 - smart.smart_pipeline - INFO - Translating NLQ: List document IDs, document names, and document descriptions for all documents.
+2026-01-01 21:52:57,750 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:52:58,158 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['Documents', '_id', 'documentName', 'description'], 'collection': None, 'raw_response': 'Documents,_id,documentName,description'}
+2026-01-01 21:52:58,158 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:52:58,944 - smart.query_generator - INFO - Generated query: db.Documents.find({}, {"_id": 1, "name": 1, "description": 1});
+2026-01-01 21:52:58,944 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 20.33it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 207.69it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 215.05it/s]
+2026-01-01 21:53:01,004 - smart.rag_refiner - INFO - Refined query: db.Documents.aggregate([
+  {
+    "$project": {
+      "_id": 1,
+      "documentName": 1,
+      "description": 1
+    }
+  }
+]);
+2026-01-01 21:53:01,004 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:01,004 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:01,004 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:01,006 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:01,006 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Documents.aggregate([
+  {
+    "$project": {
+      "_id": 1,
+      "documentName": 1,
+      "description": 1
+    }
+  }
+]);
+2026-01-01 21:53:01,006 - __main__ - INFO - Predicted Query: db.Documents.aggregate([
+  {
+    "$project": {
+      "_id": 1,
+      "documentName": 1,
+      "description": 1
+    }
+  }
+]);
+2026-01-01 21:53:01,007 - __main__ - INFO - Success: True
+2026-01-01 21:53:01,007 - __main__ - INFO - 
+[10/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:53:01,007 - __main__ - INFO - Question: Return the document id, template id, and description for the document with the name Robbin CV.
+2026-01-01 21:53:01,007 - __main__ - INFO - Gold Query: db.Documents.find({
+  "document_name": "Robbin CV"
+} , {
+  "_id": 0,
+  "document_id": 1,
+  "template_id": 1,
+  "Document_Description": 1
+})
+2026-01-01 21:53:01,007 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:53:01,007 - smart.smart_pipeline - INFO - Translating NLQ: Return the document id, template id, and description for the document with the name Robbin CV.
+2026-01-01 21:53:01,007 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:01,458 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['id', 'template_id', 'description', 'name'], 'collection': None, 'raw_response': 'id, template_id, description, name'}
+2026-01-01 21:53:01,458 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:02,408 - smart.query_generator - INFO - Generated query: db.Documents.find({"name": "Robbin CV"}, {"_id": 1, "template_id": 1, "description": 1});
+2026-01-01 21:53:02,408 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.41it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.38it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 215.00it/s]
+2026-01-01 21:53:05,476 - smart.rag_refiner - INFO - Refined query: db.Documents.find({
+  "name": {
+    "$eq": "Robbin CV"
+  }
+}, {
+  "_id": 1,
+  "template_id": 1,
+  "description": 1
+});
+2026-01-01 21:53:05,476 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:05,477 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:05,477 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:05,477 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid find query format
+2026-01-01 21:53:05,478 - smart.execution_optimizer - WARNING - Query failed: Invalid find query format
+2026-01-01 21:53:06,601 - smart.execution_optimizer - INFO - Generated corrected query: db.Documents.find({"name": "Robbin CV"}, {"_id": 1, "template_id": 1, "description": 1});
+2026-01-01 21:53:06,601 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:53:06,603 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:06,603 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Documents.find({"name": "Robbin CV"}, {"_id": 1, "template_id": 1, "description": 1});
+2026-01-01 21:53:06,603 - __main__ - INFO - Predicted Query: db.Documents.find({"name": "Robbin CV"}, {"_id": 1, "template_id": 1, "description": 1});
+2026-01-01 21:53:06,603 - __main__ - INFO - Success: True
+2026-01-01 21:53:06,604 - __main__ - INFO - 
+[11/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:53:06,604 - __main__ - INFO - Question: What are the template ids of any templates used in more than a single document?
+2026-01-01 21:53:06,604 - __main__ - INFO - Gold Query: db.Documents.aggregate([{
+  "$group": {
+    "_id": "$template_id"
+  }
+},{
+  "$match": {
+    "$expr": {
+      "$gt": [
+        "$count",
+        1
+      ]
+    }
+  }
+},{
+  "$project": {
+    "template_id": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:06,604 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:53:06,604 - smart.smart_pipeline - INFO - Translating NLQ: What are the template ids of any templates used in more than a single document?
+2026-01-01 21:53:06,604 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:07,013 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['template_id', 'document_id', 'template_id'], 'collection': None, 'raw_response': 'template_id,document_id,template_id'}
+2026-01-01 21:53:07,013 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:07,807 - smart.query_generator - INFO - Generated query: db.Templates.distinct("template_id", { "used_in.documents": { $gt: 1 } });
+2026-01-01 21:53:07,808 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 22.33it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 220.02it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.03it/s]
+2026-01-01 21:53:10,713 - smart.rag_refiner - INFO - Refined query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$template_id",
+      "count": { "$sum": 1 }
+    }
+  },
+  {
+    "$match": {
+      "count": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "template_id": "$_id"
+    }
+  }
+]);
+2026-01-01 21:53:10,713 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:10,713 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:10,714 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:10,718 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:10,718 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$template_id",
+      "count": { "$sum": 1 }
+    }
+  },
+  {
+    "$match": {
+      "count": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "template_id": "$_id"
+    }
+  }
+]);
+2026-01-01 21:53:10,718 - __main__ - INFO - Predicted Query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$template_id",
+      "count": { "$sum": 1 }
+    }
+  },
+  {
+    "$match": {
+      "count": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "template_id": "$_id"
+    }
+  }
+]);
+2026-01-01 21:53:10,718 - __main__ - INFO - Success: True
+2026-01-01 21:53:10,718 - __main__ - INFO - 
+[12/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:53:10,718 - __main__ - INFO - Question: What are the different template type codes, and how many documents use each type?
+2026-01-01 21:53:10,718 - __main__ - INFO - Gold Query: db.Templates.aggregate([{
+  "$lookup": {
+    "from": "Documents",
+    "let": {
+      "template_id": "$template_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$template_id",
+              "$template_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$template_type_code",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "template_type_code": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:10,718 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:53:10,718 - smart.smart_pipeline - INFO - Translating NLQ: What are the different template type codes, and how many documents use each type?
+2026-01-01 21:53:10,719 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:11,164 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['templateTypeCode', 'templateTypeCode', 'documentCount'], 'collection': None, 'raw_response': 'templateTypeCode, templateTypeCode, documentCount'}
+2026-01-01 21:53:11,164 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:12,113 - smart.query_generator - INFO - Generated query: db.Templates.distinct("templateTypeCode"); 
+
+This query uses the `distinct()` method to find all unique template type codes in the Templates collection.;
+2026-01-01 21:53:12,114 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.80it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.26it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 245.21it/s]
+2026-01-01 21:53:14,270 - smart.rag_refiner - INFO - Refined query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$templateTypeCode",
+      "documentCount": { "$sum": 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "templateTypeCode": "$_id",
+      "count": "$documentCount"
+    }
+  }
+]);
+2026-01-01 21:53:14,270 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:14,270 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:14,271 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:14,277 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:14,277 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$templateTypeCode",
+      "documentCount": { "$sum": 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "templateTypeCode": "$_id",
+      "count": "$documentCount"
+    }
+  }
+]);
+2026-01-01 21:53:14,277 - __main__ - INFO - Predicted Query: db.Templates.aggregate([
+  {
+    "$group": {
+      "_id": "$templateTypeCode",
+      "documentCount": { "$sum": 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "templateTypeCode": "$_id",
+      "count": "$documentCount"
+    }
+  }
+]);
+2026-01-01 21:53:14,277 - __main__ - INFO - Success: True
+2026-01-01 21:53:14,277 - __main__ - INFO - 
+[13/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:53:14,277 - __main__ - INFO - Question: How many paragraphs for the document with name 'Summer Show'?
+2026-01-01 21:53:14,277 - __main__ - INFO - Gold Query: db.Paragraphs.aggregate([{
+  "$lookup": {
+    "from": "Documents",
+    "let": {
+      "document_id": "$document_ID"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$document_id",
+                  "$document_ID"
+                ]
+              }
+            },
+            {
+              "document_name": "Summer Show"
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {},
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:14,277 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:53:14,277 - smart.smart_pipeline - INFO - Translating NLQ: How many paragraphs for the document with name 'Summer Show'?
+2026-01-01 21:53:14,277 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:14,821 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'type', 'content', 'id', 'title', 'document_id', 'paragraphs_id'], 'collection': None, 'raw_response': 'name, type, content, id, title, document_id, paragraphs_id'}
+2026-01-01 21:53:14,821 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:15,455 - smart.query_generator - INFO - Generated query: db.Paragraphs.countDocuments({"documentName": "Summer Show"});
+2026-01-01 21:53:15,455 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.85it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 182.69it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 207.07it/s]
+2026-01-01 21:53:16,695 - smart.rag_refiner - INFO - Refined query: db.Paragraphs.countDocuments({
+  "document_id": {
+    "$elemMatch": {
+      "name": "Summer Show"
+    }
+  }
+});
+2026-01-01 21:53:16,695 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:16,695 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:16,695 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:16,695 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid countDocuments query format
+2026-01-01 21:53:16,695 - smart.execution_optimizer - WARNING - Query failed: Invalid countDocuments query format
+2026-01-01 21:53:17,547 - smart.execution_optimizer - INFO - Generated corrected query: db.Paragraphs.countDocuments({ "document_id.name": "Summer Show" });
+2026-01-01 21:53:17,547 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:53:17,551 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:17,551 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Paragraphs.countDocuments({ "document_id.name": "Summer Show" });
+2026-01-01 21:53:17,551 - __main__ - INFO - Predicted Query: db.Paragraphs.countDocuments({ "document_id.name": "Summer Show" });
+2026-01-01 21:53:17,551 - __main__ - INFO - Success: True
+2026-01-01 21:53:17,552 - __main__ - INFO - 
+[14/50] Database: cre_Doc_Template_Mgt
+2026-01-01 21:53:17,552 - __main__ - INFO - Question: Show all paragraph ids and texts for the document with name 'Welcome to NY'.
+2026-01-01 21:53:17,552 - __main__ - INFO - Gold Query: db.Paragraphs.aggregate([{
+  "$lookup": {
+    "from": "Documents",
+    "let": {
+      "document_id": "$document_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$document_id",
+                  "$document_id"
+                ]
+              }
+            },
+            {
+              "Document_Name": "Welcome to NY"
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$project": {
+    "_id": 0,
+    "paragraph_id": 1,
+    "paragraph_text": 1
+  }
+}])
+2026-01-01 21:53:17,552 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:53:17,552 - smart.smart_pipeline - INFO - Translating NLQ: Show all paragraph ids and texts for the document with name 'Welcome to NY'.
+2026-01-01 21:53:17,552 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:17,976 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['Paragraphs', 'id', 'text', 'Documents', 'name', 'Templates'], 'collection': None, 'raw_response': 'Paragraphs,id,text,Documents,name,Templates'}
+2026-01-01 21:53:17,976 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:18,829 - smart.query_generator - INFO - Generated query: db.Paragraphs.find({"document.name": "Welcome to NY"}, {"id": 1, "text": 1});
+2026-01-01 21:53:18,829 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.45it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.25it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 228.56it/s]
+2026-01-01 21:53:20,515 - smart.rag_refiner - INFO - Refined query: db.Paragraphs.find({
+  "document.name": {
+    "$regex": "^.*Welcome to NY.*$"
+  }
+}, {"id": 1, "text": 1});
+2026-01-01 21:53:20,515 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:20,515 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:20,515 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:20,515 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid find query format
+2026-01-01 21:53:20,515 - smart.execution_optimizer - WARNING - Query failed: Invalid find query format
+2026-01-01 21:53:21,806 - smart.execution_optimizer - INFO - Generated corrected query: db.Paragraphs.find({"document.name": {"$regex": "^.*Welcome to NY.*$", "$options": "i"}}, {"id": 1, "text": 1});
+2026-01-01 21:53:21,806 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:53:21,809 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:21,809 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Paragraphs.find({"document.name": {"$regex": "^.*Welcome to NY.*$", "$options": "i"}}, {"id": 1, "text": 1});
+2026-01-01 21:53:21,809 - __main__ - INFO - Predicted Query: db.Paragraphs.find({"document.name": {"$regex": "^.*Welcome to NY.*$", "$options": "i"}}, {"id": 1, "text": 1});
+2026-01-01 21:53:21,809 - __main__ - INFO - Success: True
+2026-01-01 21:53:21,809 - __main__ - INFO - 
+[15/50] Database: course_teach
+2026-01-01 21:53:21,809 - __main__ - INFO - Question: Show the name of the teacher for the math course.
+2026-01-01 21:53:21,809 - __main__ - INFO - Gold Query: db.course_arrange.aggregate([{
+  "$lookup": {
+    "from": "course",
+    "let": {
+      "course_id": "$Course_ID"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$course_id",
+                  "$Course_ID"
+                ]
+              }
+            },
+            {
+              "Course": "Math"
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$lookup": {
+    "from": "teacher",
+    "let": {
+      "teacher_id": "$Teacher_ID"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$teacher_id",
+              "$Teacher_ID"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T3"
+  }
+},{
+  "$unwind": {
+    "path": "$T3",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$project": {
+    "_id": 0,
+    "T3.Name": 1
+  }
+}])
+2026-01-01 21:53:21,809 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 21:53:21,809 - smart.smart_pipeline - INFO - Translating NLQ: Show the name of the teacher for the math course.
+2026-01-01 21:53:21,809 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:22,157 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'teacher', 'course'], 'collection': None, 'raw_response': 'name,teacher,course'}
+2026-01-01 21:53:22,157 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:22,831 - smart.query_generator - INFO - Generated query: db.course_arrange.distinct("teacher", { course_name: "math" });
+2026-01-01 21:53:22,831 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.89it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 199.48it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 198.61it/s]
+2026-01-01 21:53:25,288 - smart.rag_refiner - INFO - Refined query: db.course_arrange.aggregate([
+  {
+    "$match": {
+      "course_name": "math"
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "teacher": { $first: "$teacher" }
+    }
+  },
+  {
+    "$project": {
+      "name": "$teacher",
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:53:25,288 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:25,288 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:25,288 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:25,292 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:25,292 - smart.smart_pipeline - INFO - Translation complete. Final query: db.course_arrange.aggregate([
+  {
+    "$match": {
+      "course_name": "math"
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "teacher": { $first: "$teacher" }
+    }
+  },
+  {
+    "$project": {
+      "name": "$teacher",
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:53:25,292 - __main__ - INFO - Predicted Query: db.course_arrange.aggregate([
+  {
+    "$match": {
+      "course_name": "math"
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "teacher": { $first: "$teacher" }
+    }
+  },
+  {
+    "$project": {
+      "name": "$teacher",
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:53:25,292 - __main__ - INFO - Success: True
+2026-01-01 21:53:25,292 - __main__ - INFO - 
+[16/50] Database: museum_visit
+2026-01-01 21:53:25,292 - __main__ - INFO - Question: What are the id, name and membership level of visitors who have spent the largest amount of money in total in all museum tickets?
+2026-01-01 21:53:25,292 - __main__ - INFO - Gold Query: db.visitor.aggregate([{
+  "$lookup": {
+    "from": "visit",
+    "let": {
+      "id": "$id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$id",
+              "$visitor_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "t2"
+  }
+},{
+  "$unwind": {
+    "path": "$t2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "t2_visitor_id": "$t2.visitor_id",
+      "name": "$name",
+      "Level_of_membership": "$Level_of_membership"
+    }
+  }
+},{
+  "$sort": {
+    "sum_t2_Total_spent": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "t2.visitor_id": "$_id.t2_visitor_id",
+    "name": "$_id.name",
+    "Level_of_membership": "$_id.Level_of_membership",
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:25,293 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:53:25,293 - smart.smart_pipeline - INFO - Translating NLQ: What are the id, name and membership level of visitors who have spent the largest amount of money in total in all museum tickets?
+2026-01-01 21:53:25,293 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:25,838 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['id', 'name', 'membership_level', 'total_spent', 'ticket_id'], 'collection': None, 'raw_response': 'id, name, membership_level, total_spent, ticket_id'}
+2026-01-01 21:53:25,839 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:28,188 - smart.query_generator - INFO - Generated query: db.visitor.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSpent: { $sum: "$total_spent" }
+    }
+  },
+  {
+    $sort: { totalSpent: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      id: 1,
+      name: 1,
+      membership_level: 1,
+      totalSpent: 1
+    }
+  }
+]);
+2026-01-01 21:53:28,189 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.92it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.50it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 195.24it/s]
+2026-01-01 21:53:32,664 - smart.rag_refiner - INFO - Refined query: db.visitor.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSpent: { $sum: "$total_spent" },
+      visitorIds: { $push: "$_id" }
+    }
+  },
+  {
+    $sort: { totalSpent: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $lookup: {
+      from: "visitor",
+      localField: "_id",
+      foreignField: "_id",
+      as: "visitorInfo"
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $project: {
+      id: "$visitorInfo.id",
+      name: "$visitorInfo.name",
+      membership_level: "$visitorInfo.membership_level",
+      totalSpent: 1
+    }
+  }
+]);
+2026-01-01 21:53:32,664 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:32,664 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:32,664 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:32,668 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:32,668 - smart.smart_pipeline - INFO - Translation complete. Final query: db.visitor.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSpent: { $sum: "$total_spent" },
+      visitorIds: { $push: "$_id" }
+    }
+  },
+  {
+    $sort: { totalSpent: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $lookup: {
+      from: "visitor",
+      localField: "_id",
+      foreignField: "_id",
+      as: "visitorInfo"
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $project: {
+      id: "$visitorInfo.id",
+      name: "$visitorInfo.name",
+      membership_level: "$visitorInfo.membership_level",
+      totalSpent: 1
+    }
+  }
+]);
+2026-01-01 21:53:32,669 - __main__ - INFO - Predicted Query: db.visitor.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSpent: { $sum: "$total_spent" },
+      visitorIds: { $push: "$_id" }
+    }
+  },
+  {
+    $sort: { totalSpent: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $lookup: {
+      from: "visitor",
+      localField: "_id",
+      foreignField: "_id",
+      as: "visitorInfo"
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $project: {
+      id: "$visitorInfo.id",
+      name: "$visitorInfo.name",
+      membership_level: "$visitorInfo.membership_level",
+      totalSpent: 1
+    }
+  }
+]);
+2026-01-01 21:53:32,669 - __main__ - INFO - Success: True
+2026-01-01 21:53:32,669 - __main__ - INFO - 
+[17/50] Database: museum_visit
+2026-01-01 21:53:32,669 - __main__ - INFO - Question: Find the name and age of the visitor who bought the most tickets at once.
+2026-01-01 21:53:32,669 - __main__ - INFO - Gold Query: db.visitor.aggregate([{
+  "$lookup": {
+    "from": "visit",
+    "let": {
+      "id": "$id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$id",
+              "$visitor_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "t2"
+  }
+},{
+  "$unwind": {
+    "path": "$t2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$sort": {
+    "t2.num_of_ticket": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "_id": 0,
+    "name": 1,
+    "age": 1
+  }
+}])
+2026-01-01 21:53:32,669 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:53:32,669 - smart.smart_pipeline - INFO - Translating NLQ: Find the name and age of the visitor who bought the most tickets at once.
+2026-01-01 21:53:32,669 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:33,116 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'age', 'tickets_bought', 'visitor_id'], 'collection': None, 'raw_response': 'name,age,tickets_bought,visitor_id'}
+2026-01-01 21:53:33,117 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:35,701 - smart.query_generator - INFO - Generated query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$visitorId",
+      maxTickets: { $max: "$tickets" },
+      visitorInfo: { $push: "$$ROOT" }
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $sort: { "visitorInfo.maxTickets": -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1
+    }
+  }
+]);
+2026-01-01 21:53:35,701 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.01it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 13.84it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 155.41it/s]
+2026-01-01 21:53:39,264 - smart.rag_refiner - INFO - Refined query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$visitor_id",
+      maxTickets: { $max: "$tickets_bought" },
+      visitorInfo: { $push: "$$ROOT" }
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $sort: { "visitorInfo.maxTickets": -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1
+    }
+  }
+]);
+2026-01-01 21:53:39,264 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:39,264 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:39,264 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:39,268 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:39,268 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$visitor_id",
+      maxTickets: { $max: "$tickets_bought" },
+      visitorInfo: { $push: "$$ROOT" }
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $sort: { "visitorInfo.maxTickets": -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1
+    }
+  }
+]);
+2026-01-01 21:53:39,268 - __main__ - INFO - Predicted Query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$visitor_id",
+      maxTickets: { $max: "$tickets_bought" },
+      visitorInfo: { $push: "$$ROOT" }
+    }
+  },
+  {
+    $unwind: "$visitorInfo"
+  },
+  {
+    $sort: { "visitorInfo.maxTickets": -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1
+    }
+  }
+]);
+2026-01-01 21:53:39,268 - __main__ - INFO - Success: True
+2026-01-01 21:53:39,268 - __main__ - INFO - 
+[18/50] Database: museum_visit
+2026-01-01 21:53:39,269 - __main__ - INFO - Question: What is the total ticket expense of the visitors whose membership level is 1?
+2026-01-01 21:53:39,269 - __main__ - INFO - Gold Query: db.visitor.aggregate([{
+  "$match": {
+    "Level_of_membership": 1
+  }
+},{
+  "$lookup": {
+    "from": "visit",
+    "let": {
+      "id": "$id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$id",
+              "$visitor_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "t2"
+  }
+},{
+  "$unwind": {
+    "path": "$t2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {},
+    "sum_t2_Total_spent": {
+      "$sum": "$t2.Total_spent"
+    }
+  }
+},{
+  "$project": {
+    "sum_t2_Total_spent": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:39,269 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:53:39,269 - smart.smart_pipeline - INFO - Translating NLQ: What is the total ticket expense of the visitors whose membership level is 1?
+2026-01-01 21:53:39,269 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:39,696 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['visitor', 'membership_level', 'ticket_expense'], 'collection': None, 'raw_response': 'visitor,membership_level,ticket_expense'}
+2026-01-01 21:53:39,696 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:41,086 - smart.query_generator - INFO - Generated query: db.visitor.aggregate([
+  {
+    $match: { "membership.level": 1 }
+  },
+  {
+    $group: {
+      _id: null,
+      totalExpense: { $sum: "$ticket.expense" }
+    }
+  }
+]);
+2026-01-01 21:53:41,086 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.97it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.31it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 212.59it/s]
+2026-01-01 21:53:45,434 - smart.rag_refiner - INFO - Refined query: db.visitor.aggregate([
+  {
+    $lookup: {
+      from: "ticket",
+      let: { visitor_id: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: ["$$visitor_id", "$visitor_id"]
+            }
+          }
+        }
+      ],
+      as: "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $match: { "membership.level": 1 }
+  },
+  {
+    $group: {
+      _id: null,
+      totalExpense: { $sum: "$T2.expense" }
+    }
+  }
+]);
+2026-01-01 21:53:45,434 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:45,434 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:45,434 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:45,438 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:45,438 - smart.smart_pipeline - INFO - Translation complete. Final query: db.visitor.aggregate([
+  {
+    $lookup: {
+      from: "ticket",
+      let: { visitor_id: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: ["$$visitor_id", "$visitor_id"]
+            }
+          }
+        }
+      ],
+      as: "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $match: { "membership.level": 1 }
+  },
+  {
+    $group: {
+      _id: null,
+      totalExpense: { $sum: "$T2.expense" }
+    }
+  }
+]);
+2026-01-01 21:53:45,438 - __main__ - INFO - Predicted Query: db.visitor.aggregate([
+  {
+    $lookup: {
+      from: "ticket",
+      let: { visitor_id: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: ["$$visitor_id", "$visitor_id"]
+            }
+          }
+        }
+      ],
+      as: "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $match: { "membership.level": 1 }
+  },
+  {
+    $group: {
+      _id: null,
+      totalExpense: { $sum: "$T2.expense" }
+    }
+  }
+]);
+2026-01-01 21:53:45,438 - __main__ - INFO - Success: True
+2026-01-01 21:53:45,438 - __main__ - INFO - 
+[19/50] Database: museum_visit
+2026-01-01 21:53:45,438 - __main__ - INFO - Question: How many museums were opened after 2013 or before 2008?
+2026-01-01 21:53:45,438 - __main__ - INFO - Gold Query: db.museum.count({
+  "$or": [
+    {
+      "open_year": {
+        "$gt": 2013
+      }
+    },
+    {
+      "open_year": {
+        "$lt": 2008
+      }
+    }
+  ]
+})
+2026-01-01 21:53:45,438 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:53:45,438 - smart.smart_pipeline - INFO - Translating NLQ: How many museums were opened after 2013 or before 2008?
+2026-01-01 21:53:45,439 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:45,889 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['museum', 'openedYear', 'museum', 'openedYear'], 'collection': None, 'raw_response': 'museum,openedYear,museum,openedYear'}
+2026-01-01 21:53:45,889 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:47,005 - smart.query_generator - INFO - Generated query: db.museum.find({ $or: [ { "openingYear": { $gt: 2013 } }, { "openingYear": { $lt: 2008 } } ] });
+2026-01-01 21:53:47,005 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.50it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 184.77it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 212.40it/s]
+2026-01-01 21:53:48,675 - smart.rag_refiner - INFO - Refined query: db.museum.countDocuments({
+  "$or": [
+    { "openedYear": { $gt: 2013 } },
+    { "openedYear": { $lt: 2008 } }
+  ]
+});
+2026-01-01 21:53:48,676 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:48,676 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:48,676 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:48,676 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid countDocuments query format
+2026-01-01 21:53:48,676 - smart.execution_optimizer - WARNING - Query failed: Invalid countDocuments query format
+2026-01-01 21:53:49,952 - smart.execution_optimizer - INFO - Generated corrected query: db.museum.countDocuments({ $or: [ { openedYear: { $gt: 2013 } }, { openedYear: { $lt: 2008 } } ] });
+2026-01-01 21:53:49,952 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:53:49,954 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:49,954 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.countDocuments({ $or: [ { openedYear: { $gt: 2013 } }, { openedYear: { $lt: 2008 } } ] });
+2026-01-01 21:53:49,954 - __main__ - INFO - Predicted Query: db.museum.countDocuments({ $or: [ { openedYear: { $gt: 2013 } }, { openedYear: { $lt: 2008 } } ] });
+2026-01-01 21:53:49,954 - __main__ - INFO - Success: True
+2026-01-01 21:53:49,954 - __main__ - INFO - 
+[20/50] Database: wta_1
+2026-01-01 21:53:49,954 - __main__ - INFO - Question: What is the average rank for winners in all matches?
+2026-01-01 21:53:49,954 - __main__ - INFO - Gold Query: db.matches.aggregate([{
+  "$group": {
+    "_id": {},
+    "avg_winner_rank": {
+      "$avg": "$winner_rank"
+    }
+  }
+},{
+  "$project": {
+    "avg_winner_rank": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:49,954 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:53:49,955 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:53:49,955 - smart.smart_pipeline - INFO - Translating NLQ: What is the average rank for winners in all matches?
+2026-01-01 21:53:49,955 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:50,305 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['rank', 'match', 'winner'], 'collection': None, 'raw_response': 'rank,match,winner'}
+2026-01-01 21:53:50,305 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:51,597 - smart.query_generator - INFO - Generated query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $group: {
+      _id: null,
+      averageRank: { $avg: "$rank" }
+    }
+  }
+]);
+2026-01-01 21:53:51,597 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.56it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 33.51it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 226.03it/s]
+2026-01-01 21:53:53,933 - smart.rag_refiner - INFO - Refined query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $group: {
+      _id: null,
+      averageRank: { $avg: "$rank" }
+    }
+  },
+  {
+    $project: {
+      "_id": 0,
+      "averageRank": 1
+    }
+  }
+]);
+2026-01-01 21:53:53,933 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:53,933 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:53,933 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:53,937 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:53,937 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $group: {
+      _id: null,
+      averageRank: { $avg: "$rank" }
+    }
+  },
+  {
+    $project: {
+      "_id": 0,
+      "averageRank": 1
+    }
+  }
+]);
+2026-01-01 21:53:53,937 - __main__ - INFO - Predicted Query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $group: {
+      _id: null,
+      averageRank: { $avg: "$rank" }
+    }
+  },
+  {
+    $project: {
+      "_id": 0,
+      "averageRank": 1
+    }
+  }
+]);
+2026-01-01 21:53:53,937 - __main__ - INFO - Success: True
+2026-01-01 21:53:53,937 - __main__ - INFO - 
+[21/50] Database: wta_1
+2026-01-01 21:53:53,937 - __main__ - INFO - Question: How many matches were played in 2013 or 2016?
+2026-01-01 21:53:53,938 - __main__ - INFO - Gold Query: db.matches.count({
+  "$or": [
+    {
+      "YEAR": 2013
+    },
+    {
+      "YEAR": 2016
+    }
+  ]
+})
+2026-01-01 21:53:53,938 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:53:53,939 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:53:53,939 - smart.smart_pipeline - INFO - Translating NLQ: How many matches were played in 2013 or 2016?
+2026-01-01 21:53:53,939 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:54,269 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['match_date', 'year'], 'collection': None, 'raw_response': 'match_date,year'}
+2026-01-01 21:53:54,269 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:53:55,027 - smart.query_generator - INFO - Generated query: db.museum.find({"year": {"$in": [2013, 2016]}});
+2026-01-01 21:53:55,027 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 185.15it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 194.30it/s]
+2026-01-01 21:53:56,644 - smart.rag_refiner - INFO - Refined query: db.museum.countDocuments({
+  "$or": [
+    {
+      "match_date": {"$regex": "^2013"}
+    },
+    {
+      "year": 2016
+    }
+  ]
+});
+2026-01-01 21:53:56,644 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:53:56,644 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:53:56,644 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:53:56,644 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid countDocuments query format
+2026-01-01 21:53:56,645 - smart.execution_optimizer - WARNING - Query failed: Invalid countDocuments query format
+2026-01-01 21:53:57,721 - smart.execution_optimizer - INFO - Generated corrected query: db.museum.countDocuments({ $or: [ { match_date: /^2013/ }, { year: 2016 } ] });
+2026-01-01 21:53:57,722 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:53:57,722 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax (<string>, line 1)
+2026-01-01 21:53:57,722 - smart.execution_optimizer - WARNING - Query failed: invalid syntax (<string>, line 1)
+2026-01-01 21:53:58,803 - smart.execution_optimizer - INFO - Generated corrected query: db.museum.countDocuments({ $or: [ { match_date: { $regex: '^2013' } }, { year: 2016 } ] });
+2026-01-01 21:53:58,803 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 21:53:58,806 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:53:58,806 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.countDocuments({ $or: [ { match_date: { $regex: '^2013' } }, { year: 2016 } ] });
+2026-01-01 21:53:58,806 - __main__ - INFO - Predicted Query: db.museum.countDocuments({ $or: [ { match_date: { $regex: '^2013' } }, { year: 2016 } ] });
+2026-01-01 21:53:58,806 - __main__ - INFO - Success: True
+2026-01-01 21:53:58,806 - __main__ - INFO - 
+[22/50] Database: wta_1
+2026-01-01 21:53:58,806 - __main__ - INFO - Question: Find the number of matches happened in each year.
+2026-01-01 21:53:58,806 - __main__ - INFO - Gold Query: db.matches.aggregate([{
+  "$group": {
+    "_id": "$YEAR",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "YEAR": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:53:58,806 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:53:58,808 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:53:58,808 - smart.smart_pipeline - INFO - Translating NLQ: Find the number of matches happened in each year.
+2026-01-01 21:53:58,808 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:53:59,116 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['year', 'match'], 'collection': None, 'raw_response': 'year,match'}
+2026-01-01 21:53:59,117 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:00,128 - smart.query_generator - INFO - Generated query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$year",
+      count: { $sum: 1 }
+    }
+  }
+]);
+2026-01-01 21:54:00,128 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.57it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.73it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 241.15it/s]
+2026-01-01 21:54:02,489 - smart.rag_refiner - INFO - Refined query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$year",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      year: "$_id",
+      count: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:02,490 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:02,490 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:02,490 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:02,494 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:02,494 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$year",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      year: "$_id",
+      count: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:02,494 - __main__ - INFO - Predicted Query: db.museum.aggregate([
+  {
+    $group: {
+      _id: "$year",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      year: "$_id",
+      count: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:02,494 - __main__ - INFO - Success: True
+2026-01-01 21:54:02,494 - __main__ - INFO - 
+[23/50] Database: wta_1
+2026-01-01 21:54:02,494 - __main__ - INFO - Question: What are the names and ranks of the three youngest winners across all matches?
+2026-01-01 21:54:02,494 - __main__ - INFO - Gold Query: 
+2026-01-01 21:54:02,494 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:54:02,495 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:54:02,495 - smart.smart_pipeline - INFO - Translating NLQ: What are the names and ranks of the three youngest winners across all matches?
+2026-01-01 21:54:02,496 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:02,922 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'rank', 'age', 'match', 'winner'], 'collection': None, 'raw_response': 'name,rank,age,match,winner'}
+2026-01-01 21:54:02,922 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:04,330 - smart.query_generator - INFO - Generated query: db.museum.aggregate([
+  {
+    $sort: { age: 1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      name: 1,
+      rank: 1
+    }
+  }
+]);
+2026-01-01 21:54:04,330 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.20it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 184.50it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 211.78it/s]
+2026-01-01 21:54:06,492 - smart.rag_refiner - INFO - Refined query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $sort: { age: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      name: 1,
+      rank: 1
+    }
+  }
+]);
+2026-01-01 21:54:06,493 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:06,493 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:06,493 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:06,496 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:06,496 - smart.smart_pipeline - INFO - Translation complete. Final query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $sort: { age: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      name: 1,
+      rank: 1
+    }
+  }
+]);
+2026-01-01 21:54:06,496 - __main__ - INFO - Predicted Query: db.museum.aggregate([
+  {
+    $match: { winner: true }
+  },
+  {
+    $sort: { age: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      name: 1,
+      rank: 1
+    }
+  }
+]);
+2026-01-01 21:54:06,496 - __main__ - INFO - Success: True
+2026-01-01 21:54:06,497 - __main__ - INFO - 
+[24/50] Database: student_transcripts_tracking
+2026-01-01 21:54:06,497 - __main__ - INFO - Question: What is the name of the semester with no students enrolled?
+2026-01-01 21:54:06,497 - __main__ - INFO - Gold Query: 
+2026-01-01 21:54:06,497 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:06,497 - smart.smart_pipeline - INFO - Translating NLQ: What is the name of the semester with no students enrolled?
+2026-01-01 21:54:06,497 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:06,845 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['semester_name', 'student_count'], 'collection': None, 'raw_response': 'semester_name,student_count'}
+2026-01-01 21:54:06,845 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:08,654 - smart.query_generator - INFO - Generated query: db.Transcripts.aggregate([
+  {
+    $group: {
+      _id: "$semester",
+      studentCount: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      studentCount: { $eq: 0 }
+    }
+  },
+  {
+    $project: {
+      semesterName: 1
+    }
+  }
+]);
+2026-01-01 21:54:08,654 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 18.73it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 206.06it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 241.54it/s]
+2026-01-01 21:54:11,687 - smart.rag_refiner - INFO - Refined query: db.Transcripts.aggregate([
+  {
+    $group: {
+      _id: "$semester_name",
+      studentCount: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      studentCount: { $eq: 0 }
+    }
+  },
+  {
+    $project: {
+      semesterName: "$_id"
+    }
+  }
+]);
+2026-01-01 21:54:11,687 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:11,687 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:11,687 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:11,689 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:11,689 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Transcripts.aggregate([
+  {
+    $group: {
+      _id: "$semester_name",
+      studentCount: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      studentCount: { $eq: 0 }
+    }
+  },
+  {
+    $project: {
+      semesterName: "$_id"
+    }
+  }
+]);
+2026-01-01 21:54:11,689 - __main__ - INFO - Predicted Query: db.Transcripts.aggregate([
+  {
+    $group: {
+      _id: "$semester_name",
+      studentCount: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      studentCount: { $eq: 0 }
+    }
+  },
+  {
+    $project: {
+      semesterName: "$_id"
+    }
+  }
+]);
+2026-01-01 21:54:11,689 - __main__ - INFO - Success: True
+2026-01-01 21:54:11,689 - __main__ - INFO - 
+[25/50] Database: student_transcripts_tracking
+2026-01-01 21:54:11,689 - __main__ - INFO - Question: What is the name of the course with the most students enrolled?
+2026-01-01 21:54:11,689 - __main__ - INFO - Gold Query: db.Courses.aggregate([{
+  "$lookup": {
+    "from": "Student_Enrolment_Courses",
+    "let": {
+      "course_id": "$course_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$course_id",
+              "$course_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$course_name"
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "course_name": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:54:11,689 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:11,689 - smart.smart_pipeline - INFO - Translating NLQ: What is the name of the course with the most students enrolled?
+2026-01-01 21:54:11,689 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:12,348 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name', 'studentsEnrolled', 'courseId \ncourseName', 'studentsEnrolled', 'courseId \ncourseName'], 'collection': None, 'raw_response': 'name,studentsEnrolled,courseId \ncourseName,studentsEnrolled,courseId \ncourseName'}
+2026-01-01 21:54:12,348 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:15,060 - smart.query_generator - INFO - Generated query: db.Courses.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxEnrolled: { $max: "$enrolled" }
+    }
+  },
+  {
+    $lookup: {
+      from: "Transcripts",
+      localField: "maxEnrolled",
+      foreignField: "course_id",
+      as: "transcript"
+    }
+  },
+  {
+    $unwind: "$transcript"
+  },
+  {
+    $group: {
+      _id: null,
+      courseName: { $first: "$name" }
+    }
+  }
+]);
+2026-01-01 21:54:15,061 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 18.79it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.25it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 265.55it/s]
+2026-01-01 21:54:20,234 - smart.rag_refiner - INFO - Refined query: db.Courses.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxEnrolled: { $max: "$studentsEnrolled" }
+    }
+  },
+  {
+    $lookup: {
+      from: "Transcripts",
+      let: { enrolled: "$maxEnrolled" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: [ "$$enrolled", "$studentsEnrolled" ] }
+          }
+        }
+      ],
+      as: "transcript"
+    }
+  },
+  {
+    $unwind: "$transcript"
+  },
+  {
+    $group: {
+      _id: null,
+      courseName: { $first: "$name" }
+    }
+  },
+  {
+    $project: {
+      courseName: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:20,234 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:20,234 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:20,234 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:20,239 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:20,240 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Courses.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxEnrolled: { $max: "$studentsEnrolled" }
+    }
+  },
+  {
+    $lookup: {
+      from: "Transcripts",
+      let: { enrolled: "$maxEnrolled" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: [ "$$enrolled", "$studentsEnrolled" ] }
+          }
+        }
+      ],
+      as: "transcript"
+    }
+  },
+  {
+    $unwind: "$transcript"
+  },
+  {
+    $group: {
+      _id: null,
+      courseName: { $first: "$name" }
+    }
+  },
+  {
+    $project: {
+      courseName: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:20,240 - __main__ - INFO - Predicted Query: db.Courses.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxEnrolled: { $max: "$studentsEnrolled" }
+    }
+  },
+  {
+    $lookup: {
+      from: "Transcripts",
+      let: { enrolled: "$maxEnrolled" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: [ "$$enrolled", "$studentsEnrolled" ] }
+          }
+        }
+      ],
+      as: "transcript"
+    }
+  },
+  {
+    $unwind: "$transcript"
+  },
+  {
+    $group: {
+      _id: null,
+      courseName: { $first: "$name" }
+    }
+  },
+  {
+    $project: {
+      courseName: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:54:20,240 - __main__ - INFO - Success: True
+2026-01-01 21:54:20,240 - __main__ - INFO - 
+[26/50] Database: student_transcripts_tracking
+2026-01-01 21:54:20,240 - __main__ - INFO - Question: What is the date and id of the transcript with at least 2 courses listed?
+2026-01-01 21:54:20,240 - __main__ - INFO - Gold Query: db.Transcript_Contents.aggregate([{
+  "$lookup": {
+    "from": "Transcripts",
+    "let": {
+      "transcript_id": "$transcript_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$transcript_id",
+              "$transcript_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "T2_transcript_date": "$T2.transcript_date",
+      "transcript_id": "$transcript_id"
+    }
+  }
+},{
+  "$match": {
+    "$expr": {
+      "$gte": [
+        "$count",
+        2
+      ]
+    }
+  }
+},{
+  "$project": {
+    "T2.transcript_date": "$_id.T2_transcript_date",
+    "transcript_id": "$_id.transcript_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:54:20,240 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:20,240 - smart.smart_pipeline - INFO - Translating NLQ: What is the date and id of the transcript with at least 2 courses listed?
+2026-01-01 21:54:20,240 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:20,633 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['date', 'id', 'courses'], 'collection': None, 'raw_response': 'date, id, courses'}
+2026-01-01 21:54:20,633 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:22,065 - smart.query_generator - INFO - Generated query: db.Transcripts.aggregate([
+  {
+    $match: {
+      "transcript_contents.courses": { $gt: 2 }
+    }
+  },
+  {
+    $project: {
+      date: 1,
+      id: 1
+    }
+  }
+]);
+2026-01-01 21:54:22,065 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.58it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.32it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 234.48it/s]
+2026-01-01 21:54:27,830 - smart.rag_refiner - INFO - Refined query: db.Transcripts.aggregate([
+  {
+    $match: {
+      "transcript_contents.courses": { $gt: 2 }
+    }
+  },
+  {
+    "$lookup": {
+      "from": "courses",
+      "let": {
+        "course_ids": "$transcript_contents.courses"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$in": [
+                "$_id",
+                "$$course_ids"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      date: { $first: "$date" },
+      id: { $first: "$id" }
+    }
+  },
+  {
+    $project: {
+      date: 1,
+      id: 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:54:27,830 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:27,830 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:27,831 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:27,833 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:27,833 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Transcripts.aggregate([
+  {
+    $match: {
+      "transcript_contents.courses": { $gt: 2 }
+    }
+  },
+  {
+    "$lookup": {
+      "from": "courses",
+      "let": {
+        "course_ids": "$transcript_contents.courses"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$in": [
+                "$_id",
+                "$$course_ids"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      date: { $first: "$date" },
+      id: { $first: "$id" }
+    }
+  },
+  {
+    $project: {
+      date: 1,
+      id: 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:54:27,833 - __main__ - INFO - Predicted Query: db.Transcripts.aggregate([
+  {
+    $match: {
+      "transcript_contents.courses": { $gt: 2 }
+    }
+  },
+  {
+    "$lookup": {
+      "from": "courses",
+      "let": {
+        "course_ids": "$transcript_contents.courses"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$in": [
+                "$_id",
+                "$$course_ids"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    $unwind: {
+      path: "$T2",
+      preserveNullAndEmptyArrays: false
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      date: { $first: "$date" },
+      id: { $first: "$id" }
+    }
+  },
+  {
+    $project: {
+      date: 1,
+      id: 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:54:27,833 - __main__ - INFO - Success: True
+2026-01-01 21:54:27,833 - __main__ - INFO - 
+[27/50] Database: student_transcripts_tracking
+2026-01-01 21:54:27,833 - __main__ - INFO - Question: How many transcripts are released?
+2026-01-01 21:54:27,833 - __main__ - INFO - Gold Query: db.Transcripts.count({})
+2026-01-01 21:54:27,833 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:27,833 - smart.smart_pipeline - INFO - Translating NLQ: How many transcripts are released?
+2026-01-01 21:54:27,833 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:28,181 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['Transcripts', 'release_date'], 'collection': None, 'raw_response': 'Transcripts,release_date'}
+2026-01-01 21:54:28,181 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:28,639 - smart.query_generator - INFO - Generated query: db.Transcripts.countDocuments();
+2026-01-01 21:54:28,639 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.44it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 184.54it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 208.77it/s]
+2026-01-01 21:54:29,412 - smart.rag_refiner - INFO - Refined query: db.Transcripts.countDocuments({ release_date: { $exists: true } });
+2026-01-01 21:54:29,412 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:29,412 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:29,412 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:29,416 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:29,416 - smart.smart_pipeline - INFO - Translation complete. Final query: db.Transcripts.countDocuments({ release_date: { $exists: true } });
+2026-01-01 21:54:29,416 - __main__ - INFO - Predicted Query: db.Transcripts.countDocuments({ release_date: { $exists: true } });
+2026-01-01 21:54:29,416 - __main__ - INFO - Success: True
+2026-01-01 21:54:29,416 - __main__ - INFO - 
+[28/50] Database: tvshow
+2026-01-01 21:54:29,416 - __main__ - INFO - Question: How many cartoons were written by "Joseph Kuhr"?
+2026-01-01 21:54:29,416 - __main__ - INFO - Gold Query: db.Cartoon.count({
+  "Written_by": "Joseph Kuhr"
+})
+2026-01-01 21:54:29,416 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:29,416 - smart.smart_pipeline - INFO - Translating NLQ: How many cartoons were written by "Joseph Kuhr"?
+2026-01-01 21:54:29,416 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:30,020 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['cartoon.writerName', 'cartoon.title', 'cartoon.releaseYear', 'Cartoon.writerName'], 'collection': None, 'raw_response': 'cartoon.writerName,cartoon.title,cartoon.releaseYear,Cartoon.writerName'}
+2026-01-01 21:54:30,020 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:30,676 - smart.query_generator - INFO - Generated query: db.cartoon.find({"author": "Joseph Kuhr"}).countDocuments();
+2026-01-01 21:54:30,676 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.55it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 204.00it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 193.02it/s]
+2026-01-01 21:54:31,621 - smart.rag_refiner - INFO - Refined query: db.cartoon.countDocuments({ "writerName": "Joseph Kuhr" });
+2026-01-01 21:54:31,621 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:31,621 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:31,621 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:31,625 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:31,625 - smart.smart_pipeline - INFO - Translation complete. Final query: db.cartoon.countDocuments({ "writerName": "Joseph Kuhr" });
+2026-01-01 21:54:31,625 - __main__ - INFO - Predicted Query: db.cartoon.countDocuments({ "writerName": "Joseph Kuhr" });
+2026-01-01 21:54:31,625 - __main__ - INFO - Success: True
+2026-01-01 21:54:31,625 - __main__ - INFO - 
+[29/50] Database: tvshow
+2026-01-01 21:54:31,625 - __main__ - INFO - Question: Find the production code and channel of the most recently aired cartoon .
+2026-01-01 21:54:31,625 - __main__ - INFO - Gold Query: db.cartoon.find({} , {
+  "_id": 0,
+  "production_code": 1,
+  "channel": 1
+}).sort({
+  "original_air_date": -1
+}).limit(1)
+2026-01-01 21:54:31,625 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:31,625 - smart.smart_pipeline - INFO - Translating NLQ: Find the production code and channel of the most recently aired cartoon .
+2026-01-01 21:54:31,625 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:32,013 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['production_code', 'channel', 'air_date'], 'collection': None, 'raw_response': 'production_code,channel,air_date'}
+2026-01-01 21:54:32,013 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:33,461 - smart.query_generator - INFO - Generated query: db.cartoon.aggregate([
+  {
+    $sort: { aired_date: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      production_code: 1,
+      channel: 1
+    }
+  }
+]);
+2026-01-01 21:54:33,461 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 53.37it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 223.36it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 224.71it/s]
+2026-01-01 21:54:35,729 - smart.rag_refiner - INFO - Refined query: db.cartoon.aggregate([
+  {
+    $sort: { air_date: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      production_code: 1,
+      channel: 1
+    }
+  }
+]);
+2026-01-01 21:54:35,729 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:35,729 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:35,729 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:35,732 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:35,732 - smart.smart_pipeline - INFO - Translation complete. Final query: db.cartoon.aggregate([
+  {
+    $sort: { air_date: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      production_code: 1,
+      channel: 1
+    }
+  }
+]);
+2026-01-01 21:54:35,732 - __main__ - INFO - Predicted Query: db.cartoon.aggregate([
+  {
+    $sort: { air_date: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      production_code: 1,
+      channel: 1
+    }
+  }
+]);
+2026-01-01 21:54:35,732 - __main__ - INFO - Success: True
+2026-01-01 21:54:35,732 - __main__ - INFO - 
+[30/50] Database: tvshow
+2026-01-01 21:54:35,732 - __main__ - INFO - Question: What are the package options and the name of the series for the TV Channel that supports high definition TV?
+2026-01-01 21:54:35,732 - __main__ - INFO - Gold Query: db.TV_Channel.find({
+  "hight_definition_TV": "yes"
+} , {
+  "_id": 0,
+  "package_option": 1,
+  "series_name": 1
+})
+2026-01-01 21:54:35,732 - smart.smart_pipeline - INFO - Loaded 3 collection schemas
+2026-01-01 21:54:35,732 - smart.smart_pipeline - INFO - Translating NLQ: What are the package options and the name of the series for the TV Channel that supports high definition TV?
+2026-01-01 21:54:35,732 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:36,241 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['package_options', 'name', 'series_name', 'high_definition_TV'], 'collection': None, 'raw_response': 'package_options, name, series_name, high_definition_TV'}
+2026-01-01 21:54:36,241 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:37,077 - smart.query_generator - INFO - Generated query: db.TV_Channel.find({"supportsHD": true}, {"packageOptions": 1, "seriesName": 1});
+2026-01-01 21:54:37,077 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.09it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 179.57it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 190.81it/s]
+2026-01-01 21:54:39,035 - smart.rag_refiner - INFO - Refined query: db.TV_Channel.find({
+  "$and": [
+    {
+      "high_definition_TV": true
+    }
+  ]
+}, {
+  "_id": 0,
+  "package_options": 1,
+  "series_name": 1
+});
+2026-01-01 21:54:39,035 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:39,035 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:39,035 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:39,035 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid find query format
+2026-01-01 21:54:39,035 - smart.execution_optimizer - WARNING - Query failed: Invalid find query format
+2026-01-01 21:54:40,281 - smart.execution_optimizer - INFO - Generated corrected query: db.TV_Channel.find({ "high_definition_TV": true }, { "_id": 0, "package_options": 1, "series_name": 1 });
+2026-01-01 21:54:40,281 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:54:40,285 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:40,285 - smart.smart_pipeline - INFO - Translation complete. Final query: db.TV_Channel.find({ "high_definition_TV": true }, { "_id": 0, "package_options": 1, "series_name": 1 });
+2026-01-01 21:54:40,285 - __main__ - INFO - Predicted Query: db.TV_Channel.find({ "high_definition_TV": true }, { "_id": 0, "package_options": 1, "series_name": 1 });
+2026-01-01 21:54:40,285 - __main__ - INFO - Success: True
+2026-01-01 21:54:40,285 - __main__ - INFO - 
+[31/50] Database: poker_player
+2026-01-01 21:54:40,285 - __main__ - INFO - Question: What are the names of poker players?
+2026-01-01 21:54:40,285 - __main__ - INFO - Gold Query: db.people.aggregate([{
+  "$lookup": {
+    "from": "poker_player",
+    "let": {
+      "people_id": "$People_ID"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$people_id",
+              "$People_ID"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$project": {
+    "_id": 0,
+    "Name": 1
+  }
+}])
+2026-01-01 21:54:40,285 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 21:54:40,285 - smart.smart_pipeline - INFO - Translating NLQ: What are the names of poker players?
+2026-01-01 21:54:40,285 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:40,557 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['name'], 'collection': None, 'raw_response': 'name'}
+2026-01-01 21:54:40,557 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:41,001 - smart.query_generator - INFO - Generated query: db.people.distinct("name");
+2026-01-01 21:54:41,001 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 52.33it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 230.42it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 45.19it/s]
+2026-01-01 21:54:41,687 - smart.rag_refiner - INFO - Refined query: db.people.distinct("name");
+2026-01-01 21:54:41,687 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:41,687 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:41,687 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:41,688 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:41,688 - smart.smart_pipeline - INFO - Translation complete. Final query: db.people.distinct("name");
+2026-01-01 21:54:41,688 - __main__ - INFO - Predicted Query: db.people.distinct("name");
+2026-01-01 21:54:41,689 - __main__ - INFO - Success: True
+2026-01-01 21:54:41,689 - __main__ - INFO - 
+[32/50] Database: world_1
+2026-01-01 21:54:41,689 - __main__ - INFO - Question: What region does Angola belong to and what is its population?
+2026-01-01 21:54:41,689 - __main__ - INFO - Gold Query: db.country.find({
+  "Name": "Angola"
+} , {
+  "_id": 0,
+  "Population": 1,
+  "Region": 1
+})
+2026-01-01 21:54:41,689 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:54:41,689 - smart.smart_pipeline - INFO - Translating NLQ: What region does Angola belong to and what is its population?
+2026-01-01 21:54:41,689 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:42,316 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'countryname', 'countrycode', 'isofficial', 'percentage', 'region', 'language', 'population'], 'collection': None, 'raw_response': 'countrylanguage, countryname, countrycode, isofficial, percentage, region, language, population'}
+2026-01-01 21:54:42,316 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:43,129 - smart.query_generator - INFO - Generated query: db.countrylanguage.find({ countryName: "Angola" }, { region: 1, population: 1 });
+2026-01-01 21:54:43,129 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.21it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.59it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.56it/s]
+2026-01-01 21:54:45,220 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    "$match": {
+      "countryName": "Angola"
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "region": 1,
+      "population": 1
+    }
+  }
+]);
+2026-01-01 21:54:45,220 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:45,220 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:45,220 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:45,224 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:45,224 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    "$match": {
+      "countryName": "Angola"
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "region": 1,
+      "population": 1
+    }
+  }
+]);
+2026-01-01 21:54:45,224 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    "$match": {
+      "countryName": "Angola"
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "region": 1,
+      "population": 1
+    }
+  }
+]);
+2026-01-01 21:54:45,224 - __main__ - INFO - Success: True
+2026-01-01 21:54:45,224 - __main__ - INFO - 
+[33/50] Database: world_1
+2026-01-01 21:54:45,225 - __main__ - INFO - Question: Which languages are spoken by only one country in republic governments?
+2026-01-01 21:54:45,225 - __main__ - INFO - Gold Query: db.country.aggregate([{
+  "$match": {
+    "GovernmentForm": "Republic"
+  }
+},{
+  "$lookup": {
+    "from": "countrylanguage",
+    "let": {
+      "code": "$Code"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$code",
+              "$CountryCode"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$T2.Language"
+  }
+},{
+  "$match": {
+    "$expr": {
+      "$eq": [
+        "$count",
+        1
+      ]
+    }
+  }
+},{
+  "$project": {
+    "T2.Language": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 21:54:45,225 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:54:45,225 - smart.smart_pipeline - INFO - Translating NLQ: Which languages are spoken by only one country in republic governments?
+2026-01-01 21:54:45,225 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:45,708 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'CountryName', 'SpokenByCountry', 'Language'], 'collection': None, 'raw_response': 'countrylanguage, CountryName, SpokenByCountry, Language'}
+2026-01-01 21:54:45,708 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:46,604 - smart.query_generator - INFO - Generated query: db.countrylanguage.find({"countryCode": "R", "isoLanguage": 1}, {"isoLanguage": 1}).countDocuments();
+2026-01-01 21:54:46,604 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.18it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.90it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 205.12it/s]
+2026-01-01 21:54:48,564 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      countryCode: "R",
+      SpokenByCountry: 1,
+      Language: { $ne: "" }
+    }
+  },
+  {
+    $group: {
+      _id: "$Language"
+    }
+  },
+  {
+    $count: "total"
+  }
+]);
+2026-01-01 21:54:48,564 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:48,564 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:48,564 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:48,570 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:48,570 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      countryCode: "R",
+      SpokenByCountry: 1,
+      Language: { $ne: "" }
+    }
+  },
+  {
+    $group: {
+      _id: "$Language"
+    }
+  },
+  {
+    $count: "total"
+  }
+]);
+2026-01-01 21:54:48,570 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      countryCode: "R",
+      SpokenByCountry: 1,
+      Language: { $ne: "" }
+    }
+  },
+  {
+    $group: {
+      _id: "$Language"
+    }
+  },
+  {
+    $count: "total"
+  }
+]);
+2026-01-01 21:54:48,570 - __main__ - INFO - Success: True
+2026-01-01 21:54:48,570 - __main__ - INFO - 
+[34/50] Database: world_1
+2026-01-01 21:54:48,570 - __main__ - INFO - Question: What are the African countries that have a  population less than any country in Asia?
+2026-01-01 21:54:48,570 - __main__ - INFO - Gold Query: 
+2026-01-01 21:54:48,570 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:54:48,570 - smart.smart_pipeline - INFO - Translating NLQ: What are the African countries that have a  population less than any country in Asia?
+2026-01-01 21:54:48,570 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:49,195 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['country', 'country.name', 'country.code', 'lang', 'percentage', 'population', 'region', 'subregion'], 'collection': None, 'raw_response': 'country,country.name,country.code,lang,percentage,population,region,subregion'}
+2026-01-01 21:54:49,195 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:54:52,481 - smart.query_generator - INFO - Generated query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      country_code: { $in: ["AF", "EG"] } // Assuming African countries have codes AF, EG
+    }
+  },
+  {
+    $group: {
+      _id: "$country",
+      min_population_asia: { $min: "$population" }
+    }
+  },
+  {
+    $lookup: {
+      from: "countrylanguage",
+      localField: "_id",
+      foreignField: "country",
+      as: "countries"
+    }
+  },
+  {
+    $unwind: "$countries"
+  },
+  {
+    $match: {
+      countries.population: { $lt: "$min_population_asia" }
+    }
+  }
+]);
+2026-01-01 21:54:52,482 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.62it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.01it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 236.91it/s]
+2026-01-01 21:54:58,074 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      region: "Africa"
+    }
+  },
+  {
+    $group: {
+      _id: "$country",
+      min_population_asia: { $min: "$population" }
+    }
+  },
+  {
+    $lookup: {
+      from: "countrylanguage",
+      let: {
+        country: "$_id"
+      },
+      pipeline: [
+        {
+          $match: {
+            region: "Asia"
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            min_population_asia: { $min: "$population" }
+          }
+        }
+      ],
+      as: "countries"
+    }
+  },
+  {
+    $unwind: "$countries"
+  },
+  {
+    $match: {
+      countries.min_population_asia: { $gt: "$min_population_asia" }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      country: 1
+    }
+  }
+]);
+2026-01-01 21:54:58,074 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:54:58,074 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:54:58,074 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:54:58,081 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:54:58,081 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      region: "Africa"
+    }
+  },
+  {
+    $group: {
+      _id: "$country",
+      min_population_asia: { $min: "$population" }
+    }
+  },
+  {
+    $lookup: {
+      from: "countrylanguage",
+      let: {
+        country: "$_id"
+      },
+      pipeline: [
+        {
+          $match: {
+            region: "Asia"
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            min_population_asia: { $min: "$population" }
+          }
+        }
+      ],
+      as: "countries"
+    }
+  },
+  {
+    $unwind: "$countries"
+  },
+  {
+    $match: {
+      countries.min_population_asia: { $gt: "$min_population_asia" }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      country: 1
+    }
+  }
+]);
+2026-01-01 21:54:58,081 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $match: {
+      region: "Africa"
+    }
+  },
+  {
+    $group: {
+      _id: "$country",
+      min_population_asia: { $min: "$population" }
+    }
+  },
+  {
+    $lookup: {
+      from: "countrylanguage",
+      let: {
+        country: "$_id"
+      },
+      pipeline: [
+        {
+          $match: {
+            region: "Asia"
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            min_population_asia: { $min: "$population" }
+          }
+        }
+      ],
+      as: "countries"
+    }
+  },
+  {
+    $unwind: "$countries"
+  },
+  {
+    $match: {
+      countries.min_population_asia: { $gt: "$min_population_asia" }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      country: 1
+    }
+  }
+]);
+2026-01-01 21:54:58,081 - __main__ - INFO - Success: True
+2026-01-01 21:54:58,081 - __main__ - INFO - 
+[35/50] Database: world_1
+2026-01-01 21:54:58,081 - __main__ - INFO - Question: Return the names of the 3 most populated countries.
+2026-01-01 21:54:58,081 - __main__ - INFO - Gold Query: db.country.find({} , {
+  "_id": 0,
+  "Name": 1
+}).sort({
+  "Population": -1
+}).limit(3)
+2026-01-01 21:54:58,081 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:54:58,081 - smart.smart_pipeline - INFO - Translating NLQ: Return the names of the 3 most populated countries.
+2026-01-01 21:54:58,081 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:54:58,409 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countryname', 'population'], 'collection': None, 'raw_response': 'countryname, population'}
+2026-01-01 21:54:58,409 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:00,367 - smart.query_generator - INFO - Generated query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { population: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      name: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:55:00,367 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.95it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.49it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 247.33it/s]
+2026-01-01 21:55:03,452 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$countryname" }
+    }
+  },
+  {
+    $sort: { population: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      population: 1
+    }
+  }
+]);
+2026-01-01 21:55:03,452 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:03,452 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:03,452 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:03,455 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:03,456 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$countryname" }
+    }
+  },
+  {
+    $sort: { population: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      population: 1
+    }
+  }
+]);
+2026-01-01 21:55:03,456 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$countryname" }
+    }
+  },
+  {
+    $sort: { population: -1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      population: 1
+    }
+  }
+]);
+2026-01-01 21:55:03,456 - __main__ - INFO - Success: True
+2026-01-01 21:55:03,456 - __main__ - INFO - 
+[36/50] Database: world_1
+2026-01-01 21:55:03,456 - __main__ - INFO - Question: What are the names of the nations with the 3 lowest populations?
+2026-01-01 21:55:03,456 - __main__ - INFO - Gold Query: db.country.find({} , {
+  "_id": 0,
+  "Name": 1
+}).sort({
+  "Population": 1
+}).limit(3)
+2026-01-01 21:55:03,456 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:55:03,456 - smart.smart_pipeline - INFO - Translating NLQ: What are the names of the nations with the 3 lowest populations?
+2026-01-01 21:55:03,456 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:03,829 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countryname', 'population', 'name'], 'collection': None, 'raw_response': 'countryname, population, name'}
+2026-01-01 21:55:03,829 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:05,769 - smart.query_generator - INFO - Generated query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { population: 1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      country: 1,
+      name: 1
+    }
+  }
+]);
+2026-01-01 21:55:05,769 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.23it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.27it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 238.72it/s]
+2026-01-01 21:55:08,848 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$name" }
+    }
+  },
+  {
+    $sort: { population: 1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      country: "$_id",
+      name: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:55:08,848 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:08,848 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:08,848 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:08,852 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:08,852 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$name" }
+    }
+  },
+  {
+    $sort: { population: 1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      country: "$_id",
+      name: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:55:08,852 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      population: { $sum: 1 },
+      name: { $first: "$name" }
+    }
+  },
+  {
+    $sort: { population: 1 }
+  },
+  {
+    $limit: 3
+  },
+  {
+    $project: {
+      country: "$_id",
+      name: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:55:08,852 - __main__ - INFO - Success: True
+2026-01-01 21:55:08,852 - __main__ - INFO - 
+[37/50] Database: world_1
+2026-01-01 21:55:08,852 - __main__ - INFO - Question: What is the language spoken by the largest percentage of people in each country?
+2026-01-01 21:55:08,852 - __main__ - INFO - Gold Query: db.countrylanguage.aggregate([{
+  "$group": {
+    "_id": {
+      "LANGUAGE": "$LANGUAGE",
+      "CountryCode": "$CountryCode"
+    },
+    "max_Percentage": {
+      "$max": "$Percentage"
+    }
+  }
+},{
+  "$project": {
+    "LANGUAGE": "$_id.LANGUAGE",
+    "CountryCode": "$_id.CountryCode",
+    "max_Percentage": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:55:08,852 - smart.smart_pipeline - INFO - Loaded 2 collection schemas
+2026-01-01 21:55:08,852 - smart.smart_pipeline - INFO - Translating NLQ: What is the language spoken by the largest percentage of people in each country?
+2026-01-01 21:55:08,852 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:09,280 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'CountryName', 'Language', 'Percentage'], 'collection': None, 'raw_response': 'countrylanguage, CountryName, Language, Percentage'}
+2026-01-01 21:55:09,280 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:12,382 - smart.query_generator - INFO - Generated query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$country",
+      language: { $first: "$language" },
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: -1 }
+  },
+  {
+    $group: {
+      _id: null,
+      language: { $push: "$language" },
+      count: { $push: "$count" }
+    }
+  },
+  {
+    $project: {
+      language: { $arrayElemAt: [ "$language", 0 ] },
+      count: { $arrayElemAt: [ "$count", 0 ] }
+    }
+  }
+]);
+2026-01-01 21:55:12,382 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.10it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 34.51it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 250.69it/s]
+2026-01-01 21:55:16,483 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      language: { $first: "$Language" },
+      percentage: { $max: "$Percentage" }
+    }
+  },
+  {
+    $sort: { percentage: -1 }
+  },
+  {
+    $group: {
+      _id: null,
+      language: { $push: "$language" },
+      percentage: { $push: "$percentage" }
+    }
+  },
+  {
+    $project: {
+      language: { $arrayElemAt: [ "$language", 0 ] },
+      percentage: { $arrayElemAt: [ "$percentage", 0 ] }
+    }
+  }
+]);
+2026-01-01 21:55:16,484 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:16,484 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:16,484 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:16,487 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:16,488 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      language: { $first: "$Language" },
+      percentage: { $max: "$Percentage" }
+    }
+  },
+  {
+    $sort: { percentage: -1 }
+  },
+  {
+    $group: {
+      _id: null,
+      language: { $push: "$language" },
+      percentage: { $push: "$percentage" }
+    }
+  },
+  {
+    $project: {
+      language: { $arrayElemAt: [ "$language", 0 ] },
+      percentage: { $arrayElemAt: [ "$percentage", 0 ] }
+    }
+  }
+]);
+2026-01-01 21:55:16,488 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      language: { $first: "$Language" },
+      percentage: { $max: "$Percentage" }
+    }
+  },
+  {
+    $sort: { percentage: -1 }
+  },
+  {
+    $group: {
+      _id: null,
+      language: { $push: "$language" },
+      percentage: { $push: "$percentage" }
+    }
+  },
+  {
+    $project: {
+      language: { $arrayElemAt: [ "$language", 0 ] },
+      percentage: { $arrayElemAt: [ "$percentage", 0 ] }
+    }
+  }
+]);
+2026-01-01 21:55:16,488 - __main__ - INFO - Success: True
+2026-01-01 21:55:16,488 - __main__ - INFO - 
+[38/50] Database: orchestra
+2026-01-01 21:55:16,488 - __main__ - INFO - Question: List the names of orchestras that have no performance.
+2026-01-01 21:55:16,488 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:16,488 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:16,489 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:16,489 - smart.smart_pipeline - INFO - Translating NLQ: List the names of orchestras that have no performance.
+2026-01-01 21:55:16,489 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:16,839 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['country', 'name', 'performances'], 'collection': None, 'raw_response': 'country, name, performances'}
+2026-01-01 21:55:16,839 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:17,569 - smart.query_generator - INFO - Generated query: db.orchestra.find({}, {"name": 1}).countDocuments({"performance": null});
+2026-01-01 21:55:17,569 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.39it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.69it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 228.57it/s]
+2026-01-01 21:55:19,772 - smart.rag_refiner - INFO - Refined query: db.orchestra.aggregate([
+  {
+    "$match": {
+      "performances": null
+    }
+  },
+  {
+    "$project": {
+      "name": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:19,772 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:19,772 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:19,772 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:19,774 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:19,774 - smart.smart_pipeline - INFO - Translation complete. Final query: db.orchestra.aggregate([
+  {
+    "$match": {
+      "performances": null
+    }
+  },
+  {
+    "$project": {
+      "name": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:19,774 - __main__ - INFO - Predicted Query: db.orchestra.aggregate([
+  {
+    "$match": {
+      "performances": null
+    }
+  },
+  {
+    "$project": {
+      "name": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:19,774 - __main__ - INFO - Success: True
+2026-01-01 21:55:19,774 - __main__ - INFO - 
+[39/50] Database: network_1
+2026-01-01 21:55:19,774 - __main__ - INFO - Question: What are the names and grades for each high schooler?
+2026-01-01 21:55:19,774 - __main__ - INFO - Gold Query: db.Highschooler.find({} , {
+  "_id": 0,
+  "name": 1,
+  "grade": 1
+})
+2026-01-01 21:55:19,774 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:19,775 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:19,775 - smart.smart_pipeline - INFO - Translating NLQ: What are the names and grades for each high schooler?
+2026-01-01 21:55:19,775 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:20,142 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'name', 'grade'], 'collection': None, 'raw_response': 'countrylanguage, name, grade'}
+2026-01-01 21:55:20,142 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:21,650 - smart.query_generator - INFO - Generated query: db.students.find({}, {"name": 1, "grade": 1}); 
+
+Note: I assumed a collection named 'students' which is not explicitly mentioned in the available collections. If it's not present, you can replace it with any other relevant collection that contains high schooler data.;
+2026-01-01 21:55:21,650 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.39it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 157.60it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 180.96it/s]
+2026-01-01 21:55:24,656 - smart.rag_refiner - INFO - Refined query: db.students.aggregate([
+  {
+    "$project": {
+      "name": 1,
+      "grade": 1
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "names": { $push: "$name" },
+      "grades": { $push: "$grade" }
+    }
+  },
+  {
+    "$project": {
+      "names": 1,
+      "grades": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:24,656 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:24,656 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:24,656 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:24,659 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:24,659 - smart.smart_pipeline - INFO - Translation complete. Final query: db.students.aggregate([
+  {
+    "$project": {
+      "name": 1,
+      "grade": 1
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "names": { $push: "$name" },
+      "grades": { $push: "$grade" }
+    }
+  },
+  {
+    "$project": {
+      "names": 1,
+      "grades": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:24,659 - __main__ - INFO - Predicted Query: db.students.aggregate([
+  {
+    "$project": {
+      "name": 1,
+      "grade": 1
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "names": { $push: "$name" },
+      "grades": { $push: "$grade" }
+    }
+  },
+  {
+    "$project": {
+      "names": 1,
+      "grades": 1,
+      "_id": 0
+    }
+  }
+]);
+2026-01-01 21:55:24,659 - __main__ - INFO - Success: True
+2026-01-01 21:55:24,659 - __main__ - INFO - 
+[40/50] Database: network_1
+2026-01-01 21:55:24,659 - __main__ - INFO - Question: How many friends does the high school student Kyle have?
+2026-01-01 21:55:24,659 - __main__ - INFO - Gold Query: db.Friend.aggregate([{
+  "$lookup": {
+    "from": "Highschooler",
+    "let": {
+      "student_id": "$student_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$student_id",
+                  "$id"
+                ]
+              }
+            },
+            {
+              "name": "Kyle"
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {},
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:55:24,659 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:24,661 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:24,661 - smart.smart_pipeline - INFO - Translating NLQ: How many friends does the high school student Kyle have?
+2026-01-01 21:55:24,661 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:25,163 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'countryName', 'personName', 'percentage', 'langCode'], 'collection': None, 'raw_response': 'countrylanguage,countryName,personName,percentage,langCode'}
+2026-01-01 21:55:25,164 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:25,857 - smart.query_generator - INFO - Generated query: db.students.find({"name": "Kyle"}, {"friends": 1}).countDocuments();
+2026-01-01 21:55:25,857 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 51.30it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 208.29it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 215.75it/s]
+2026-01-01 21:55:29,487 - smart.rag_refiner - INFO - Refined query: db.students.find({"name": "Kyle"}, {"friends": 1}).countDocuments();
+2026-01-01 21:55:29,487 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:29,487 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:29,487 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:29,492 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:29,492 - smart.smart_pipeline - INFO - Translation complete. Final query: db.students.find({"name": "Kyle"}, {"friends": 1}).countDocuments();
+2026-01-01 21:55:29,492 - __main__ - INFO - Predicted Query: db.students.find({"name": "Kyle"}, {"friends": 1}).countDocuments();
+2026-01-01 21:55:29,492 - __main__ - INFO - Success: True
+2026-01-01 21:55:29,492 - __main__ - INFO - 
+[41/50] Database: network_1
+2026-01-01 21:55:29,492 - __main__ - INFO - Question: Find the average grade of all students who have some friends.
+2026-01-01 21:55:29,492 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:29,492 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:29,494 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:29,494 - smart.smart_pipeline - INFO - Translating NLQ: Find the average grade of all students who have some friends.
+2026-01-01 21:55:29,494 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:29,901 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'avg', 'student', 'friend'], 'collection': None, 'raw_response': 'countrylanguage,avg,student,friend'}
+2026-01-01 21:55:29,901 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:30,909 - smart.query_generator - INFO - Generated query: db.students.find({"friends": {"$exists": true}}, {"averageGrade": 1}).group({"_id": null}, {"avgGrade": "$grade"});
+2026-01-01 21:55:30,909 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.59it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.87it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 232.73it/s]
+2026-01-01 21:55:33,400 - smart.rag_refiner - INFO - Refined query: db.students.aggregate([
+  {
+    "$match": {
+      "friends": {"$exists": true}
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "avgGrade": {"$avg": "$grade"}
+    }
+  }
+]);
+2026-01-01 21:55:33,400 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:33,400 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:33,400 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:33,404 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:33,404 - smart.smart_pipeline - INFO - Translation complete. Final query: db.students.aggregate([
+  {
+    "$match": {
+      "friends": {"$exists": true}
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "avgGrade": {"$avg": "$grade"}
+    }
+  }
+]);
+2026-01-01 21:55:33,404 - __main__ - INFO - Predicted Query: db.students.aggregate([
+  {
+    "$match": {
+      "friends": {"$exists": true}
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "avgGrade": {"$avg": "$grade"}
+    }
+  }
+]);
+2026-01-01 21:55:33,404 - __main__ - INFO - Success: True
+2026-01-01 21:55:33,404 - __main__ - INFO - 
+[42/50] Database: dog_kennels
+2026-01-01 21:55:33,404 - __main__ - INFO - Question: Which states have both owners and professionals living there?
+2026-01-01 21:55:33,404 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:33,404 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:33,405 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:33,405 - smart.smart_pipeline - INFO - Translating NLQ: Which states have both owners and professionals living there?
+2026-01-01 21:55:33,405 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:33,929 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'Country', 'ISOcode', 'Isofficial', 'Percentage', 'Language'], 'collection': None, 'raw_response': 'countrylanguage, Country, ISOcode, Isofficial, Percentage, Language'}
+2026-01-01 21:55:33,929 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:34,840 - smart.query_generator - INFO - Generated query: db.countrylanguage.find({"country.Name": {"$exists": true}, "lang": {"$in": ["English", "Spanish"]}});
+2026-01-01 21:55:34,840 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.87it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 175.99it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.49it/s]
+2026-01-01 21:55:36,929 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.find({
+  "$and": [
+    {
+      "Country.Name": {"$exists": true}
+    },
+    {
+      "Language": {"$in": ["English", "Spanish"]}
+    }
+  ]
+}, {
+  "_id": 0,
+  "Country.Name": 1,
+  "Language": 1
+});
+2026-01-01 21:55:36,929 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:36,929 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:36,929 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:36,929 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid find query format
+2026-01-01 21:55:36,929 - smart.execution_optimizer - WARNING - Query failed: Invalid find query format
+2026-01-01 21:55:38,630 - smart.execution_optimizer - INFO - Generated corrected query: db.countrylanguage.find({ $and: [ { "Country.Name": {"$exists": true} }, { "Language": {"$in": ["English", "Spanish"]} } ]}, { "_id": 0, "Country.Name": 1, "Language": 1 });
+2026-01-01 21:55:38,630 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:55:38,633 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:38,633 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.find({ $and: [ { "Country.Name": {"$exists": true} }, { "Language": {"$in": ["English", "Spanish"]} } ]}, { "_id": 0, "Country.Name": 1, "Language": 1 });
+2026-01-01 21:55:38,633 - __main__ - INFO - Predicted Query: db.countrylanguage.find({ $and: [ { "Country.Name": {"$exists": true} }, { "Language": {"$in": ["English", "Spanish"]} } ]}, { "_id": 0, "Country.Name": 1, "Language": 1 });
+2026-01-01 21:55:38,633 - __main__ - INFO - Success: True
+2026-01-01 21:55:38,634 - __main__ - INFO - 
+[43/50] Database: dog_kennels
+2026-01-01 21:55:38,634 - __main__ - INFO - Question: What are the id, role, and first name of the professionals who have performed two or more treatments?
+2026-01-01 21:55:38,634 - __main__ - INFO - Gold Query: db.Professionals.aggregate([{
+  "$lookup": {
+    "from": "Treatments",
+    "let": {
+      "professional_id": "$professional_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$professional_id",
+              "$professional_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "professional_id": "$professional_id",
+      "role_code": "$role_code",
+      "first_name": "$first_name"
+    }
+  }
+},{
+  "$match": {
+    "$expr": {
+      "$gte": [
+        "$count",
+        2
+      ]
+    }
+  }
+},{
+  "$project": {
+    "professional_id": "$_id.professional_id",
+    "role_code": "$_id.role_code",
+    "first_name": "$_id.first_name",
+    "_id": 0
+  }
+}])
+2026-01-01 21:55:38,634 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:38,635 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:38,635 - smart.smart_pipeline - INFO - Translating NLQ: What are the id, role, and first name of the professionals who have performed two or more treatments?
+2026-01-01 21:55:38,635 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:39,026 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['id', 'role', 'firstName', 'treatments'], 'collection': None, 'raw_response': 'id, role, firstName, treatments'}
+2026-01-01 21:55:39,026 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:39,834 - smart.query_generator - INFO - Generated query: db.professionals.find({}, {"id": 1, "role": 1, "firstName": 1});
+2026-01-01 21:55:39,834 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.89it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 194.17it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 197.28it/s]
+2026-01-01 21:55:42,712 - smart.rag_refiner - INFO - Refined query: db.professionals.aggregate([
+  {
+    "$group": {
+      "_id": "$_id",
+      "treatmentCount": { $sum: 1 }
+    }
+  },
+  {
+    "$match": {
+      "treatmentCount": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 1,
+      "role": 1,
+      "firstName": 1
+    }
+  }
+]);
+2026-01-01 21:55:42,712 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:42,712 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:42,712 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:42,714 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:42,715 - smart.smart_pipeline - INFO - Translation complete. Final query: db.professionals.aggregate([
+  {
+    "$group": {
+      "_id": "$_id",
+      "treatmentCount": { $sum: 1 }
+    }
+  },
+  {
+    "$match": {
+      "treatmentCount": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 1,
+      "role": 1,
+      "firstName": 1
+    }
+  }
+]);
+2026-01-01 21:55:42,715 - __main__ - INFO - Predicted Query: db.professionals.aggregate([
+  {
+    "$group": {
+      "_id": "$_id",
+      "treatmentCount": { $sum: 1 }
+    }
+  },
+  {
+    "$match": {
+      "treatmentCount": { $gt: 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": 1,
+      "role": 1,
+      "firstName": 1
+    }
+  }
+]);
+2026-01-01 21:55:42,715 - __main__ - INFO - Success: True
+2026-01-01 21:55:42,715 - __main__ - INFO - 
+[44/50] Database: dog_kennels
+2026-01-01 21:55:42,715 - __main__ - INFO - Question: List the names of the dogs of the rarest breed and the treatment dates of them.
+2026-01-01 21:55:42,715 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:42,715 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:42,716 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:42,717 - smart.smart_pipeline - INFO - Translating NLQ: List the names of the dogs of the rarest breed and the treatment dates of them.
+2026-01-01 21:55:42,717 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:43,395 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'Country', 'Language', 'IsOfficial', 'Percentage', 'Type', 'Name', 'dogs_breed', 'treatment_date'], 'collection': None, 'raw_response': 'countrylanguage, Country, Language, IsOfficial, Percentage, Type, Name, dogs_breed, treatment_date'}
+2026-01-01 21:55:43,395 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:44,306 - smart.query_generator - INFO - Generated query: db.dogs.find({}, {"name": 1, "treatment_date": 1}).sort({"breed.rarity": -1});
+2026-01-01 21:55:44,306 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.28it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.99it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 228.36it/s]
+2026-01-01 21:55:45,648 - smart.rag_refiner - INFO - Refined query: db.dogs.find({}, {"name": 1, "treatment_date": 1}).sort({"breed.rarity": -1});
+2026-01-01 21:55:45,649 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:45,649 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:45,649 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:45,651 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:45,651 - smart.smart_pipeline - INFO - Translation complete. Final query: db.dogs.find({}, {"name": 1, "treatment_date": 1}).sort({"breed.rarity": -1});
+2026-01-01 21:55:45,651 - __main__ - INFO - Predicted Query: db.dogs.find({}, {"name": 1, "treatment_date": 1}).sort({"breed.rarity": -1});
+2026-01-01 21:55:45,651 - __main__ - INFO - Success: True
+2026-01-01 21:55:45,651 - __main__ - INFO - 
+[45/50] Database: dog_kennels
+2026-01-01 21:55:45,651 - __main__ - INFO - Question: What are the arriving date and the departing date of the dogs who have gone through a treatment?
+2026-01-01 21:55:45,651 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:45,651 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:45,653 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:45,653 - smart.smart_pipeline - INFO - Translating NLQ: What are the arriving date and the departing date of the dogs who have gone through a treatment?
+2026-01-01 21:55:45,653 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:46,277 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'ArrivingDate', 'DepartingDate', 'CountryName', 'Language', 'Percentage', 'Treatment'], 'collection': None, 'raw_response': 'countrylanguage, ArrivingDate, DepartingDate, CountryName, Language, Percentage, Treatment'}
+2026-01-01 21:55:46,278 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:47,030 - smart.query_generator - INFO - Generated query: db.treatment.find({}, {"arriving_date": 1, "departing_date": 1});
+2026-01-01 21:55:47,030 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.49it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.48it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 50.23it/s]
+2026-01-01 21:55:53,059 - smart.rag_refiner - INFO - Refined query: db.treatment.aggregate([
+  {
+    "$match": {
+      "pettype": "dog"
+    }
+  },
+  {
+    "$lookup": {
+      "from": "treatment",
+      "let": {
+        "t1_treatmentid": "$_id"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$eq": [
+                "$$t1_treatmentid",
+                "$_id"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    "$unwind": {
+      "path": "$T2",
+      "preserveNullAndEmptyArrays": false
+    }
+  },
+  {
+    "$group": {
+      "_id": {},
+      "arriving_date": { $max: "$ArrivingDate" },
+      "departing_date": { $min: "$DepartingDate" }
+    }
+  },
+  {
+    "$project": {
+      "arriving_date": 1,
+      "departing_date": 1
+    }
+  }
+]);
+2026-01-01 21:55:53,060 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:53,060 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:53,060 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:53,065 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:53,065 - smart.smart_pipeline - INFO - Translation complete. Final query: db.treatment.aggregate([
+  {
+    "$match": {
+      "pettype": "dog"
+    }
+  },
+  {
+    "$lookup": {
+      "from": "treatment",
+      "let": {
+        "t1_treatmentid": "$_id"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$eq": [
+                "$$t1_treatmentid",
+                "$_id"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    "$unwind": {
+      "path": "$T2",
+      "preserveNullAndEmptyArrays": false
+    }
+  },
+  {
+    "$group": {
+      "_id": {},
+      "arriving_date": { $max: "$ArrivingDate" },
+      "departing_date": { $min: "$DepartingDate" }
+    }
+  },
+  {
+    "$project": {
+      "arriving_date": 1,
+      "departing_date": 1
+    }
+  }
+]);
+2026-01-01 21:55:53,065 - __main__ - INFO - Predicted Query: db.treatment.aggregate([
+  {
+    "$match": {
+      "pettype": "dog"
+    }
+  },
+  {
+    "$lookup": {
+      "from": "treatment",
+      "let": {
+        "t1_treatmentid": "$_id"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$eq": [
+                "$$t1_treatmentid",
+                "$_id"
+              ]
+            }
+          }
+        }
+      ],
+      "as": "T2"
+    }
+  },
+  {
+    "$unwind": {
+      "path": "$T2",
+      "preserveNullAndEmptyArrays": false
+    }
+  },
+  {
+    "$group": {
+      "_id": {},
+      "arriving_date": { $max: "$ArrivingDate" },
+      "departing_date": { $min: "$DepartingDate" }
+    }
+  },
+  {
+    "$project": {
+      "arriving_date": 1,
+      "departing_date": 1
+    }
+  }
+]);
+2026-01-01 21:55:53,065 - __main__ - INFO - Success: True
+2026-01-01 21:55:53,065 - __main__ - INFO - 
+[46/50] Database: dog_kennels
+2026-01-01 21:55:53,065 - __main__ - INFO - Question: Find the arriving date and the departing date of the dogs that received a treatment.
+2026-01-01 21:55:53,065 - __main__ - INFO - Gold Query: 
+2026-01-01 21:55:53,065 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:53,068 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:53,068 - smart.smart_pipeline - INFO - Translating NLQ: Find the arriving date and the departing date of the dogs that received a treatment.
+2026-01-01 21:55:53,068 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:53,690 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'ArrivingDate', 'DepartingDate', 'Language', 'IsOfficial', 'Percentage', 'Treatment'], 'collection': None, 'raw_response': 'countrylanguage, ArrivingDate, DepartingDate, Language, IsOfficial, Percentage, Treatment'}
+2026-01-01 21:55:53,690 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:54,440 - smart.query_generator - INFO - Generated query: db.treatment.find({}, {"arriving_date": 1, "departing_date": 1});
+2026-01-01 21:55:54,440 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.67it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 175.23it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 215.32it/s]
+2026-01-01 21:55:56,231 - smart.rag_refiner - INFO - Refined query: db.treatment.find({}, {
+  "ArrivingDate": 1,
+  "DepartingDate": 1
+}).where("Treatment").exists(true);
+2026-01-01 21:55:56,231 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:55:56,231 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:55:56,232 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:55:56,232 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid find query format
+2026-01-01 21:55:56,232 - smart.execution_optimizer - WARNING - Query failed: Invalid find query format
+2026-01-01 21:55:57,291 - smart.execution_optimizer - INFO - Generated corrected query: db.treatment.find({}, {"ArrivingDate": 1, "DepartingDate": 1}).where("Treatment").exists(true);
+2026-01-01 21:55:57,292 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:55:57,294 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:55:57,294 - smart.smart_pipeline - INFO - Translation complete. Final query: db.treatment.find({}, {"ArrivingDate": 1, "DepartingDate": 1}).where("Treatment").exists(true);
+2026-01-01 21:55:57,294 - __main__ - INFO - Predicted Query: db.treatment.find({}, {"ArrivingDate": 1, "DepartingDate": 1}).where("Treatment").exists(true);
+2026-01-01 21:55:57,294 - __main__ - INFO - Success: True
+2026-01-01 21:55:57,294 - __main__ - INFO - 
+[47/50] Database: dog_kennels
+2026-01-01 21:55:57,294 - __main__ - INFO - Question: Show me the cost of the most recently performed treatment.
+2026-01-01 21:55:57,294 - __main__ - INFO - Gold Query: db.Treatments.find({} , {
+  "_id": 0,
+  "cost_of_treatment": 1
+}).sort({
+  "date_of_treatment": -1
+}).limit(1)
+2026-01-01 21:55:57,294 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:55:57,296 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:55:57,296 - smart.smart_pipeline - INFO - Translating NLQ: Show me the cost of the most recently performed treatment.
+2026-01-01 21:55:57,296 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:55:57,916 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'ISO3166_1Code', 'CountryCode', 'Language', 'IsOfficial', 'Percentage'], 'collection': None, 'raw_response': 'countrylanguage, ISO3166_1Code, CountryCode, Language, IsOfficial, Percentage'}
+2026-01-01 21:55:57,917 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:55:58,687 - smart.query_generator - INFO - Generated query: db.treatment.find({}, {"cost": 1}).sort({"date": -1}).limit(1);
+2026-01-01 21:55:58,687 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.73it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 195.16it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 213.14it/s]
+2026-01-01 21:56:00,660 - smart.rag_refiner - INFO - Refined query: db.treatment.find({}, {"cost": 1}).sort({"date": -1}).limit(1);
+2026-01-01 21:56:00,660 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:56:00,660 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:56:00,660 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:56:00,663 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:56:00,663 - smart.smart_pipeline - INFO - Translation complete. Final query: db.treatment.find({}, {"cost": 1}).sort({"date": -1}).limit(1);
+2026-01-01 21:56:00,663 - __main__ - INFO - Predicted Query: db.treatment.find({}, {"cost": 1}).sort({"date": -1}).limit(1);
+2026-01-01 21:56:00,663 - __main__ - INFO - Success: True
+2026-01-01 21:56:00,663 - __main__ - INFO - 
+[48/50] Database: dog_kennels
+2026-01-01 21:56:00,663 - __main__ - INFO - Question: Find the number of owners who do not own any dogs at this moment.
+2026-01-01 21:56:00,663 - __main__ - INFO - Gold Query: 
+2026-01-01 21:56:00,663 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:56:00,664 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:56:00,664 - smart.smart_pipeline - INFO - Translating NLQ: Find the number of owners who do not own any dogs at this moment.
+2026-01-01 21:56:00,664 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:56:01,166 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'SpokenByPct', 'CountryCode', 'Language'], 'collection': None, 'raw_response': 'countrylanguage, SpokenByPct, CountryCode, Language'}
+2026-01-01 21:56:01,166 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:56:02,074 - smart.query_generator - INFO - Generated query: db.countrylanguage.find({"country": "owners", "lang": "do not own any dogs"}, {"count": 1}).countDocuments();
+2026-01-01 21:56:02,074 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 34.59it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 184.98it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 197.75it/s]
+2026-01-01 21:56:03,546 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.countDocuments({
+  "SpokenByPct": {
+    "$ne": null
+  },
+  "CountryCode": {
+    "$regex": "^O"
+  }
+});
+2026-01-01 21:56:03,546 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:56:03,546 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:56:03,546 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:56:03,546 - utils.mongo_client - ERROR - Unexpected error executing query: Invalid countDocuments query format
+2026-01-01 21:56:03,546 - smart.execution_optimizer - WARNING - Query failed: Invalid countDocuments query format
+2026-01-01 21:56:04,743 - smart.execution_optimizer - INFO - Generated corrected query: db.countrylanguage.countDocuments({ "SpokenByPct": { "$ne": [ null ] }, "CountryCode": { "$regex": "^O" } });
+2026-01-01 21:56:04,743 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 21:56:04,746 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:56:04,746 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.countDocuments({ "SpokenByPct": { "$ne": [ null ] }, "CountryCode": { "$regex": "^O" } });
+2026-01-01 21:56:04,746 - __main__ - INFO - Predicted Query: db.countrylanguage.countDocuments({ "SpokenByPct": { "$ne": [ null ] }, "CountryCode": { "$regex": "^O" } });
+2026-01-01 21:56:04,746 - __main__ - INFO - Success: True
+2026-01-01 21:56:04,746 - __main__ - INFO - 
+[49/50] Database: singer
+2026-01-01 21:56:04,746 - __main__ - INFO - Question: For each singer name, what is the total sales for their songs?
+2026-01-01 21:56:04,746 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$lookup": {
+    "from": "song",
+    "let": {
+      "singer_id": "$Singer_ID"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$singer_id",
+              "$Singer_ID"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$Name",
+    "sum_T2_Sales": {
+      "$sum": "$T2.Sales"
+    }
+  }
+},{
+  "$project": {
+    "Name": "$_id",
+    "sum_T2_Sales": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 21:56:04,746 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:56:04,747 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:56:04,747 - smart.smart_pipeline - INFO - Translating NLQ: For each singer name, what is the total sales for their songs?
+2026-01-01 21:56:04,747 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:56:05,232 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage', 'CountryName', 'Language', 'IsOfficial', 'Percentage'], 'collection': None, 'raw_response': 'countrylanguage, CountryName, Language, IsOfficial, Percentage'}
+2026-01-01 21:56:05,232 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:56:06,320 - smart.query_generator - INFO - Generated query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$singername",
+      totalSales: { $sum: "$sales" }
+    }
+  }
+]);
+2026-01-01 21:56:06,320 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 35.25it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 170.18it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 173.64it/s]
+2026-01-01 21:56:08,939 - smart.rag_refiner - INFO - Refined query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      totalSales: { $sum: "$sales" }
+    }
+  },
+  {
+    $project: {
+      CountryName: "$_id",
+      totalSales: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:56:08,940 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:56:08,940 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:56:08,940 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:56:08,944 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:56:08,944 - smart.smart_pipeline - INFO - Translation complete. Final query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      totalSales: { $sum: "$sales" }
+    }
+  },
+  {
+    $project: {
+      CountryName: "$_id",
+      totalSales: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:56:08,944 - __main__ - INFO - Predicted Query: db.countrylanguage.aggregate([
+  {
+    $group: {
+      _id: "$CountryName",
+      totalSales: { $sum: "$sales" }
+    }
+  },
+  {
+    $project: {
+      CountryName: "$_id",
+      totalSales: 1,
+      _id: 0
+    }
+  }
+]);
+2026-01-01 21:56:08,944 - __main__ - INFO - Success: True
+2026-01-01 21:56:08,944 - __main__ - INFO - 
+[50/50] Database: singer
+2026-01-01 21:56:08,944 - __main__ - INFO - Question: Show the citizenship shared by singers with birth year before 1945 and after 1955.
+2026-01-01 21:56:08,944 - __main__ - INFO - Gold Query: 
+2026-01-01 21:56:08,944 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 21:56:08,946 - smart.smart_pipeline - INFO - Introspected 2 collection schemas
+2026-01-01 21:56:08,946 - smart.smart_pipeline - INFO - Translating NLQ: Show the citizenship shared by singers with birth year before 1945 and after 1955.
+2026-01-01 21:56:08,946 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 21:56:11,371 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['countrylanguage.Country', 'countrylanguage.Language', 'countrylanguage.Percentage', 'countrylanguage.IsOfficial', 'countrylanguage.PercentEnglishSpeaking', 'countrylanguage.CountryCode', 'countrylanguage.ISO2', 'countrylanguage.ISO3', 'countrylanguage.Code', 'countrylanguage.ISO1', 'country.language', 'country.name', 'country.region', 'country.SurfaceArea', 'country.IndepYear', 'country.Population', 'country.LifeExpectancy', 'country.GNP', 'country.GNPold', 'country.LocalTime', 'country.OutOfDateCapitalCode', 'country.Offline', 'country.DistanceFromEurope', 'country.BorderCountries'], 'collection': None, 'raw_response': 'countrylanguage.Country, countrylanguage.Language, countrylanguage.Percentage, countrylanguage.IsOfficial, countrylanguage.PercentEnglishSpeaking, countrylanguage.CountryCode, countrylanguage.ISO2, countrylanguage.ISO3, countrylanguage.Code, countrylanguage.ISO1, country.language, country.name, country.region, country.SurfaceArea, country.IndepYear, country.Population, country.LifeExpectancy, country.GNP, country.GNPold, country.LocalTime, country.OutOfDateCapitalCode, country.Offline, country.DistanceFromEurope, country.BorderCountries'}
+2026-01-01 21:56:11,371 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 21:56:13,082 - smart.query_generator - INFO - Generated query: db.countrylanguage.find({"country.name": {"$exists": true}, "language": "citizenship"}, {"language": 1}).aggregate([
+    {
+        $match: {
+            "country.birthyear": { "$lt": 1945 },
+            "country.birthyear": { "$gt": 1955 }
+        }
+    }
+]);
+2026-01-01 21:56:13,082 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.02it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 33.47it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.52it/s]
+2026-01-01 21:56:16,316 - smart.rag_refiner - INFO - Refined query: db.singer.aggregate([
+    {
+        $match: {
+            "birthYear": { "$lt": 1945 },
+            "birthYear": { "$gt": 1955 }
+        }
+    },
+    {
+        $group: {
+            _id: "$country",
+            citizenships: { $addToSet: "$citizenship" }
+        }
+    },
+    {
+        $project: {
+            country: "$_id",
+            citizenships: 1,
+            _id: 0
+        }
+    }
+]);
+2026-01-01 21:56:16,316 - smart.rag_refiner - INFO - Used 3 similar examples
+2026-01-01 21:56:16,316 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 21:56:16,316 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 21:56:16,321 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 21:56:16,321 - smart.smart_pipeline - INFO - Translation complete. Final query: db.singer.aggregate([
+    {
+        $match: {
+            "birthYear": { "$lt": 1945 },
+            "birthYear": { "$gt": 1955 }
+        }
+    },
+    {
+        $group: {
+            _id: "$country",
+            citizenships: { $addToSet: "$citizenship" }
+        }
+    },
+    {
+        $project: {
+            country: "$_id",
+            citizenships: 1,
+            _id: 0
+        }
+    }
+]);
+2026-01-01 21:56:16,321 - __main__ - INFO - Predicted Query: db.singer.aggregate([
+    {
+        $match: {
+            "birthYear": { "$lt": 1945 },
+            "birthYear": { "$gt": 1955 }
+        }
+    },
+    {
+        $group: {
+            _id: "$country",
+            citizenships: { $addToSet: "$citizenship" }
+        }
+    },
+    {
+        $project: {
+            country: "$_id",
+            citizenships: 1,
+            _id: 0
+        }
+    }
+]);
+2026-01-01 21:56:16,321 - __main__ - INFO - Success: True
+2026-01-01 21:56:16,321 - __main__ - INFO - 
+================================================================================
+2026-01-01 21:56:16,321 - __main__ - INFO - Pipeline execution: 49 successful, 1 failed
+2026-01-01 21:56:16,321 - __main__ - INFO - ================================================================================
+2026-01-01 21:56:16,321 - __main__ - INFO - 
+Computing metrics...
+2026-01-01 21:56:16,321 - evaluation.evaluator - INFO - Evaluating query 1/50
+2026-01-01 21:56:16,321 - evaluation.evaluator - INFO - Evaluating query 2/50
+2026-01-01 21:56:16,321 - evaluation.evaluator - INFO - Evaluating query 3/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 4/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 5/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 6/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 7/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 8/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 9/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 10/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 11/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 12/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 13/50
+2026-01-01 21:56:16,322 - evaluation.evaluator - INFO - Evaluating query 14/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 15/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 16/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 17/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 18/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 19/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 20/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 21/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 22/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 23/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 24/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 25/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 26/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 27/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 28/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 29/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 30/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 31/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 32/50
+2026-01-01 21:56:16,323 - evaluation.evaluator - INFO - Evaluating query 33/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 34/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 35/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 36/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 37/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 38/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 39/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 40/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 41/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 42/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 43/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 44/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 45/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 46/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 47/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 48/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 49/50
+2026-01-01 21:56:16,324 - evaluation.evaluator - INFO - Evaluating query 50/50
+2026-01-01 21:56:16,327 - __main__ - INFO - 
+Results saved to results/spider_eval/spider_eval_pipeline_50samples.json
+2026-01-01 21:56:16,327 - __main__ - INFO - 
+================================================================================
+2026-01-01 21:56:16,327 - __main__ - INFO - EVALUATION SUMMARY
+2026-01-01 21:56:16,327 - __main__ - INFO - ================================================================================
+2026-01-01 21:56:16,327 - __main__ - INFO - 
+Total Queries: 50
+2026-01-01 21:56:16,327 - __main__ - INFO - 
+Metrics:
+2026-01-01 21:56:16,327 - __main__ - INFO -   Exact Match:       0.00%
+2026-01-01 21:56:16,327 - __main__ - INFO -   Collection Match:  36.00%
+2026-01-01 21:56:16,327 - __main__ - INFO -   Operation Match:   44.00%
+2026-01-01 21:56:16,327 - __main__ - INFO - 
+================================================================================

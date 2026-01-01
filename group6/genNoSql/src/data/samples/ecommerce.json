@@ -1,0 +1,200 @@
+{
+  "databases": {
+    "Products": {
+      "collection": "Products",
+      "fields": [
+        "_id",
+        "name",
+        "category",
+        "price",
+        "stock",
+        "reviews"
+      ],
+      "documents": [
+        {
+          "_id": 1,
+          "name": "Laptop",
+          "category": "Electronics",
+          "price": 999.99,
+          "stock": 50,
+          "reviews": [
+            {
+              "user": "Alice",
+              "rating": 5,
+              "comment": "Great laptop!"
+            },
+            {
+              "user": "Bob",
+              "rating": 4,
+              "comment": "Good value"
+            }
+          ]
+        },
+        {
+          "_id": 2,
+          "name": "Mouse",
+          "category": "Electronics",
+          "price": 29.99,
+          "stock": 200,
+          "reviews": [
+            {
+              "user": "Charlie",
+              "rating": 5,
+              "comment": "Perfect!"
+            }
+          ]
+        },
+        {
+          "_id": 3,
+          "name": "Desk",
+          "category": "Furniture",
+          "price": 299.99,
+          "stock": 20,
+          "reviews": []
+        }
+      ]
+    },
+    "Customers": {
+      "collection": "Customers",
+      "fields": [
+        "_id",
+        "name",
+        "email",
+        "city",
+        "orders"
+      ],
+      "documents": [
+        {
+          "_id": 1,
+          "name": "Alice Johnson",
+          "email": "alice@email.com",
+          "city": "New York",
+          "orders": [
+            {
+              "order_id": 101,
+              "product_id": 1,
+              "quantity": 1,
+              "total": 999.99
+            },
+            {
+              "order_id": 102,
+              "product_id": 2,
+              "quantity": 2,
+              "total": 59.98
+            }
+          ]
+        },
+        {
+          "_id": 2,
+          "name": "Bob Smith",
+          "email": "bob@email.com",
+          "city": "Los Angeles",
+          "orders": [
+            {
+              "order_id": 103,
+              "product_id": 3,
+              "quantity": 1,
+              "total": 299.99
+            }
+          ]
+        },
+        {
+          "_id": 3,
+          "name": "Charlie Brown",
+          "email": "charlie@email.com",
+          "city": "Chicago",
+          "orders": []
+        }
+      ]
+    }
+  },
+  "queries": [
+    {
+      "question": "Find all products in the Electronics category",
+      "query": "db.Products.find({\"category\": \"Electronics\"}, {\"_id\": 0, \"name\": 1, \"price\": 1});",
+      "schema": "Collection: Products\nFields: category, name, price",
+      "predicted_fields": "category, name, price",
+      "collection": "Products"
+    },
+    {
+      "question": "Count the total number of products",
+      "query": "db.Products.countDocuments({});",
+      "schema": "Collection: Products\nFields: (all)",
+      "predicted_fields": "(all)",
+      "collection": "Products"
+    },
+    {
+      "question": "Find customers who live in New York",
+      "query": "db.Customers.find({\"city\": \"New York\"}, {\"name\": 1, \"email\": 1, \"_id\": 0});",
+      "schema": "Collection: Customers\nFields: city, name, email",
+      "predicted_fields": "city, name, email",
+      "collection": "Customers"
+    },
+    {
+      "question": "Get the average price of all products",
+      "query": "db.Products.aggregate([{\"$group\": {\"_id\": null, \"avgPrice\": {\"$avg\": \"$price\"}}}, {\"$project\": {\"_id\": 0, \"avgPrice\": 1}}]);",
+      "schema": "Collection: Products\nFields: price",
+      "predicted_fields": "price",
+      "collection": "Products"
+    },
+    {
+      "question": "Find products with price less than $100",
+      "query": "db.Products.find({\"price\": {\"$lt\": 100}}, {\"name\": 1, \"price\": 1, \"_id\": 0});",
+      "schema": "Collection: Products\nFields: price, name",
+      "predicted_fields": "price, name",
+      "collection": "Products"
+    },
+    {
+      "question": "Count total number of reviews across all products",
+      "query": "db.Products.aggregate([{\"$unwind\": \"$reviews\"}, {\"$group\": {\"_id\": null, \"count\": {\"$sum\": 1}}}, {\"$project\": {\"_id\": 0, \"count\": 1}}]);",
+      "schema": "Collection: Products\nFields: reviews",
+      "predicted_fields": "reviews",
+      "collection": "Products"
+    },
+    {
+      "question": "Get all product categories",
+      "query": "db.Products.distinct(\"category\");",
+      "schema": "Collection: Products\nFields: category",
+      "predicted_fields": "category",
+      "collection": "Products"
+    },
+    {
+      "question": "Find customers with email containing 'alice'",
+      "query": "db.Customers.find({\"email\": {\"$regex\": \"alice\"}}, {\"name\": 1, \"email\": 1, \"_id\": 0});",
+      "schema": "Collection: Customers\nFields: email, name",
+      "predicted_fields": "email, name",
+      "collection": "Customers"
+    },
+    {
+      "question": "Count how many customers are in each city",
+      "query": "db.Customers.aggregate([{\"$group\": {\"_id\": \"$city\", \"count\": {\"$sum\": 1}}}, {\"$project\": {\"city\": \"$_id\", \"count\": 1, \"_id\": 0}}]);",
+      "schema": "Collection: Customers\nFields: city",
+      "predicted_fields": "city",
+      "collection": "Customers"
+    },
+    {
+      "question": "Find the most expensive product",
+      "query": "db.Products.find({}, {\"name\": 1, \"price\": 1, \"_id\": 0}).sort({\"price\": -1}).limit(1);",
+      "schema": "Collection: Products\nFields: name, price",
+      "predicted_fields": "name, price",
+      "collection": "Products"
+    }
+  ],
+  "schema_summary": {
+    "Products": [
+      "_id",
+      "name",
+      "category",
+      "price",
+      "stock",
+      "reviews"
+    ],
+    "Customers": [
+      "_id",
+      "name",
+      "email",
+      "city",
+      "orders"
+    ]
+  }
+}

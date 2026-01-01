@@ -1,0 +1,1294 @@
+2026-01-01 19:54:24,566 - __main__ - INFO - ================================================================================
+2026-01-01 19:54:24,566 - __main__ - INFO - SMART Pipeline Evaluation - Spider Dev MongoDB Dataset
+2026-01-01 19:54:24,566 - __main__ - INFO - ================================================================================
+2026-01-01 19:54:24,566 - __main__ - INFO - Loading data from data/samples/spider_dev_mongo.json
+2026-01-01 19:54:24,569 - __main__ - INFO - Limited to 50 samples
+2026-01-01 19:54:24,569 - __main__ - INFO - Loaded 50 test cases
+2026-01-01 19:54:24,569 - __main__ - INFO - Extracted 2 database schemas
+2026-01-01 19:54:24,569 - __main__ - INFO - Initializing SMART framework...
+2026-01-01 19:54:24,583 - utils.llm_client - INFO - Initialized Ollama client with model: llama3.2:latest
+2026-01-01 19:54:26,413 - utils.embeddings - INFO - Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 19:54:26,430 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: mps
+2026-01-01 19:54:26,430 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2026-01-01 19:54:29,298 - utils.embeddings - INFO - Embedding model loaded successfully
+2026-01-01 19:54:29,298 - smart.smart_pipeline - INFO - SMART Framework initialized successfully
+2026-01-01 19:54:29,298 - __main__ - INFO - Indexing 50 training examples for RAG...
+2026-01-01 19:54:29,299 - utils.embeddings - INFO - Indexing 50 examples...
+Batches:   0%|          | 0/2 [00:00<?, ?it/s]Batches:  50%|█████     | 1/2 [00:00<00:00,  5.71it/s]Batches: 100%|██████████| 2/2 [00:00<00:00,  8.93it/s]
+Batches:   0%|          | 0/2 [00:00<?, ?it/s]Batches: 100%|██████████| 2/2 [00:00<00:00, 18.64it/s]Batches: 100%|██████████| 2/2 [00:00<00:00, 18.62it/s]
+Batches:   0%|          | 0/2 [00:00<?, ?it/s]Batches: 100%|██████████| 2/2 [00:00<00:00, 144.62it/s]
+2026-01-01 19:54:29,654 - utils.embeddings - INFO - Indexing complete
+2026-01-01 19:54:29,654 - smart.smart_pipeline - INFO - Indexed 50 training examples
+2026-01-01 19:54:29,655 - __main__ - INFO - RAG indexing complete: None examples indexed
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+Running pipeline on 50 samples...
+2026-01-01 19:54:29,655 - __main__ - INFO - ================================================================================
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[1/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: How many singers do we have?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.count({})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[2/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the total number of singers?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.count({})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[3/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show name, country, age for all singers ordered by age from the oldest to the youngest.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1,
+  "age": 1
+}).sort({
+  "age": -1
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[4/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are the names, countries, and ages for every singer in descending order of age?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1,
+  "age": 1
+}).sort({
+  "age": -1
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[5/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the average, minimum, and maximum age of all singers from France?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$match": {
+    "country": "France"
+  }
+},{
+  "$group": {
+    "_id": {},
+    "avg_age": {
+      "$avg": "$age"
+    },
+    "min_age": {
+      "$min": "$age"
+    },
+    "max_age": {
+      "$max": "$age"
+    }
+  }
+},{
+  "$project": {
+    "avg_age": 1,
+    "min_age": 1,
+    "max_age": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[6/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the average, minimum, and maximum age for all French singers?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$match": {
+    "country": "France"
+  }
+},{
+  "$group": {
+    "_id": {},
+    "avg_age": {
+      "$avg": "$age"
+    },
+    "min_age": {
+      "$min": "$age"
+    },
+    "max_age": {
+      "$max": "$age"
+    }
+  }
+},{
+  "$project": {
+    "avg_age": 1,
+    "min_age": 1,
+    "max_age": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[7/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show the name and the release year of the song by the youngest singer.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "song_name": 1,
+  "song_release_year": 1
+}).sort({
+  "age": 1
+}).limit(1)
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[8/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are the names and release years for all the songs of the youngest singer?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.find({} , {
+  "_id": 0,
+  "song_name": 1,
+  "song_release_year": 1
+}).sort({
+  "age": 1
+}).limit(1)
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[9/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are all distinct countries where singers above age 20 are from?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.distinct("country" , {
+  "age": {
+    "$gt": 20
+  }
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[10/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are  the different countries with singers above age 20?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.distinct("country" , {
+  "age": {
+    "$gt": 20
+  }
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[11/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show all countries and the number of singers in each country.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$group": {
+    "_id": "$country",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "country": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[12/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: How many singers are from each country?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.singer.aggregate([{
+  "$group": {
+    "_id": "$country",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "country": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[13/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: List all song names by singers above the average age.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[14/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are all the song names by singers who are older than average?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[15/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show location and name for all stadiums with a capacity between 5000 and 10000.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.find({
+  "$and": [
+    {
+      "capacity": {
+        "$gte": 5000
+      }
+    },
+    {
+      "capacity": {
+        "$lte": 10000
+      }
+    }
+  ]
+} , {
+  "_id": 0,
+  "LOCATION": 1,
+  "name": 1
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[16/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What are the locations and names of all stations with capacity between 5000 and 10000?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.find({
+  "$and": [
+    {
+      "capacity": {
+        "$gte": 5000
+      }
+    },
+    {
+      "capacity": {
+        "$lte": 10000
+      }
+    }
+  ]
+} , {
+  "_id": 0,
+  "LOCATION": 1,
+  "name": 1
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[17/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the maximum capacity and the average of all stadiums ?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.aggregate([{
+  "$group": {
+    "_id": "$average",
+    "max_capacity": {
+      "$max": "$capacity"
+    }
+  }
+},{
+  "$project": {
+    "average": "$_id",
+    "max_capacity": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[18/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the average and maximum capacities for all stadiums ?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.aggregate([{
+  "$group": {
+    "_id": {},
+    "avg_capacity": {
+      "$avg": "$capacity"
+    },
+    "max_capacity": {
+      "$max": "$capacity"
+    }
+  }
+},{
+  "$project": {
+    "avg_capacity": 1,
+    "max_capacity": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[19/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the name and capacity for the stadium with highest average attendance?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.find({} , {
+  "_id": 0,
+  "name": 1,
+  "capacity": 1
+}).sort({
+  "average": -1
+}).limit(1)
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[20/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: What is the name and capacity for the stadium with the highest average attendance?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.stadium.find({} , {
+  "_id": 0,
+  "name": 1,
+  "capacity": 1
+}).sort({
+  "average": -1
+}).limit(1)
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[21/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: How many concerts are there in year 2014 or 2015?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.concert.count({
+  "$or": [
+    {
+      "YEAR": 2014
+    },
+    {
+      "YEAR": 2015
+    }
+  ]
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[22/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: How many concerts occurred in 2014 or 2015?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.concert.count({
+  "$or": [
+    {
+      "YEAR": 2014
+    },
+    {
+      "YEAR": 2015
+    }
+  ]
+})
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[23/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show the stadium name and the number of concerts in each stadium.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$lookup": {
+    "from": "stadium",
+    "let": {
+      "stadium_id": "$stadium_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$stadium_id",
+              "$stadium_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$T2.name",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "T2.name": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[24/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: For each stadium, how many concerts play there?
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$lookup": {
+    "from": "stadium",
+    "let": {
+      "stadium_id": "$stadium_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$stadium_id",
+              "$stadium_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$T2.name",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "T2.name": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,655 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,655 - __main__ - INFO - 
+[25/50] Database: concert_singer
+2026-01-01 19:54:29,655 - __main__ - INFO - Question: Show the stadium name and capacity with most number of concerts in year 2014 or after.
+2026-01-01 19:54:29,655 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$match": {
+    "year": {
+      "$gte": 2014
+    }
+  }
+},{
+  "$lookup": {
+    "from": "stadium",
+    "let": {
+      "stadium_id": "$stadium_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$stadium_id",
+              "$stadium_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "T2_name": "$T2.name",
+      "T2_capacity": "$T2.capacity"
+    }
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "T2.name": "$_id.T2_name",
+    "T2.capacity": "$_id.T2_capacity",
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,655 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[26/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What is the name and capacity of the stadium with the most concerts after 2013 ?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$match": {
+    "year": {
+      "$gt": 2013
+    }
+  }
+},{
+  "$lookup": {
+    "from": "stadium",
+    "let": {
+      "stadium_id": "$stadium_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$stadium_id",
+              "$stadium_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "t2"
+  }
+},{
+  "$unwind": {
+    "path": "$t2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "t2_name": "$t2.name",
+      "t2_capacity": "$t2.capacity"
+    }
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "t2.name": "$_id.t2_name",
+    "t2.capacity": "$_id.t2_capacity",
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[27/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Which year has most number of concerts?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$group": {
+    "_id": "$YEAR"
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "YEAR": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[28/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What is the year that had the most concerts?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.concert.aggregate([{
+  "$group": {
+    "_id": "$YEAR"
+  }
+},{
+  "$sort": {
+    "count": -1
+  }
+},{
+  "$limit": 1
+},{
+  "$project": {
+    "YEAR": "$_id",
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[29/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Show the stadium names without any concert.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[30/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names of the stadiums without any concerts?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[31/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Show countries where a singer above age 40 and a singer below 30 are from.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[32/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Show names for all stadiums except for stadiums having a concert in year 2014.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[33/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names of all stadiums that did not have a concert in 2014?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[34/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Show the name and theme for all concerts and the number of singers in each concert.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "concert",
+    "let": {
+      "concert_id": "$concert_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$concert_id",
+              "$concert_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "T2_concert_name": "$T2.concert_name",
+      "T2_theme": "$T2.theme"
+    },
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "T2.concert_name": "$_id.T2_concert_name",
+    "T2.theme": "$_id.T2_theme",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[35/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names , themes , and number of singers for every concert ?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "concert",
+    "let": {
+      "concert_id": "$concert_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$concert_id",
+              "$concert_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "t2"
+  }
+},{
+  "$unwind": {
+    "path": "$t2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": {
+      "t2_concert_name": "$t2.concert_name",
+      "t2_theme": "$t2.theme"
+    },
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "t2.concert_name": "$_id.t2_concert_name",
+    "t2.theme": "$_id.t2_theme",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[36/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: List singer names and number of concerts for each singer.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "singer",
+    "let": {
+      "singer_id": "$singer_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$singer_id",
+              "$singer_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$T2.name",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "T2.name": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[37/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names of the singers and number of concerts for each person?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "singer",
+    "let": {
+      "singer_id": "$singer_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$singer_id",
+              "$singer_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$group": {
+    "_id": "$T2.name",
+    "count": {
+      "$sum": 1
+    }
+  }
+},{
+  "$project": {
+    "T2.name": "$_id",
+    "count": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[38/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: List all singer names in concerts in year 2014.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "singer",
+    "let": {
+      "singer_id": "$singer_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$singer_id",
+              "$singer_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$lookup": {
+    "from": "concert",
+    "let": {
+      "concert_id": "$concert_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$concert_id",
+                  "$concert_id"
+                ]
+              }
+            },
+            {
+              "year": 2014
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T3"
+  }
+},{
+  "$unwind": {
+    "path": "$T3",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$project": {
+    "_id": 0,
+    "T2.name": 1
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[39/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names of the singers who performed in a concert in 2014?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer_in_concert.aggregate([{
+  "$lookup": {
+    "from": "singer",
+    "let": {
+      "singer_id": "$singer_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$expr": {
+            "$eq": [
+              "$$singer_id",
+              "$singer_id"
+            ]
+          }
+        }
+      }
+    ],
+    "as": "T2"
+  }
+},{
+  "$unwind": {
+    "path": "$T2",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$lookup": {
+    "from": "concert",
+    "let": {
+      "concert_id": "$concert_id"
+    },
+    "pipeline": [
+      {
+        "$match": {
+          "$and": [
+            {
+              "$expr": {
+                "$eq": [
+                  "$$concert_id",
+                  "$concert_id"
+                ]
+              }
+            },
+            {
+              "year": 2014
+            }
+          ]
+        }
+      }
+    ],
+    "as": "T3"
+  }
+},{
+  "$unwind": {
+    "path": "$T3",
+    "preserveNullAndEmptyArrays": false
+  }
+},{
+  "$project": {
+    "_id": 0,
+    "T2.name": 1
+  }
+}])
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[40/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: what is the name and nation of the singer who have a song having 'Hey' in its name?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer.find({
+  "song_name": {
+    "$regex": "^.*Hey.*$"
+  }
+} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1
+})
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[41/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What is the name and country of origin of every singer who has a song with the word 'Hey' in its title?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.singer.find({
+  "song_name": {
+    "$regex": "^.*Hey.*$"
+  }
+} , {
+  "_id": 0,
+  "name": 1,
+  "country": 1
+})
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[42/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[43/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[44/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Find the number of concerts happened in the stadium with the highest capacity .
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[45/50] Database: concert_singer
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: What are the number of concerts that occurred in the stadium with the largest capacity ?
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: 
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Introspecting schemas from MongoDB...
+2026-01-01 19:54:29,656 - __main__ - ERROR - Error processing query: 'NoneType' object has no attribute 'list_collection_names'
+2026-01-01 19:54:29,656 - __main__ - INFO - 
+[46/50] Database: pets_1
+2026-01-01 19:54:29,656 - __main__ - INFO - Question: Find the number of pets whose weight is heavier than 10.
+2026-01-01 19:54:29,656 - __main__ - INFO - Gold Query: db.pets.count({
+  "weight": {
+    "$gt": 10
+  }
+})
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Translating NLQ: Find the number of pets whose weight is heavier than 10.
+2026-01-01 19:54:29,656 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:54:29,857 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['weight'], 'collection': None, 'raw_response': 'weight'}
+2026-01-01 19:54:29,858 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:54:30,233 - smart.query_generator - INFO - Generated query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,233 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 19.18it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.24it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.31it/s]
+2026-01-01 19:54:30,337 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:54:30,337 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:54:30,337 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:54:30,345 - utils.mongo_client - INFO - Successfully connected to MongoDB at mongodb://localhost:27017/
+2026-01-01 19:54:30,346 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:54:30,347 - smart.smart_pipeline - INFO - Translation complete. Final query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,347 - __main__ - INFO - Predicted Query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,347 - __main__ - INFO - Success: True
+2026-01-01 19:54:30,347 - __main__ - INFO - 
+[47/50] Database: pets_1
+2026-01-01 19:54:30,347 - __main__ - INFO - Question: How many pets have a greater weight than 10?
+2026-01-01 19:54:30,347 - __main__ - INFO - Gold Query: db.pets.count({
+  "weight": {
+    "$gt": 10
+  }
+})
+2026-01-01 19:54:30,347 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:54:30,347 - smart.smart_pipeline - INFO - Translating NLQ: How many pets have a greater weight than 10?
+2026-01-01 19:54:30,347 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:54:30,527 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['weight'], 'collection': None, 'raw_response': 'weight'}
+2026-01-01 19:54:30,527 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:54:30,891 - smart.query_generator - INFO - Generated query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,891 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 17.89it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 190.05it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 186.32it/s]
+2026-01-01 19:54:30,962 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:54:30,962 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:54:30,962 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:54:30,964 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:54:30,964 - smart.smart_pipeline - INFO - Translation complete. Final query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,964 - __main__ - INFO - Predicted Query: db.pets.countDocuments({ weight: { $gt: 10 } });
+2026-01-01 19:54:30,964 - __main__ - INFO - Success: True
+2026-01-01 19:54:30,964 - __main__ - INFO - 
+[48/50] Database: pets_1
+2026-01-01 19:54:30,964 - __main__ - INFO - Question: Find the weight of the youngest dog.
+2026-01-01 19:54:30,965 - __main__ - INFO - Gold Query: db.pets.find({} , {
+  "_id": 0,
+  "weight": 1
+}).sort({
+  "pet_age": 1
+}).limit(1)
+2026-01-01 19:54:30,965 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:54:30,965 - smart.smart_pipeline - INFO - Translating NLQ: Find the weight of the youngest dog.
+2026-01-01 19:54:30,965 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:54:31,203 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['dog', 'age', 'weight'], 'collection': None, 'raw_response': 'dog, age, weight'}
+2026-01-01 19:54:31,203 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:54:31,533 - smart.query_generator - INFO - Generated query: db.pets.find({age: {$min: 1}});
+2026-01-01 19:54:31,533 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 25.03it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.13it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 235.45it/s]
+2026-01-01 19:54:31,605 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:54:31,605 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:54:31,605 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:54:31,607 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:31,607 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,085 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,086 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 19:54:32,089 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,089 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,486 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,486 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 19:54:32,489 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,489 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,738 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,738 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 19:54:32,741 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,742 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,991 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,992 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 19:54:32,993 - utils.mongo_client - ERROR - Query execution failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,993 - smart.execution_optimizer - WARNING - Query failed: unknown operator: $min, full error: {'ok': 0.0, 'errmsg': 'unknown operator: $min', 'code': 2, 'codeName': 'BadValue'}
+2026-01-01 19:54:32,993 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 19:54:32,993 - smart.smart_pipeline - INFO - Translation complete. Final query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,993 - __main__ - INFO - Predicted Query: db.pets.find({age: { $min: 0 } });
+2026-01-01 19:54:32,993 - __main__ - INFO - Success: False
+2026-01-01 19:54:32,993 - __main__ - INFO - 
+[49/50] Database: pets_1
+2026-01-01 19:54:32,993 - __main__ - INFO - Question: How much does the youngest dog weigh?
+2026-01-01 19:54:32,993 - __main__ - INFO - Gold Query: db.pets.find({} , {
+  "_id": 0,
+  "weight": 1
+}).sort({
+  "pet_age": 1
+}).limit(1)
+2026-01-01 19:54:32,993 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:54:32,994 - smart.smart_pipeline - INFO - Translating NLQ: How much does the youngest dog weigh?
+2026-01-01 19:54:32,994 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:54:33,169 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['dog', 'weight'], 'collection': None, 'raw_response': 'dog, weight'}
+2026-01-01 19:54:33,169 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:54:33,665 - smart.query_generator - INFO - Generated query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:$min:"age"}}]);
+2026-01-01 19:54:33,665 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 41.54it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 34.09it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 213.64it/s]
+2026-01-01 19:54:33,729 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:54:33,729 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:54:33,729 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:54:33,729 - utils.mongo_client - ERROR - Unexpected error executing query: invalid syntax (<string>, line 1)
+2026-01-01 19:54:33,729 - smart.execution_optimizer - WARNING - Query failed: invalid syntax (<string>, line 1)
+2026-01-01 19:54:34,344 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:34,344 - smart.execution_optimizer - INFO - Execution attempt 2/5
+2026-01-01 19:54:34,344 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:54:34,344 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:54:34,904 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:34,905 - smart.execution_optimizer - INFO - Execution attempt 3/5
+2026-01-01 19:54:34,905 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:54:34,905 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:54:35,336 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:35,336 - smart.execution_optimizer - INFO - Execution attempt 4/5
+2026-01-01 19:54:35,337 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:54:35,337 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:54:35,767 - smart.execution_optimizer - INFO - Generated corrected query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:35,767 - smart.execution_optimizer - INFO - Execution attempt 5/5
+2026-01-01 19:54:35,767 - utils.mongo_client - ERROR - Unexpected error executing query: name 'null' is not defined
+2026-01-01 19:54:35,767 - smart.execution_optimizer - WARNING - Query failed: name 'null' is not defined
+2026-01-01 19:54:35,768 - smart.execution_optimizer - ERROR - Max retries reached, query still failing
+2026-01-01 19:54:35,768 - smart.smart_pipeline - INFO - Translation complete. Final query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:35,768 - __main__ - INFO - Predicted Query: db.pets.aggregate([{$sort:{age:1}}, {$group:{_id:null, minAge:{$min:"$age"}}}]);
+2026-01-01 19:54:35,768 - __main__ - INFO - Success: False
+2026-01-01 19:54:35,768 - __main__ - INFO - 
+[50/50] Database: pets_1
+2026-01-01 19:54:35,768 - __main__ - INFO - Question: Find the maximum weight for each type of pet. List the maximum weight and pet type.
+2026-01-01 19:54:35,768 - __main__ - INFO - Gold Query: db.pets.aggregate([{
+  "$group": {
+    "_id": "$petType",
+    "max_weight": {
+      "$max": "$weight"
+    }
+  }
+},{
+  "$project": {
+    "petType": "$_id",
+    "max_weight": 1,
+    "_id": 0
+  }
+}])
+2026-01-01 19:54:35,768 - smart.smart_pipeline - INFO - Loaded 1 collection schemas
+2026-01-01 19:54:35,768 - smart.smart_pipeline - INFO - Translating NLQ: Find the maximum weight for each type of pet. List the maximum weight and pet type.
+2026-01-01 19:54:35,768 - smart.smart_pipeline - INFO - Step 1: Schema Prediction
+2026-01-01 19:54:35,970 - smart.schema_predictor - INFO - Predicted schema: {'fields': ['type', 'name', 'weight'], 'collection': None, 'raw_response': 'type, name, weight'}
+2026-01-01 19:54:35,970 - smart.smart_pipeline - INFO - Step 2: Query Generation
+2026-01-01 19:54:37,054 - smart.query_generator - INFO - Generated query: db.pets.aggregate([
+  {
+    $group: {
+      _id: "$type",
+      maxWeight: { $max: "$weight" }
+    }
+  },
+  {
+    $sort: { maxWeight: -1 }
+  },
+  {
+    $project: {
+      type: 1,
+      maxWeight: 1
+    }
+  }
+]);
+2026-01-01 19:54:37,054 - smart.smart_pipeline - INFO - Step 3: RAG Refinement
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.84it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 32.83it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 218.14it/s]
+2026-01-01 19:54:37,121 - smart.rag_refiner - ERROR - Query refinement failed: 'query'
+2026-01-01 19:54:37,121 - smart.smart_pipeline - INFO - Step 4: Execution Optimization
+2026-01-01 19:54:37,121 - smart.execution_optimizer - INFO - Execution attempt 1/5
+2026-01-01 19:54:37,124 - smart.execution_optimizer - INFO - Query executed successfully
+2026-01-01 19:54:37,124 - smart.smart_pipeline - INFO - Translation complete. Final query: db.pets.aggregate([
+  {
+    $group: {
+      _id: "$type",
+      maxWeight: { $max: "$weight" }
+    }
+  },
+  {
+    $sort: { maxWeight: -1 }
+  },
+  {
+    $project: {
+      type: 1,
+      maxWeight: 1
+    }
+  }
+]);
+2026-01-01 19:54:37,124 - __main__ - INFO - Predicted Query: db.pets.aggregate([
+  {
+    $group: {
+      _id: "$type",
+      maxWeight: { $max: "$weight" }
+    }
+  },
+  {
+    $sort: { maxWeight: -1 }
+  },
+  {
+    $project: {
+      type: 1,
+      maxWeight: 1
+    }
+  }
+]);
+2026-01-01 19:54:37,124 - __main__ - INFO - Success: True
+2026-01-01 19:54:37,124 - __main__ - INFO - 
+================================================================================
+2026-01-01 19:54:37,124 - __main__ - INFO - Pipeline execution: 3 successful, 47 failed
+2026-01-01 19:54:37,124 - __main__ - INFO - ================================================================================
+2026-01-01 19:54:37,124 - __main__ - INFO - 
+Computing metrics...
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 1/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 2/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 3/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 4/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 5/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 6/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 7/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 8/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 9/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 10/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 11/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 12/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 13/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 14/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 15/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 16/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 17/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 18/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 19/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 20/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 21/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 22/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 23/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 24/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 25/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 26/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 27/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 28/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 29/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 30/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 31/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 32/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 33/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 34/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 35/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 36/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 37/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 38/50
+2026-01-01 19:54:37,124 - evaluation.evaluator - INFO - Evaluating query 39/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 40/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 41/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 42/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 43/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 44/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 45/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 46/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 47/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 48/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 49/50
+2026-01-01 19:54:37,125 - evaluation.evaluator - INFO - Evaluating query 50/50
+2026-01-01 19:54:37,126 - __main__ - INFO - 
+Results saved to results/spider_eval/spider_eval_pipeline_50samples.json
+2026-01-01 19:54:37,126 - __main__ - INFO - 
+================================================================================
+2026-01-01 19:54:37,126 - __main__ - INFO - EVALUATION SUMMARY
+2026-01-01 19:54:37,126 - __main__ - INFO - ================================================================================
+2026-01-01 19:54:37,126 - __main__ - INFO - 
+Total Queries: 50
+2026-01-01 19:54:37,126 - __main__ - INFO - 
+Metrics:
+2026-01-01 19:54:37,126 - __main__ - INFO -   Exact Match:       22.00%
+2026-01-01 19:54:37,126 - __main__ - INFO -   Collection Match:  32.00%
+2026-01-01 19:54:37,126 - __main__ - INFO -   Operation Match:   26.00%
+2026-01-01 19:54:37,126 - __main__ - INFO - 
+================================================================================

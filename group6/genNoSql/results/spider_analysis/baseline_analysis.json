@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "total_queries": 1034,
+    "successful": 859,
+    "failed": 175,
+    "success_rate": 0.8307543520309478
+  },
+  "query_types": {
+    "find": 239,
+    "aggregate": 518,
+    "count": 74,
+    "distinct": 28,
+    "other": 0
+  },
+  "databases": {
+    "total_databases": 20,
+    "queries_per_db": {
+      "concert_singer": 45,
+      "pets_1": 42,
+      "car_1": 92,
+      "flight_2": 80,
+      "employee_hire_evaluation": 38,
+      "cre_Doc_Template_Mgt": 84,
+      "course_teach": 30,
+      "museum_visit": 18,
+      "wta_1": 62,
+      "battle_death": 16,
+      "student_transcripts_tracking": 78,
+      "tvshow": 62,
+      "poker_player": 40,
+      "voter_1": 15,
+      "world_1": 120,
+      "orchestra": 40,
+      "network_1": 56,
+      "dog_kennels": 82,
+      "singer": 30,
+      "real_estate_properties": 4
+    },
+    "success_per_db": {
+      "concert_singer": 34,
+      "pets_1": 30,
+      "car_1": 78,
+      "flight_2": 74,
+      "employee_hire_evaluation": 30,
+      "cre_Doc_Template_Mgt": 78,
+      "course_teach": 28,
+      "museum_visit": 14,
+      "wta_1": 56,
+      "battle_death": 12,
+      "student_transcripts_tracking": 70,
+      "tvshow": 54,
+      "poker_player": 38,
+      "voter_1": 12,
+      "world_1": 94,
+      "orchestra": 34,
+      "network_1": 44,
+      "dog_kennels": 50,
+      "singer": 26,
+      "real_estate_properties": 3
+    },
+    "failed_per_db": {
+      "concert_singer": 11,
+      "pets_1": 12,
+      "car_1": 14,
+      "flight_2": 6,
+      "employee_hire_evaluation": 8,
+      "cre_Doc_Template_Mgt": 6,
+      "course_teach": 2,
+      "museum_visit": 4,
+      "wta_1": 6,
+      "battle_death": 4,
+      "student_transcripts_tracking": 8,
+      "tvshow": 8,
+      "poker_player": 2,
+      "voter_1": 3,
+      "world_1": 26,
+      "orchestra": 6,
+      "network_1": 12,
+      "dog_kennels": 32,
+      "singer": 4,
+      "real_estate_properties": 1
+    },
+    "success_rate_per_db": {
+      "concert_singer": 0.7555555555555555,
+      "pets_1": 0.7142857142857143,
+      "car_1": 0.8478260869565217,
+      "flight_2": 0.925,
+      "employee_hire_evaluation": 0.7894736842105263,
+      "cre_Doc_Template_Mgt": 0.9285714285714286,
+      "course_teach": 0.9333333333333333,
+      "museum_visit": 0.7777777777777778,
+      "wta_1": 0.9032258064516129,
+      "battle_death": 0.75,
+      "student_transcripts_tracking": 0.8974358974358975,
+      "tvshow": 0.8709677419354839,
+      "poker_player": 0.95,
+      "voter_1": 0.8,
+      "world_1": 0.7833333333333333,
+      "orchestra": 0.85,
+      "network_1": 0.7857142857142857,
+      "dog_kennels": 0.6097560975609756,
+      "singer": 0.8666666666666667,
+      "real_estate_properties": 0.75
+    }
+  },
+  "error_analysis": {
+    "error_patterns": {
+      "subquery": 29,
+      "intersect/except": 146,
+      "distinct_multiple_columns": 0,
+      "null_pointer": 0,
+      "parse_exception": 0,
+      "other": 0
+    },
+    "errors_by_type": {
+      "Subquery not supported": 29,
+      "INTERSECT/EXCEPT not supported": 146
+    }
+  },
+  "metadata": {
+    "file": "data/samples/spider_dev_mongo.json",
+    "timestamp": "2025-12-23T11:17:24.091249"
+  }
+}

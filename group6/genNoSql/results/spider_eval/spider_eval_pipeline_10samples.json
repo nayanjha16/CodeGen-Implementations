@@ -1,0 +1,201 @@
+{
+  "evaluation_metrics": {
+    "individual_results": [
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the code of airport that has the highest number of flights?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": false,
+          "projection_match": true
+        },
+        "question": "Return the document id, template id, and description for the document with the name Robbin CV."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the template ids of any templates used in more than a single document?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the different template type codes, and how many documents use each type?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many museums were opened after 2013 or before 2008?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many matches were played in 2013 or 2016?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the number of matches happened in each year."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "List the names of orchestras that have no performance."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": false,
+          "projection_match": true
+        },
+        "question": "List the names of the dogs of the rarest breed and the treatment dates of them."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": false,
+          "projection_match": true
+        },
+        "question": "Find the arriving date and the departing date of the dogs that received a treatment."
+      }
+    ],
+    "aggregate": {
+      "exact_match": 0.0,
+      "collection_match": 0.6,
+      "operation_match": 0.5
+    },
+    "total_queries": 10,
+    "metadata": {
+      "test_file": "data/samples/spider_dev_mongo.json",
+      "num_samples": 10,
+      "timestamp": "2026-01-01T21:23:28.208495",
+      "pipeline_successful": 8,
+      "pipeline_failed": 2
+    }
+  },
+  "predictions": [
+    {
+      "id": 225,
+      "db_id": "flight_2",
+      "question": "What is the code of airport that has the highest number of flights?",
+      "predicted": "db.AIRPORTS.aggregate([\n  {\n    \"$group\": {\n      \"_id\": \"$airportCode\",\n      \"count\": {\"$sum\": 1}\n    }\n  },\n  {\n    \"$sort\": {\n      \"count\": -1\n    }\n  },\n  {\n    \"$limit\": 1\n  },\n  {\n    \"$project\": {\n      \"airportCode\": 1,\n      \"count\": 1\n    }\n  }\n]);",
+      "gold": "db.AIRPORTS.aggregate([{\n  \"$lookup\": {\n    \"from\": \"FLIGHTS\",\n    \"let\": {\n      \"airportcode\": \"$AirportCode\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$or\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$DestAirport\"\n                ]\n              }\n            },\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$SourceAirport\"\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$AirportCode\"\n  }\n},{\n  \"$sort\": {\n    \"count\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"AirportCode\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 304,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "Return the document id, template id, and description for the document with the name Robbin CV.",
+      "predicted": "db.Documents.find({name: \"Robbin CV\"}, {\"_id\": 1, \"templateId\": 1, \"description\": 1}).toArray();",
+      "gold": "db.Documents.find({\n  \"document_name\": \"Robbin CV\"\n} , {\n  \"_id\": 0,\n  \"document_id\": 1,\n  \"template_id\": 1,\n  \"Document_Description\": 1\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 314,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "What are the template ids of any templates used in more than a single document?",
+      "predicted": "db.Templates.aggregate([\n  {\n    $group: {\n      _id: \"$templateId\",\n      count: { $sum: 1 }\n    }\n  },\n  {\n    $match: {\n      count: { $gt: 0 }\n    }\n  },\n  {\n    $project: {\n      templateId: 1\n    }\n  },\n  {\n    $sort: { \"count\": -1 } // added quotes around sort key\n  },\n  {\n    $limit: 10\n  }\n]);",
+      "gold": "db.Documents.aggregate([{\n  \"$group\": {\n    \"_id\": \"$template_id\"\n  }\n},{\n  \"$match\": {\n    \"$expr\": {\n      \"$gt\": [\n        \"$count\",\n        1\n      ]\n    }\n  }\n},{\n  \"$project\": {\n    \"template_id\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 342,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "What are the different template type codes, and how many documents use each type?",
+      "predicted": "db.Templates.aggregate([\n    {\n        $group: {\n            _id: \"$template_type_code\",\n            count: { $sum: 1 }\n        }\n    },\n    {\n        $sort: { count: -1 }\n    },\n    {\n        $project: {\n            template_type_code: 1,\n            count: 1\n        }\n    }\n]);",
+      "gold": "db.Templates.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Documents\",\n    \"let\": {\n      \"template_id\": \"$template_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$template_id\",\n              \"$template_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$template_type_code\",\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"template_type_code\": \"$_id\",\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 428,
+      "db_id": "museum_visit",
+      "question": "How many museums were opened after 2013 or before 2008?",
+      "predicted": "db.museum.countDocuments({ opening_year: { $gt: 2013, $lt: 2008 } });",
+      "gold": "db.museum.count({\n  \"$or\": [\n    {\n      \"open_year\": {\n        \"$gt\": 2013\n      }\n    },\n    {\n      \"open_year\": {\n        \"$lt\": 2008\n      }\n    }\n  ]\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 450,
+      "db_id": "wta_1",
+      "question": "How many matches were played in 2013 or 2016?",
+      "predicted": "db.matches.countDocuments({\n  year: {\n    $in: [2013, 2016]\n  }\n});",
+      "gold": "db.matches.count({\n  \"$or\": [\n    {\n      \"YEAR\": 2013\n    },\n    {\n      \"YEAR\": 2016\n    }\n  ]\n})",
+      "pipeline_success": false
+    },
+    {
+      "id": 481,
+      "db_id": "wta_1",
+      "question": "Find the number of matches happened in each year.",
+      "predicted": "db.matches.aggregate([\n  {\n    \"$group\": {\n      \"_id\": \"$year\",\n      \"count\": {\n        \"$sum\": 1\n      }\n    }\n  },\n  {\n    \"$sort\": {\n      \"count\": -1\n    }\n  },\n  {\n    \"$limit\": 1\n  },\n  {\n    \"$project\": {\n      \"year\": \"$_id\",\n      \"_id\": 0\n    }\n  }\n]);",
+      "gold": "db.matches.aggregate([{\n  \"$group\": {\n    \"_id\": \"$YEAR\",\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"YEAR\": \"$_id\",\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 854,
+      "db_id": "orchestra",
+      "question": "List the names of orchestras that have no performance.",
+      "predicted": "db.matches.aggregate([\n  {\n    \"$match\": {\n      \"performance\": null\n    }\n  },\n  {\n    \"$project\": {\n      \"_id\": 0,\n      name: 1\n    }\n  }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 954,
+      "db_id": "dog_kennels",
+      "question": "List the names of the dogs of the rarest breed and the treatment dates of them.",
+      "predicted": "db.matches.find({breed: \"rarest breed\"}).project({\"name\": 1, treatment_date: 1}).distinct(\"name\");",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 959,
+      "db_id": "dog_kennels",
+      "question": "Find the arriving date and the departing date of the dogs that received a treatment.",
+      "predicted": "db.matches.find({ treatment: true }, {\"arrivingDate\": 1, \"departingDate\": 1});",
+      "gold": "",
+      "pipeline_success": true
+    }
+  ]
+}

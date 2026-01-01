@@ -1,0 +1,921 @@
+{
+  "evaluation_metrics": {
+    "individual_results": [
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Count the number of flights into ATO."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the code of airport that has the highest number of flights?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the code of airport that has fewest number of flights?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What airline serves the most flights?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the abbreviation of the airilne has the fewest flights and what country is it in?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is total bonus given in all evaluations?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many different store locations are there?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "List document IDs, document names, and document descriptions for all documents."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Return the document id, template id, and description for the document with the name Robbin CV."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the template ids of any templates used in more than a single document?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the different template type codes, and how many documents use each type?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many paragraphs for the document with name 'Summer Show'?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": false,
+          "projection_match": true
+        },
+        "question": "Show all paragraph ids and texts for the document with name 'Welcome to NY'."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Show the name of the teacher for the math course."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the id, name and membership level of visitors who have spent the largest amount of money in total in all museum tickets?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the name and age of the visitor who bought the most tickets at once."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the total ticket expense of the visitors whose membership level is 1?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many museums were opened after 2013 or before 2008?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the average rank for winners in all matches?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many matches were played in 2013 or 2016?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the number of matches happened in each year."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the names and ranks of the three youngest winners across all matches?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the name of the semester with no students enrolled?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the name of the course with the most students enrolled?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the date and id of the transcript with at least 2 courses listed?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many transcripts are released?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many cartoons were written by \"Joseph Kuhr\"?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the production code and channel of the most recently aired cartoon ."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": false,
+          "projection_match": true
+        },
+        "question": "What are the package options and the name of the series for the TV Channel that supports high definition TV?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the names of poker players?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What region does Angola belong to and what is its population?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Which languages are spoken by only one country in republic governments?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the African countries that have a  population less than any country in Asia?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Return the names of the 3 most populated countries."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the names of the nations with the 3 lowest populations?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": true,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What is the language spoken by the largest percentage of people in each country?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "List the names of orchestras that have no performance."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the names and grades for each high schooler?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "How many friends does the high school student Kyle have?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the average grade of all students who have some friends."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Which states have both owners and professionals living there?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the id, role, and first name of the professionals who have performed two or more treatments?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "List the names of the dogs of the rarest breed and the treatment dates of them."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "What are the arriving date and the departing date of the dogs who have gone through a treatment?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the arriving date and the departing date of the dogs that received a treatment."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Show me the cost of the most recently performed treatment."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Find the number of owners who do not own any dogs at this moment."
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": true,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "For each singer name, what is the total sales for their songs?"
+      },
+      {
+        "exact_match": false,
+        "component_match": {
+          "collection_match": false,
+          "operation_match": false,
+          "filter_match": true,
+          "projection_match": true
+        },
+        "question": "Show the citizenship shared by singers with birth year before 1945 and after 1955."
+      }
+    ],
+    "aggregate": {
+      "exact_match": 0.0,
+      "collection_match": 0.4,
+      "operation_match": 0.38
+    },
+    "total_queries": 50,
+    "metadata": {
+      "test_file": "data/samples/spider_dev_mongo.json",
+      "num_samples": 50,
+      "timestamp": "2026-01-01T22:20:50.278900",
+      "pipeline_successful": 34,
+      "pipeline_failed": 16
+    }
+  },
+  "predictions": [
+    {
+      "id": 206,
+      "db_id": "flight_2",
+      "question": "Count the number of flights into ATO.",
+      "predicted": "db.FLIGHTS.countDocuments({\"destinationAirport\": \"ATO\"});",
+      "gold": "db.FLIGHTS.count({\n  \"DestAirport\": \"ATO\"\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 225,
+      "db_id": "flight_2",
+      "question": "What is the code of airport that has the highest number of flights?",
+      "predicted": "db.FLIGHTS.aggregate([\n      { $group: { _id: \"$airportCode\", totalFlights: { $sum: 1 } } },\n      { $sort: { totalFlights: -1 } },\n      { $limit: 1 },\n      { $project: { _id: 0, airportCode: \"$_id\" }\n  ]);",
+      "gold": "db.AIRPORTS.aggregate([{\n  \"$lookup\": {\n    \"from\": \"FLIGHTS\",\n    \"let\": {\n      \"airportcode\": \"$AirportCode\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$or\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$DestAirport\"\n                ]\n              }\n            },\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$SourceAirport\"\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$AirportCode\"\n  }\n},{\n  \"$sort\": {\n    \"count\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"AirportCode\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 227,
+      "db_id": "flight_2",
+      "question": "What is the code of airport that has fewest number of flights?",
+      "predicted": "db.AIRPORTS.aggregate([\n    { $lookup: { from: \"FLIGHTS\", localField: \"_id\", foreignField: \"airportId\", as: \"flights\" } },\n    { $unwind: \"$flights\" },\n    { $group: { _id: \"$_id\", count: { $sum: 1 } } },\n    { $sort: { count: 1 } },\n    { $limit: 1 },\n    { $project: { _id: 0, airportCode: \"$_id\" } }\n]);",
+      "gold": "db.AIRPORTS.aggregate([{\n  \"$lookup\": {\n    \"from\": \"FLIGHTS\",\n    \"let\": {\n      \"airportcode\": \"$AirportCode\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$or\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$DestAirport\"\n                ]\n              }\n            },\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$airportcode\",\n                  \"$SourceAirport\"\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$AirportCode\"\n  }\n},{\n  \"$sort\": {\n    \"count\": 1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"AirportCode\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 230,
+      "db_id": "flight_2",
+      "question": "What airline serves the most flights?",
+      "predicted": "db.AIRLINES.aggregate([\n      { $group:\n          {\n            _id: \"$_id\",\n            count: { $sum: 1 }\n          }\n      },\n      { $sort: { count: -1 } },\n      { $limit: 1 }\n]);",
+      "gold": "db.AIRLINES.aggregate([{\n  \"$lookup\": {\n    \"from\": \"FLIGHTS\",\n    \"let\": {\n      \"uid\": \"$uid\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$uid\",\n              \"$Airline\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$Airline\"\n  }\n},{\n  \"$sort\": {\n    \"count\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"Airline\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 232,
+      "db_id": "flight_2",
+      "question": "What is the abbreviation of the airilne has the fewest flights and what country is it in?",
+      "predicted": "db.AIRPORTS.aggregate([\n    { $lookup: { from: \"FLIGHTS\", localField: \"_id\", foreignField: \"departureAirportId\", as: \"flights\" } },\n    { $unwind: \"$flights\" },\n    { $group: { _id: \"$iataCode\", count: { $sum: 1 } } },\n    { $sort: { count: -1 } },\n    { $limit: 1 },\n    { $project: { iataCode: 1, country: \"$country\" } },\n    { $lookup: { from: \"AIRPORTS\", localField: \"iataCode\", foreignField: \"_id\", as: \"airport\" } },\n    { $unwind: \"$airport\" },\n    { $match: { airlineId: { $exists: false } } },\n    { $project: { iataCode: 1, country: 1 } }\n]);",
+      "gold": "db.AIRLINES.aggregate([{\n  \"$lookup\": {\n    \"from\": \"FLIGHTS\",\n    \"let\": {\n      \"uid\": \"$uid\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$uid\",\n              \"$Airline\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {\n      \"Abbreviation\": \"$Abbreviation\",\n      \"Country\": \"$Country\"\n    }\n  }\n},{\n  \"$sort\": {\n    \"count\": 1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"Abbreviation\": \"$_id.Abbreviation\",\n    \"Country\": \"$_id.Country\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 289,
+      "db_id": "employee_hire_evaluation",
+      "question": "What is total bonus given in all evaluations?",
+      "predicted": "db.shop.aggregate([{\n  \"$group\": {\n    \"_id\": null,\n    \"total_bonus\": {\n      \"$sum\": \"$bonuses\"\n    }\n  }\n}]);",
+      "gold": "db.evaluation.aggregate([{\n  \"$group\": {\n    \"_id\": {},\n    \"sum_bonus\": {\n      \"$sum\": \"$bonus\"\n    }\n  }\n},{\n  \"$project\": {\n    \"sum_bonus\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 294,
+      "db_id": "employee_hire_evaluation",
+      "question": "Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products.",
+      "predicted": "db.shop.aggregate([\n    {\n        $lookup: {\n            from: \"district\",\n            localField: \"district\",\n            foreignField: \"_id\",\n            as: \"district\"\n        }\n    },\n    {\n        $unwind: \"$district\"\n    },\n    {\n        $match: {\n            $and: [\n                { $expr: { $gt: [ { $size: \"$products\" }, 3000 ] } },\n                { $expr: { $lt: [ { $size: \"$products\" }, 10000 ] } }\n            ]\n        }\n    },\n    {\n        $project: {\n            _id: 1,\n            district: 1,\n            products: 1\n        }\n    }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 295,
+      "db_id": "employee_hire_evaluation",
+      "question": "How many different store locations are there?",
+      "predicted": "db.store.countDocuments({});",
+      "gold": "db.shop.aggregate([{\n  \"$group\": {\n    \"_id\": {},\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 299,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "List document IDs, document names, and document descriptions for all documents.",
+      "predicted": "db.Documents.aggregate([\n  {\n    \"$project\": {\n      \"_id\": 1,\n      \"name\": 1,\n      \"description\": 1\n    }\n  }\n]);",
+      "gold": "db.Documents.find({} , {\n  \"_id\": 0,\n  \"document_id\": 1,\n  \"document_name\": 1,\n  \"document_description\": 1\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 304,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "Return the document id, template id, and description for the document with the name Robbin CV.",
+      "predicted": "db.Documents.aggregate([\n  {\n    \"$match\": {\n      name: \"Robbin CV\"\n    }\n  },\n  {\n    \"$lookup\": {\n      \"from\": \"Templates\",\n      \"localField\": \"templateId\",\n      \"foreignField\": \"_id\",\n      \"as\": \"TemplateData\"\n    }\n  },\n  {\n    \"$unwind\": {\n      \"path\": \"$TemplateData\",\n      \"preserveNullAndEmptyArrays\": false\n    }\n  },\n  {\n    \"$project\": {\n      \"_id\": 1,\n      \"description\": 1,\n      \"templateId\": \"$TemplateData.templateId\",\n      \"TemplateData\": 0,\n      \"TemplateData._id\": 0,\n      \"TemplateData.description\": 0,\n      \"TemplateData\": {\n        \"$cond\": [\n          { $ne: [\"$TemplateData\", null] }, // Check if TemplateData is not null\n          \"$TemplateData\", // If it's not null, keep it\n          {} // Otherwise, exclude it\n        ]\n      }\n    }\n  }\n]);",
+      "gold": "db.Documents.find({\n  \"document_name\": \"Robbin CV\"\n} , {\n  \"_id\": 0,\n  \"document_id\": 1,\n  \"template_id\": 1,\n  \"Document_Description\": 1\n})",
+      "pipeline_success": false
+    },
+    {
+      "id": 314,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "What are the template ids of any templates used in more than a single document?",
+      "predicted": "db.Templates.aggregate([\n    {\n        $lookup: {\n            from: \"Documents\",\n            localField: \"_id\",\n            foreignField: \"templateId\",\n            as: \"documents\"\n        }\n    },\n    {\n        $unwind: \"$documents\"\n    },\n    {\n        $group: {\n            _id: \"$_id\",\n            count: { $sum: 1 }\n        }\n    },\n    {\n        $match: { count: { $gt: 1 } }\n    },\n    {\n        $project: { \"_id\": 0, \"templateId\": 1 }\n    }\n]);",
+      "gold": "db.Documents.aggregate([{\n  \"$group\": {\n    \"_id\": \"$template_id\"\n  }\n},{\n  \"$match\": {\n    \"$expr\": {\n      \"$gt\": [\n        \"$count\",\n        1\n      ]\n    }\n  }\n},{\n  \"$project\": {\n    \"template_id\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 342,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "What are the different template type codes, and how many documents use each type?",
+      "predicted": "db.Templates.distinct(\"templateTypeCode\");",
+      "gold": "db.Templates.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Documents\",\n    \"let\": {\n      \"template_id\": \"$template_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$template_id\",\n              \"$template_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$template_type_code\",\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"template_type_code\": \"$_id\",\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 359,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "How many paragraphs for the document with name 'Summer Show'?",
+      "predicted": "db.Paragraphs.countDocuments({ \"documentName\": \"Summer Show\" });",
+      "gold": "db.Paragraphs.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Documents\",\n    \"let\": {\n      \"document_id\": \"$document_ID\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$and\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$document_id\",\n                  \"$document_ID\"\n                ]\n              }\n            },\n            {\n              \"document_name\": \"Summer Show\"\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {},\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 363,
+      "db_id": "cre_Doc_Template_Mgt",
+      "question": "Show all paragraph ids and texts for the document with name 'Welcome to NY'.",
+      "predicted": "db.Documents.find({\"name\": \"Welcome to NY\"}, {\"_id\": \"paragraphs._id\", \"text\": \"paragraphs.text\"}).distinct(\"paragraphs._id\");",
+      "gold": "db.Paragraphs.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Documents\",\n    \"let\": {\n      \"document_id\": \"$document_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$and\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$document_id\",\n                  \"$document_id\"\n                ]\n              }\n            },\n            {\n              \"Document_Name\": \"Welcome to NY\"\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$project\": {\n    \"_id\": 0,\n    \"paragraph_id\": 1,\n    \"paragraph_text\": 1\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 403,
+      "db_id": "course_teach",
+      "question": "Show the name of the teacher for the math course.",
+      "predicted": "db.course_arrange.distinct(\"teacher\", { course: \"math\" });",
+      "gold": "db.course_arrange.aggregate([{\n  \"$lookup\": {\n    \"from\": \"course\",\n    \"let\": {\n      \"course_id\": \"$Course_ID\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$and\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$course_id\",\n                  \"$Course_ID\"\n                ]\n              }\n            },\n            {\n              \"Course\": \"Math\"\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$lookup\": {\n    \"from\": \"teacher\",\n    \"let\": {\n      \"teacher_id\": \"$Teacher_ID\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$teacher_id\",\n              \"$Teacher_ID\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T3\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T3\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$project\": {\n    \"_id\": 0,\n    \"T3.Name\": 1\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 420,
+      "db_id": "museum_visit",
+      "question": "What are the id, name and membership level of visitors who have spent the largest amount of money in total in all museum tickets?",
+      "predicted": "db.visitor.aggregate([\n    {\n        $lookup: {\n            from: \"museum\",\n            localField: \"_id\",\n            foreignField: \"visitor_id\",\n            as: \"tickets\"\n        }\n    },\n    {\n        $unwind: \"$tickets\"\n    },\n    {\n        $group: {\n            _id: null,\n            totalSpending: { $sum: \"$tickets.price\" },\n            id: {$push: \"$_id\"},\n            name: {$push: \"$name\"},\n            membershipLevel: {$push: \"$membership_level\"}\n        }\n    },\n    {\n        $sort: { totalSpending: -1 }\n    },\n    {\n        $limit: 1\n    },\n    {\n        $project: {\n            id: 1,\n            name: 1,\n            membershipLevel: 1,\n            _id: \"$id\"\n        }\n    }\n]);",
+      "gold": "db.visitor.aggregate([{\n  \"$lookup\": {\n    \"from\": \"visit\",\n    \"let\": {\n      \"id\": \"$id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$id\",\n              \"$visitor_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"t2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$t2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {\n      \"t2_visitor_id\": \"$t2.visitor_id\",\n      \"name\": \"$name\",\n      \"Level_of_membership\": \"$Level_of_membership\"\n    }\n  }\n},{\n  \"$sort\": {\n    \"sum_t2_Total_spent\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"t2.visitor_id\": \"$_id.t2_visitor_id\",\n    \"name\": \"$_id.name\",\n    \"Level_of_membership\": \"$_id.Level_of_membership\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 423,
+      "db_id": "museum_visit",
+      "question": "Find the name and age of the visitor who bought the most tickets at once.",
+      "predicted": "db.visitor.aggregate([\n    { $lookup: { from: \"tickets\", localField: \"_id\", foreignField: \"boughtBy\", as: \"tickets\" } },\n    { $unwind: \"$tickets\" },\n    { $group: { _id: { name: \"$name\", age: \"$age\" }, totalTicketsBought: { $sum: 1 } } },\n    { $sort: { \"totalTicketsBought\": -1 } },\n    { $limit: 1 },\n    { $project: { _id: 0, name: \"$_id.name\", age: \"$_id.age\" } });",
+      "gold": "db.visitor.aggregate([{\n  \"$lookup\": {\n    \"from\": \"visit\",\n    \"let\": {\n      \"id\": \"$id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$id\",\n              \"$visitor_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"t2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$t2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$sort\": {\n    \"t2.num_of_ticket\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"_id\": 0,\n    \"name\": 1,\n    \"age\": 1\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 425,
+      "db_id": "museum_visit",
+      "question": "What is the total ticket expense of the visitors whose membership level is 1?",
+      "predicted": "db.visitor.aggregate([{\n  \"$match\": { \"membership_level\": 1 } }, {\n  \"$group\": {\n    \"_id\": null,\n    \"totalExpense\": {\n      \"$sum\": \"$ticket_expense\"\n    }\n  }\n}]);",
+      "gold": "db.visitor.aggregate([{\n  \"$match\": {\n    \"Level_of_membership\": 1\n  }\n},{\n  \"$lookup\": {\n    \"from\": \"visit\",\n    \"let\": {\n      \"id\": \"$id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$id\",\n              \"$visitor_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"t2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$t2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {},\n    \"sum_t2_Total_spent\": {\n      \"$sum\": \"$t2.Total_spent\"\n    }\n  }\n},{\n  \"$project\": {\n    \"sum_t2_Total_spent\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 428,
+      "db_id": "museum_visit",
+      "question": "How many museums were opened after 2013 or before 2008?",
+      "predicted": "db.museum.countDocuments({ \"opening_year\": { $gte: 2008, $lt: 2014 } });",
+      "gold": "db.museum.count({\n  \"$or\": [\n    {\n      \"open_year\": {\n        \"$gt\": 2013\n      }\n    },\n    {\n      \"open_year\": {\n        \"$lt\": 2008\n      }\n    }\n  ]\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 438,
+      "db_id": "wta_1",
+      "question": "What is the average rank for winners in all matches?",
+      "predicted": "db.matches.aggregate([\n    { $match: { winner: { $ne: null } } },\n    { $group: { _id: null, average_rank: { $avg: \"$winner.rank\" } }\n]);",
+      "gold": "db.matches.aggregate([{\n  \"$group\": {\n    \"_id\": {},\n    \"avg_winner_rank\": {\n      \"$avg\": \"$winner_rank\"\n    }\n  }\n},{\n  \"$project\": {\n    \"avg_winner_rank\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 450,
+      "db_id": "wta_1",
+      "question": "How many matches were played in 2013 or 2016?",
+      "predicted": "db.matches.countDocuments({ year: { $in: [2013, 2016] } });",
+      "gold": "db.matches.count({\n  \"$or\": [\n    {\n      \"YEAR\": 2013\n    },\n    {\n      \"YEAR\": 2016\n    }\n  ]\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 481,
+      "db_id": "wta_1",
+      "question": "Find the number of matches happened in each year.",
+      "predicted": "db.match.aggregate([\n      { $group: { _id: \"$year\", count: { $sum: 1 } } },\n      { $sort: { count: -1 } },\n      { $limit: 1 },\n      { $project: { year: \"$_id\", count: 1, \"_id\": 0 }\n]);",
+      "gold": "db.matches.aggregate([{\n  \"$group\": {\n    \"_id\": \"$YEAR\",\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"YEAR\": \"$_id\",\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 484,
+      "db_id": "wta_1",
+      "question": "What are the names and ranks of the three youngest winners across all matches?",
+      "predicted": "db.matches.aggregate([\n    { $sort: { \"winners.age\": 1 } },\n    { $group: { _id: null, youngest_winners: { $push: { name: \"$winners.name\", rank: \"$winnerRank\" } } } },\n    { $limit: 3 },\n    { $project: { _id: 0, names_and_ranks: 1 } }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 544,
+      "db_id": "student_transcripts_tracking",
+      "question": "What is the name of the semester with no students enrolled?",
+      "predicted": "db.Transcripts.aggregate([\n  {\n    \"$lookup\": {\n      \"from\": \"Transcript_Contents\",\n      \"let\": {\n        \"semester\": \"$year\"\n      },\n      \"pipeline\": [\n        {\n          \"$match\": {\n            \"$expr\": {\n              \"$and\": [\n                { $eq: [\"$course.year\", \"$$semester\"]},\n                {$not: {\"student_id\": {$exists: true}} }\n              ]\n            }\n          }\n        ]\n      },\n      \"as\": \"T2\"\n    }\n  },\n  {\n    \"$unwind\": \"$T2\"\n  },\n  {\n    \"$group\": {\n      \"_id\": \"$_id\",\n      \"semester\": {$first: \"$year\"}\n    }\n  },\n  {\n    \"$group\": {\n      \"_id\": \"$semester\",\n      \"count\": {$sum: 1}\n    }\n  },\n  {\n    \"$match\": {\n      \"count\": 0\n    }\n  },\n  {\n    \"$project\": {\n      \"semester\": 1,\n      \"_id\": 0\n    }\n  }\n]);",
+      "gold": "",
+      "pipeline_success": false
+    },
+    {
+      "id": 548,
+      "db_id": "student_transcripts_tracking",
+      "question": "What is the name of the course with the most students enrolled?",
+      "predicted": "db.Courses.aggregate([\n    { $lookup: { from: \"Enrollments\", localField: \"_id\", foreignField: \"courseId\", as: \"enrolledStudents\" } },\n    { $unwind: \"$enrolledStudents\" },\n    { $group: { _id: \"$_id\", totalStudents: { $sum: 1 } } },\n    { $sort: { totalStudents: -1 } },\n    { $limit: 1 },\n    { $project: { courseName: \"$name\" } },\n    { $lookup: { from: \"Enrollments\", localField: \"_id\", foreignField: \"courseId\", as: \"enrolledCourseIds\" } },\n    { $unwind: \"$enrolledCourseIds\" },\n    { $group: { _id: \"$courseName\", courseCount: { $sum: 1 } } },\n    { $sort: { courseCount: -1 } },\n    { $limit: 1 }\n]);",
+      "gold": "db.Courses.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Student_Enrolment_Courses\",\n    \"let\": {\n      \"course_id\": \"$course_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$course_id\",\n              \"$course_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$course_name\"\n  }\n},{\n  \"$sort\": {\n    \"count\": -1\n  }\n},{\n  \"$limit\": 1\n},{\n  \"$project\": {\n    \"course_name\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 552,
+      "db_id": "student_transcripts_tracking",
+      "question": "What is the date and id of the transcript with at least 2 courses listed?",
+      "predicted": "db.Transcripts.aggregate([\n    {\n        $lookup: {\n            from: \"Transcript_Contents\",\n            localField: \"_id\",\n            foreignField: \"transcriptId\",\n            as: \"contents\"\n        }\n    },\n    {\n        $unwind: \"$contents\"\n    },\n    {\n        $group: {\n            _id: { transcriptId: \"$_id\", courseCount: { $sum: 1 } },\n            transcriptDate: { $first: \"$transcriptDate\" }\n        }\n    },\n    {\n        $match: { courseCount: { $gte: 2 } }\n    },\n    {\n        $project: { _id: 0, transcriptId: \"$_id.transcriptId\", courseCount: 1, transcriptDate: 1 }\n    }\n]);",
+      "gold": "db.Transcript_Contents.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Transcripts\",\n    \"let\": {\n      \"transcript_id\": \"$transcript_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$transcript_id\",\n              \"$transcript_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {\n      \"T2_transcript_date\": \"$T2.transcript_date\",\n      \"transcript_id\": \"$transcript_id\"\n    }\n  }\n},{\n  \"$match\": {\n    \"$expr\": {\n      \"$gte\": [\n        \"$count\",\n        2\n      ]\n    }\n  }\n},{\n  \"$project\": {\n    \"T2.transcript_date\": \"$_id.T2_transcript_date\",\n    \"transcript_id\": \"$_id.transcript_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 567,
+      "db_id": "student_transcripts_tracking",
+      "question": "How many transcripts are released?",
+      "predicted": "db.Transcript_Contents.countDocuments({ \"isReleased\": true });",
+      "gold": "db.Transcripts.count({})",
+      "pipeline_success": true
+    },
+    {
+      "id": 589,
+      "db_id": "tvshow",
+      "question": "How many cartoons were written by \"Joseph Kuhr\"?",
+      "predicted": "db.Cartoon.countDocuments({\"writer\": \"Joseph Kuhr\"});",
+      "gold": "db.Cartoon.count({\n  \"Written_by\": \"Joseph Kuhr\"\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 629,
+      "db_id": "tvshow",
+      "question": "Find the production code and channel of the most recently aired cartoon .",
+      "predicted": "db.Cartoon.findOne({}, { \"_id\": 0, \"productionCode\": 1, \"channel\": 1 })\n    .sort({ \"airedAt\": -1 })\n    .then(result => db.Cartoon.findOne({ \"_id\": result._id }, { \"_id\": 0 }))\n    .catch(err => console.error(err));",
+      "gold": "db.cartoon.find({} , {\n  \"_id\": 0,\n  \"production_code\": 1,\n  \"channel\": 1\n}).sort({\n  \"original_air_date\": -1\n}).limit(1)",
+      "pipeline_success": false
+    },
+    {
+      "id": 632,
+      "db_id": "tvshow",
+      "question": "What are the package options and the name of the series for the TV Channel that supports high definition TV?",
+      "predicted": "db.TV_Channel.find({\"highDefinitionTV\": true}, {\"seriesName\": 1, \"packageOptions\": 1});",
+      "gold": "db.TV_Channel.find({\n  \"hight_definition_TV\": \"yes\"\n} , {\n  \"_id\": 0,\n  \"package_option\": 1,\n  \"series_name\": 1\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 659,
+      "db_id": "poker_player",
+      "question": "What are the names of poker players?",
+      "predicted": "db.pokerPlayer.distinct(\"name\", {});",
+      "gold": "db.people.aggregate([{\n  \"$lookup\": {\n    \"from\": \"poker_player\",\n    \"let\": {\n      \"people_id\": \"$People_ID\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$people_id\",\n              \"$People_ID\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$project\": {\n    \"_id\": 0,\n    \"Name\": 1\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 717,
+      "db_id": "world_1",
+      "question": "What region does Angola belong to and what is its population?",
+      "predicted": "db.country.aggregate([\n    { $match: { name: \"Angola\" } },\n    { $lookup: {\n        from: \"regions\",\n        localField: \"region\",\n        foreignField: \"_id\",\n        as: \"region_data\"\n    }},\n    { $unwind: \"$region_data\" },\n    { $project: { _id: 0, region: \"$region_data._id\", population: \"$population\" }\n});",
+      "gold": "db.country.find({\n  \"Name\": \"Angola\"\n} , {\n  \"_id\": 0,\n  \"Population\": 1,\n  \"Region\": 1\n})",
+      "pipeline_success": false
+    },
+    {
+      "id": 758,
+      "db_id": "world_1",
+      "question": "Which languages are spoken by only one country in republic governments?",
+      "predicted": "db.countrylanguage.aggregate([\n    { $group: { _id: \"$country\", languages: { $addToSet: \"$language\" } } },\n    { $match: { \"_id\": { $size: 1 } } },\n    { $project: { \"country\": \"$_id\", \"language\": { $arrayElemAt: [ \"$languages\", 0 ] } } }\n]);",
+      "gold": "db.country.aggregate([{\n  \"$match\": {\n    \"GovernmentForm\": \"Republic\"\n  }\n},{\n  \"$lookup\": {\n    \"from\": \"countrylanguage\",\n    \"let\": {\n      \"code\": \"$Code\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$code\",\n              \"$CountryCode\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$T2.Language\"\n  }\n},{\n  \"$match\": {\n    \"$expr\": {\n      \"$eq\": [\n        \"$count\",\n        1\n      ]\n    }\n  }\n},{\n  \"$project\": {\n    \"T2.Language\": \"$_id\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 774,
+      "db_id": "world_1",
+      "question": "What are the African countries that have a  population less than any country in Asia?",
+      "predicted": "db.country.aggregate([\n    { $match: { continent: \"Asia\" } }, // Find all Asian countries\n    { $group: { _id: null, minPopulation: { $min: \"$population\" } } }, // Get the minimum population of any Asian country\n    { $sort: { \"minPopulation\": 1 } }, // Sort by the minimum population in ascending order\n    { $project: { _id: 0, minPopulation: 1 } }, // Project only the minimum population\n    { $lookup: {\n        from: \"country\",\n        localField: \"minPopulation\",\n        foreignField: \"population\",\n        as: \"asianCountries\"\n    }}, // Join the Asian countries with the original collection where population is less than the minimum Asian population\n    { $unwind: \"$asianCountries\" }, // Flatten the array of Asian countries\n    { $match: { $and: [{ continent: \"Africa\" }, { population: { $lt: \"$minPopulation\" } }] } }, // Filter African countries with a population less than the minimum Asian population\n    { $project: { _id: 0, name: 1, continent: 1, population: 1 } } // Project the required fields for African countries with a population less than any Asian country\n]);",
+      "gold": "",
+      "pipeline_success": false
+    },
+    {
+      "id": 803,
+      "db_id": "world_1",
+      "question": "Return the names of the 3 most populated countries.",
+      "predicted": "db.countries.aggregate([\n      { $sort: { population: -1 } },\n      { $limit: 3 },\n      { $project: { _id: 0, name: 1 }\n   ]);",
+      "gold": "db.country.find({} , {\n  \"_id\": 0,\n  \"Name\": 1\n}).sort({\n  \"Population\": -1\n}).limit(3)",
+      "pipeline_success": false
+    },
+    {
+      "id": 804,
+      "db_id": "world_1",
+      "question": "What are the names of the nations with the 3 lowest populations?",
+      "predicted": "db.country.aggregate([\n    { $sort: { population: 1 } },\n    { $limit: 3 },\n    { $project: { _id: 0, name: 1 }\n});",
+      "gold": "db.country.find({} , {\n  \"_id\": 0,\n  \"Name\": 1\n}).sort({\n  \"Population\": 1\n}).limit(3)",
+      "pipeline_success": false
+    },
+    {
+      "id": 816,
+      "db_id": "world_1",
+      "question": "What is the language spoken by the largest percentage of people in each country?",
+      "predicted": "db.countrylanguage.aggregate([\n      { $group: { _id: \"$country\", language: \"$language\", count: { $sum: 1 }, percentage: { $divide: [{ $multiply: [{$count: \"$count\"}, 100]}, {$divide: [{$sum: \"$count\"}, {$cond: [{ $gt: [{ $size: db.countrylanguage.estimatedDocumentCount}, 0] }, db.countrylanguage.count, null]} ] } } },\n      { $sort: { percentage: -1 } },\n      { $limit: 1 },\n      { $project: { _id: 0, country: \"$_id\", language: 1, percentage: 1 } },\n      { $group: { _id: \"$country\", largestLanguage: {$first: \"$language\"}, largestPercentage: {$first: \"$percentage\"}}\n]);",
+      "gold": "db.countrylanguage.aggregate([{\n  \"$group\": {\n    \"_id\": {\n      \"LANGUAGE\": \"$LANGUAGE\",\n      \"CountryCode\": \"$CountryCode\"\n    },\n    \"max_Percentage\": {\n      \"$max\": \"$Percentage\"\n    }\n  }\n},{\n  \"$project\": {\n    \"LANGUAGE\": \"$_id.LANGUAGE\",\n    \"CountryCode\": \"$_id.CountryCode\",\n    \"max_Percentage\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 854,
+      "db_id": "orchestra",
+      "question": "List the names of orchestras that have no performance.",
+      "predicted": "db.refined_documents.aggregate([\n    { $lookup: {\n        from: \"orchestras\",\n        localField: \"orchestraId\",\n        foreignField: \"_id\",\n        as: \"orchestra\"\n    }},\n    { $unwind: \"$orchestra\" },\n    { $match: { \"orchestra.name\": { $exists: true }, \"orchestra._id\": { $ne: null } } },\n    { $group: { _id: \"$orchestra.name\", count: { $sum: { $cond: [{ $eq: [\"$performanceId\", null]}, 1, 0]}} } },\n    { $match: { \"count\": 0 }}\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 865,
+      "db_id": "network_1",
+      "question": "What are the names and grades for each high schooler?",
+      "predicted": "db.refined_documents.aggregate([\n  {\n    \"$match\": {\n      \"type\": \"high schooler\"\n    }\n  },\n  {\n    \"$project\": {\n      \"_id\": 0,\n      \"name\": 1,\n      \"grade\": 1\n    }\n  }\n]);",
+      "gold": "db.Highschooler.find({} , {\n  \"_id\": 0,\n  \"name\": 1,\n  \"grade\": 1\n})",
+      "pipeline_success": true
+    },
+    {
+      "id": 892,
+      "db_id": "network_1",
+      "question": "How many friends does the high school student Kyle have?",
+      "predicted": "db.refined_documents.aggregate([\n  {\n    \"$match\": {\n      \"student_name\": \"Kyle\"\n    }\n  },\n  {\n    \"$group\": {\n      \"_id\": null,\n      \"count\": {\n        \"$sum\": 1\n      }\n    }\n  },\n  {\n    \"$lookup\": {\n      \"from\": \"refined_documents\",\n      \"localField\": \"_id\",\n      \"foreignField\": \"_id\",\n      \"as\": \"friends\"\n    }\n  },\n  {\n    \"$unwind\": \"$friends\"\n  },\n  {\n    \"$match\": {\n      \"student_name\": { $ne: \"Kyle\" },\n      \"_id\": { $nin: [ \"$$ROOT._id\" ] } // Replace '$root' with '$$ROOT' and '_id' with '$$_id' to fix the error\n    }\n  },\n  {\n    \"$group\": {\n      \"_id\": null,\n      \"count\": {\n        \"$sum\": 1\n      }\n    }\n  }\n]);",
+      "gold": "db.Friend.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Highschooler\",\n    \"let\": {\n      \"student_id\": \"$student_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$and\": [\n            {\n              \"$expr\": {\n                \"$eq\": [\n                  \"$$student_id\",\n                  \"$id\"\n                ]\n              }\n            },\n            {\n              \"name\": \"Kyle\"\n            }\n          ]\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {},\n    \"count\": {\n      \"$sum\": 1\n    }\n  }\n},{\n  \"$project\": {\n    \"count\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 914,
+      "db_id": "network_1",
+      "question": "Find the average grade of all students who have some friends.",
+      "predicted": "db.students.aggregate([\n    { $match: { friends: { $exists: true } } },\n    { $lookup: {\n        from: \"students\",\n        localField: \"_id\",\n        foreignField: \"friends\",\n        as: \"friend_data\"\n    }},\n    { $unwind: \"$friend_data\" },\n    { $group: { _id: null, average_grade: { $avg: \"$grade\" } } }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 918,
+      "db_id": "dog_kennels",
+      "question": "Which states have both owners and professionals living there?",
+      "predicted": "db.refined_documents.aggregate([\n    { $group: { _id: \"$country\", countOwner: { $sum: { $cond: [ { $in: [\"$tags\", \"owner\"] }, 1, 0 ] } } },\n    { $group: { _id: \"$_id\", countProfessional: { $sum: { $cond: [ { $in: [\"$tags\", \"professional\"] }, 1, 0 ] } } },\n    { $match: { $and: [{ \"countOwner.countOwner\": { $gt: 0 } }, { \"countProfessional.countProfessional\": { $gt: 0 } }] } },\n    { $group: { _id: \"$_id.country\", countStates: { $sum: 1 } } },\n    { $project: { _id: 0, state: \"$_id\" } }\n]);",
+      "gold": "",
+      "pipeline_success": false
+    },
+    {
+      "id": 933,
+      "db_id": "dog_kennels",
+      "question": "What are the id, role, and first name of the professionals who have performed two or more treatments?",
+      "predicted": "db.professionals.aggregate([\n    { $lookup: {\n        from: \"treatments\",\n        localField: \"_id\",\n        foreignField: \"professional_id\",\n        as: \"T\"\n    }},\n    { $unwind: \"$T\" },\n    { $group: {\n        _id: { role: \"$role\", first_name: \"$first_name\" },\n        count: { $sum: 1 }\n    }},\n    { $match: { count: { $gte: 2 } } },\n    { $project: { _id: 0, role: 1, first_name: 1, id: \"$_id.role._id\" } }\n]);",
+      "gold": "db.Professionals.aggregate([{\n  \"$lookup\": {\n    \"from\": \"Treatments\",\n    \"let\": {\n      \"professional_id\": \"$professional_id\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$professional_id\",\n              \"$professional_id\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": {\n      \"professional_id\": \"$professional_id\",\n      \"role_code\": \"$role_code\",\n      \"first_name\": \"$first_name\"\n    }\n  }\n},{\n  \"$match\": {\n    \"$expr\": {\n      \"$gte\": [\n        \"$count\",\n        2\n      ]\n    }\n  }\n},{\n  \"$project\": {\n    \"professional_id\": \"$_id.professional_id\",\n    \"role_code\": \"$_id.role_code\",\n    \"first_name\": \"$_id.first_name\",\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": true
+    },
+    {
+      "id": 954,
+      "db_id": "dog_kennels",
+      "question": "List the names of the dogs of the rarest breed and the treatment dates of them.",
+      "predicted": "db.refined_documents.aggregate([\n    { $group: { _id: \"$breed\", count: { $sum: 1 } } }, // Count the number of each breed\n    { $sort: { count: -1 } }, // Sort by count in descending order (assuming rarest first)\n    { $limit: 1 }, // Get the rarest breed\n    { $project: { _id: \"$_id\", breed: 1 } }, // Project only the breed field\n    { $lookup: { from: \"treatments\", localField: \"_id\", foreignField: \"breed\", as: \"treatments\" } }, // Join the treatments collection based on breed\n    { $unwind: \"$treatments\" }, // Flatten the treatments array\n    { $match: { \"treatments.date\": { $exists: true } } }, // Filter documents with treatment dates\n    { $project: { _id: 0, breed: 1, \"treatments.date\": 1 } } // Project only the breed and treatment date fields\n]);",
+      "gold": "",
+      "pipeline_success": false
+    },
+    {
+      "id": 958,
+      "db_id": "dog_kennels",
+      "question": "What are the arriving date and the departing date of the dogs who have gone through a treatment?",
+      "predicted": "db.treatments.aggregate([\n    { $match: { \"dog_id\": { $exists: 1 } } },\n    { $lookup: {\n        from: \"refined_documents\",\n        localField: \"_id\",\n        foreignField: \"treatment_id\",\n        as: \"document\"\n    }},\n    { $unwind: \"$document\" },\n    { $match: { \"document.arrivalDate\": { $exists: 1 }, \"document.departureDate\": { $exists: 1 } } },\n    { $group: {\n        _id: null,\n        arrival_date: { $first: \"$document.arrivalDate\" },\n        departure_date: { $first: \"$document.departureDate\" },\n        total: { $sum: 1 }\n    }},\n    { $project: { _id: 0, arrival_date: 1, departure_date: 1, total: { $ifNull: [ \"$total\", 0 ] } } },\n    { $sort: { \"arrival_date\": 1, \"departure_date\": 1 } }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 959,
+      "db_id": "dog_kennels",
+      "question": "Find the arriving date and the departing date of the dogs that received a treatment.",
+      "predicted": "db.treatments.aggregate([\n  {\n    \"$lookup\": {\n      \"from\": \"refined_documents\",\n      \"localField\": \"dog_id\",\n      \"foreignField\": \"_id\",\n      \"as\": \"T1\"\n    }\n  },\n  {\n    \"$unwind\": {\n      \"path\": \"$T1\",\n      \"preserveNullAndEmptyArrays\": false\n    }\n  },\n  {\n    \"$match\": {\n      \"T1.treatment\": { $exists: true }\n    }\n  },\n  {\n    \"$project\": {\n      \"_id\": 0,\n      \"arrivingDate\": 1,\n      \"departingDate\": 1,\n      \"dog_id\": \"$T1._id\"\n    }\n  }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 977,
+      "db_id": "dog_kennels",
+      "question": "Show me the cost of the most recently performed treatment.",
+      "predicted": "db.refined_documents.aggregate([\n    { $sort: { treatment_date: -1 } },\n    { $limit: 1 },\n    { $project: { treatment_cost: 1, _id: 0 } }\n]);",
+      "gold": "db.Treatments.find({} , {\n  \"_id\": 0,\n  \"cost_of_treatment\": 1\n}).sort({\n  \"date_of_treatment\": -1\n}).limit(1)",
+      "pipeline_success": true
+    },
+    {
+      "id": 981,
+      "db_id": "dog_kennels",
+      "question": "Find the number of owners who do not own any dogs at this moment.",
+      "predicted": "db.owners.countDocuments({ dog_ownership: false });",
+      "gold": "",
+      "pipeline_success": true
+    },
+    {
+      "id": 1025,
+      "db_id": "singer",
+      "question": "For each singer name, what is the total sales for their songs?",
+      "predicted": "db.refined_documents.aggregate([\n      { $group: { _id: \"$singer_name\", totalSales: { $sum: \"$songSales\" } } });",
+      "gold": "db.singer.aggregate([{\n  \"$lookup\": {\n    \"from\": \"song\",\n    \"let\": {\n      \"singer_id\": \"$Singer_ID\"\n    },\n    \"pipeline\": [\n      {\n        \"$match\": {\n          \"$expr\": {\n            \"$eq\": [\n              \"$$singer_id\",\n              \"$Singer_ID\"\n            ]\n          }\n        }\n      }\n    ],\n    \"as\": \"T2\"\n  }\n},{\n  \"$unwind\": {\n    \"path\": \"$T2\",\n    \"preserveNullAndEmptyArrays\": false\n  }\n},{\n  \"$group\": {\n    \"_id\": \"$Name\",\n    \"sum_T2_Sales\": {\n      \"$sum\": \"$T2.Sales\"\n    }\n  }\n},{\n  \"$project\": {\n    \"Name\": \"$_id\",\n    \"sum_T2_Sales\": 1,\n    \"_id\": 0\n  }\n}])",
+      "pipeline_success": false
+    },
+    {
+      "id": 1028,
+      "db_id": "singer",
+      "question": "Show the citizenship shared by singers with birth year before 1945 and after 1955.",
+      "predicted": "db.artists.aggregate([\n    { $match: { birth_year: { $gte: 1945, $lt: 1955 } } },\n    { $group: { _id: \"$citizenship\", count: { $sum: 1 } } },\n    { $sort: { count: -1 } }\n]);",
+      "gold": "",
+      "pipeline_success": true
+    }
+  ]
+}
