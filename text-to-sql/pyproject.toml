@@ -1,0 +1,34 @@
+[project]
+name = "text-to-sql"
+version = "0.1.0"
+description = "Minimal Text-to-SQL implementation with QLoRA fine-tuning"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+    "accelerate>=0.27.0",
+    "peft>=0.10.0",
+    "datasets>=2.18.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.4.0",
+    "sqlglot>=23.0.0",
+    "sentence-transformers>=2.6.0",
+    "bitsandbytes>=0.43.0",
+    "gdown>=5.1.0",
+    "tqdm>=4.66.0",
+    "trl>=0.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["standalone"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+]
+

@@ -1,0 +1,22 @@
+# Data folder (download separately with scripts/download_spider.py)
+data/
+
+# Results and checkpoints (generated files)
+results/*.json
+results/checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.uv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
