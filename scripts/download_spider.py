@@ -74,15 +74,26 @@ def validate_dataset() -> bool:
         True if validation passes, False otherwise
     """
     print(f"\nValidating dataset structure...")
+    all_valid = True
     
+    # specific check for train file variations
+    train_path = os.path.join(SPIDER_DIR, 'train.json')
+    train_spider_path = os.path.join(SPIDER_DIR, 'train_spider.json')
+    
+    if os.path.exists(train_path):
+        print(f"✓ Found: train.json")
+    elif os.path.exists(train_spider_path):
+        print(f"✓ Found: train_spider.json")
+    else:
+        print(f"✗ Missing: train.json or train_spider.json")
+        all_valid = False
+
     required_files = [
-        os.path.join(SPIDER_DIR, 'train.json'),
         os.path.join(SPIDER_DIR, 'dev.json'),
         os.path.join(SPIDER_DIR, 'tables.json'),
         os.path.join(SPIDER_DIR, 'database'),
     ]
     
-    all_valid = True
     for file_path in required_files:
         if os.path.exists(file_path):
             print(f"✓ Found: {os.path.basename(file_path)}")
@@ -110,12 +121,12 @@ def main() -> None:
     
     # Check if dataset already exists
     if os.path.exists(SPIDER_DIR):
-        response = input(f"\nSpider dataset already exists at {SPIDER_DIR}\nRe-download? (y/n): ")
-        if response.lower() != 'y':
-            print("Skipping download.")
-            if validate_dataset():
-                print("\n✓ Dataset is valid and ready to use!")
+        print(f"Spider dataset already exists at {SPIDER_DIR}")
+        if validate_dataset():
+            print("✓ Dataset is valid. Skipping download.")
             return
+        else:
+            print("Dataset exists but validation failed. Re-downloading...")
     
     try:
         # Download and extract

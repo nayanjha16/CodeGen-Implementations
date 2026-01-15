@@ -2,46 +2,48 @@ from typing import List, Optional
 from sentence_transformers import SentenceTransformer, util
 import torch
 
-# Global retriever model (lazy loading recommended in production)
+# Global retriever model
 retriever_model: Optional[SentenceTransformer] = None
 schema_corpus: List[str] = []  # List of schema descriptions
+schema_ids: List[str] = []     # List of corresponding DB IDs
 schema_embeddings: Optional[torch.Tensor] = None
 
-def initialize_retriever(schemas: List[str]) -> None:
+def initialize_retriever(schemas: List[dict]) -> None:
     """
-    Initializes the retriever with a list of schema strings.
+    Initializes the retriever with a list of schema dictionaries.
     
     Args:
-        schemas: List of database schema descriptions as strings
+        schemas: List of dicts with 'text' and 'id' keys
     """
-    global retriever_model, schema_corpus, schema_embeddings
+    global retriever_model, schema_corpus, schema_ids, schema_embeddings
     print("Initializing retriever...")
     retriever_model = SentenceTransformer('all-MiniLM-L6-v2')
-    schema_corpus = schemas
+    
+    schema_corpus = [s['text'] for s in schemas]
+    schema_ids = [s['id'] for s in schemas]
+    
     schema_embeddings = retriever_model.encode(schema_corpus, convert_to_tensor=True)
 
-def retrieve_schema(query: str, top_k: int = 1) -> str:
+def retrieve_schema(query: str, top_k: int = 1) -> tuple:
     """
-    Retrieves the most relevant schema for the query using semantic search.
+    Retrieves the most relevant schema and its ID.
     
-    Args:
-        query: Natural language query from user
-        top_k: Number of top schemas to retrieve (default: 1)
-        
     Returns:
-        Retrieved schema descriptions joined by newlines
+        (schema_text, db_id)
     """
-    global retriever_model, schema_embeddings
+    global retriever_model, schema_embeddings, schema_ids
     
     if retriever_model is None:
-        # Fallback if not initialized
-        return ""
+        return "", None
         
     query_embedding = retriever_model.encode(query, convert_to_tensor=True)
     hits = util.semantic_search(query_embedding, schema_embeddings, top_k=top_k)
     
-    results: List[str] = []
-    for hit in hits[0]:
-        results.append(schema_corpus[hit['corpus_id']])
+    # Just return top 1 for now
+    if not hits[0]:
+        return "", None
         
-    return "\n\n".join(results)
+    hit = hits[0][0] # Top 1
+    idx = hit['corpus_id']
+    
+    return schema_corpus[idx], schema_ids[idx]

@@ -53,7 +53,8 @@ def load_spider_dataset(
     split: str = 'dev',
     spider_dir: Optional[str] = None,
     limit: Optional[int] = None,
-    smart_filter: bool = False
+    smart_filter: bool = False,
+    slice_range: Optional[tuple] = None
 ) -> List[SpiderExample]:
     """
     Load the Spider dataset from JSON files.
@@ -62,14 +63,11 @@ def load_spider_dataset(
         split: Dataset split to load ('train' or 'dev')
         spider_dir: Path to spider directory. If None, uses default location.
         limit: Maximum number of examples to load (for testing)
-        smart_filter: If True, returns 100 examples with last 25 being complex (overrides normal limit logic if set)
+        smart_filter: If True, returns 100 examples with last 25 being complex
+        slice_range: Tuple of (start, end) indices to slice the dataset. Overrides limit if set.
         
     Returns:
         List of SpiderExample objects
-        
-    Raises:
-        FileNotFoundError: If dataset files are not found
-        ValueError: If split is invalid
     """
     # Validate split
     if split not in ['train', 'dev']:
@@ -119,6 +117,17 @@ def load_spider_dataset(
         )
         all_examples.append(example)
 
+    # Apply slicing if requested
+    if slice_range:
+        start, end = slice_range
+        print(f"Slicing dataset: range {start}-{end}")
+        # Ensure indices are within bounds
+        start = max(0, start)
+        end = min(len(all_examples), end)
+        examples = all_examples[start:end]
+        print(f"Sliced to {len(examples)} examples.")
+        return examples
+
     if smart_filter:
         total_limit = limit if limit is not None else 100
         # 25% complex, rest simple
@@ -144,6 +153,125 @@ def load_spider_dataset(
     
     print(f"Loaded {len(examples)} examples from Spider {split} set")
     
+    return examples
+
+
+class BirdExample:
+    """
+    Represents a single example from the BirdBench dataset.
+    """
+    def __init__(
+        self,
+        question: str,
+        sql: str,
+        db_id: str,
+        db_path: Optional[str] = None
+    ):
+        self.question = question
+        self.query = sql # Standardize naming to 'query' for compatibility
+        self.db_id = db_id
+        self.db_path = db_path
+        self.complexity = "unknown" # BirdBench might not have this explicit simple/complex label easily available
+
+    def __repr__(self) -> str:
+        return f"BirdExample(db='{self.db_id}', question='{self.question[:50]}...')"
+
+
+def load_bird_dataset(
+    split: str = 'dev', # default to dev/minidev
+    bird_dir: Optional[str] = None,
+    slice_range: Optional[tuple] = None,
+    limit: Optional[int] = None
+) -> List[BirdExample]:
+    """
+    Load the BirdBench dataset.
+    
+    Args:
+        split: 'train', 'dev', or 'minidev'
+        bird_dir: Path to directory
+        slice_range: (start, end)
+        limit: Max limit if slice is not used
+    """
+    if bird_dir is None:
+        current_dir = os.path.dirname(__file__)
+        bird_dir = os.path.abspath(os.path.join(current_dir, '..', 'data', 'bird'))
+        
+    # Priority check: If split is 'train', usually we want the full train set if available
+    # Otherwise check Mini-Dev
+    
+    # 1. Standard Structure (train/dev/test.json in bird_dir)
+    standard_json = os.path.join(bird_dir, f'{split}.json')
+    # Some archives unzip as 'train/train.json'
+    nested_json = os.path.join(bird_dir, split, f'{split}.json') 
+    
+    json_path = None
+    database_dir = os.path.join(bird_dir, 'databases') # Default
+    
+    if os.path.exists(standard_json):
+        json_path = standard_json
+    elif os.path.exists(nested_json):
+        json_path = nested_json
+        # Adjust DB dir if nested
+        database_dir = os.path.join(bird_dir, split, 'databases')
+        if not os.path.exists(database_dir):
+             # Fallback to common db dir
+             database_dir = os.path.join(bird_dir, 'databases')
+        
+    # 2. Mini-Dev Fallback (Only if we aren't explicitly asking for 'train' or if train not found)
+    if not json_path:
+        minidev_base = os.path.join(bird_dir, 'minidev', 'MINIDEV')
+        if os.path.exists(minidev_base):
+            if split == 'dev' or split == 'minidev':
+                json_path = os.path.join(minidev_base, 'mini_dev_sqlite.json')
+                database_dir = os.path.join(minidev_base, 'dev_databases')
+    
+    if not json_path or not os.path.exists(json_path):
+        print(f"BIRD dataset JSON not found for split '{split}'.")
+        print(f"Searched: {standard_json}, {nested_json}, and Mini-Dev.")
+        return []
+        
+    print(f"Loading BirdBench from: {json_path}")
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception as e:
+        print(f"Error loading JSON: {e}")
+        return []
+        
+    raw_examples = []
+    for item in data:
+        question = item.get('question', item.get('text', ''))
+        sql = item.get('SQL', item.get('sql', ''))
+        db_id = item.get('db_id', item.get('database_id', ''))
+        
+        db_path = None
+        if database_dir:
+            possible_path = os.path.join(database_dir, db_id, f'{db_id}.sqlite')
+            if os.path.exists(possible_path):
+                db_path = possible_path
+        
+        ex = BirdExample(question, sql, db_id, db_path)
+        raw_examples.append(ex)
+        
+    # Apply filtering
+    if slice_range:
+        start, end = slice_range
+        print(f"Requested filtering: range {start}-{end}")
+        
+        if start >= len(raw_examples):
+            print(f"WARNING: Requested start index {start} is beyond dataset size ({len(raw_examples)}). Returning empty list.")
+            return []
+            
+        real_end = min(len(raw_examples), end)
+        examples = raw_examples[start:real_end]
+        print(f"Loaded {len(examples)} examples (sliced from {len(raw_examples)} total).")
+    elif limit:
+        examples = raw_examples[:limit]
+        print(f"Loaded {len(examples)} examples (limit applied).")
+    else:
+        examples = raw_examples
+        print(f"Loaded {len(examples)} examples.")
+        
     return examples
 
 
@@ -261,3 +389,105 @@ def get_database_schema(db_id: str, spider_dir: Optional[str] = None) -> str:
         schema_lines.append("")
     
     return "\n".join(schema_lines)
+
+
+def load_bird_tables(bird_dir: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load BirdBench tables.json.
+    """
+    if bird_dir is None:
+        current_dir = os.path.dirname(__file__)
+        bird_dir = os.path.abspath(os.path.join(current_dir, '..', 'data', 'bird'))
+        
+    # Priority check for Mini-Dev path
+    json_path = None
+    minidev_base = os.path.join(bird_dir, 'minidev', 'MINIDEV')
+    if os.path.exists(minidev_base):
+        json_path = os.path.join(minidev_base, 'dev_tables.json')
+    elif os.path.exists(os.path.join(bird_dir, 'tables.json')):
+        json_path = os.path.join(bird_dir, 'tables.json')
+        
+    if not json_path or not os.path.exists(json_path):
+        return {}
+        
+    with open(json_path, 'r', encoding='utf-8') as f:
+        tables = json.load(f)
+        
+    if isinstance(tables, list):
+        return {table['db_id']: table for table in tables}
+    return tables
+
+
+def get_bird_schema(db_id: str, bird_dir: Optional[str] = None) -> str:
+    """
+    Get generic schema for valid BirdBench DB.
+    Reuses Spider logic if format matches, otherwise returns placeholder.
+    """
+    tables = load_bird_tables(bird_dir)
+    if db_id not in tables:
+        return f"-- Schema for {db_id} not available (tables.json missing)"
+        
+    # Assuming Spider-like format for simplicity of implementation
+    # If Bird format differs, this needs adjustment. 
+    # For now, we try to use the same logic or return a simple dump.
+    try:
+        # HACK: Reuse spider logic by injecting table info?
+        # Better: duplicate logic or genericize. 
+        # For brevity, let's assume it's similar enough or fallback.
+        db_info = tables[db_id]
+        schema_lines = []
+        # basic extraction if keys exist
+        if 'table_names_original' in db_info and 'column_names_original' in db_info:
+             # It mimics spider
+             # ... copy paste spider logic ...
+             # For now, let's return a simple representation
+             for t_idx, t_name in enumerate(db_info['table_names_original']):
+                 cols = [c[1] for c in db_info['column_names_original'] if c[0] == t_idx]
+                 schema_lines.append(f"CREATE TABLE {t_name} ({', '.join(cols)});")
+             return "\n".join(schema_lines)
+    except Exception:
+        pass
+        
+    return f"-- Schema for {db_id} (BirdBench)"
+
+
+def get_unified_schema(db_id: str) -> str:
+    """
+    Try getting schema from Spider, then Bird.
+    """
+    try:
+        return get_database_schema(db_id)
+    except Exception:
+        pass
+        
+    return get_bird_schema(db_id)
+
+def load_ddl_dataset(limit: Optional[int] = None) -> List[SpiderExample]:
+    """
+    Load synthetic DDL/DML tasks from ddl_tasks.json.
+    """
+    data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+    json_path = os.path.join(data_dir, 'ddl_tasks.json')
+    
+    if not os.path.exists(json_path):
+        print(f"DDL dataset not found at {json_path}. Run generate_ddl_data.py first.")
+        return []
+        
+    print(f"Loading DDL dataset from: {json_path}")
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        
+    examples = []
+    for item in data:
+        ex = SpiderExample(
+            question=item['question'],
+            query=item['query'],
+            db_id=item['db_id']
+        )
+        examples.append(ex)
+        
+    if limit:
+        examples = examples[:limit]
+        
+    print(f"Loaded {len(examples)} DDL examples.")
+    return examples

@@ -15,7 +15,7 @@ BASELINE_MODEL_NAME = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
 IMPROVED_MODEL_NAME = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
 
 # Default to Improved for Training context, but explicit elsewhere
-MODEL_NAME = IMPROVED_MODEL_NAME 
+MODEL_NAME = BASELINE_MODEL_NAME 
 
 # Hardware Configuration
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

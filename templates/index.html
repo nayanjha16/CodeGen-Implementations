@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-SQL Generator</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            align-self: flex-end;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-area {
+            display: none;
+            margin-top: 2rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .result-area.visible {
+            display: block;
+        }
+
+        .sql-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1.1rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .loading.visible {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-msg {
+            color: #ef4444;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            background: #f1f5f9;
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .radio-option input {
+            accent-color: var(--primary-color);
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Text-to-SQL</h1>
+            <p class="subtitle">Convert natural language questions into SQL queries instantly.</p>
+        </header>
+
+        <div class="card">
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="mode" value="text" checked onchange="updatePlaceholder()">
+                    Text to SQL
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="mode" value="sql" onchange="updatePlaceholder()">
+                    SQL to NoSQL (Direct)
+                </label>
+            </div>
+
+            <div class="input-group">
+                <label for="queryInput" id="inputLabel">Your Question</label>
+                <textarea id="queryInput" placeholder="e.g., Show me all students who enrolled in 2023..."></textarea>
+            </div>
+
+            <button id="generateBtn" onclick="generateSQL()">Generate</button>
+
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <span>Generating...</span>
+            </div>
+
+            <div id="errorMsg" class="error-msg"></div>
+
+            <div id="resultArea" class="result-area">
+                <!-- Result Match Status -->
+                <div id="matchStatus"
+                    style="display:none; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-weight: bold; text-align: center;">
+                </div>
+
+                <div id="gridContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div id="sqlColumn">
+                        <label>SQL Query:</label>
+                        <div class="sql-block">
+                            <button class="copy-btn" onclick="copyToClipboard('sqlOutput')">Copy</button>
+                            <code id="sqlOutput"></code>
+                        </div>
+                        <div id="sqlResult"
+                            style="margin-top: 0.5rem; font-size: 0.85rem; color: #64748b; white-space: pre-wrap; display:none;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Generated NoSQL (MongoDB):</label>
+                        <div class="sql-block">
+                            <button class="copy-btn" onclick="copyToClipboard('nosqlOutput')">Copy</button>
+                            <code id="nosqlOutput"></code>
+                        </div>
+                        <div id="nosqlResult"
+                            style="margin-top: 0.5rem; font-size: 0.85rem; color: #64748b; white-space: pre-wrap; display:none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updatePlaceholder() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const input = document.getElementById('queryInput');
+            const label = document.getElementById('inputLabel');
+
+            if (mode === 'text') {
+                label.textContent = "Your Question";
+                input.placeholder = "e.g., Show me all students who enrolled in 2023...";
+            } else {
+                label.textContent = "Your SQL Query";
+                input.placeholder = "e.g., SELECT * FROM students WHERE year = 2023;";
+            }
+        }
+
+        async function generateSQL() {
+            const query = document.getElementById('queryInput').value.trim();
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+
+            const btn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const resultArea = document.getElementById('resultArea');
+            const errorMsg = document.getElementById('errorMsg');
+            const sqlOutput = document.getElementById('sqlOutput');
+            const nosqlOutput = document.getElementById('nosqlOutput');
+            const matchStatus = document.getElementById('matchStatus');
+            const sqlResult = document.getElementById('sqlResult');
+            const nosqlResult = document.getElementById('nosqlResult');
+
+            if (!query) return;
+
+            // Reset UI
+            btn.disabled = true;
+            loading.classList.add('visible');
+            resultArea.classList.remove('visible');
+            errorMsg.style.display = 'none';
+            matchStatus.style.display = 'none';
+            sqlResult.style.display = 'none';
+            nosqlResult.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query, mode })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate SQL');
+                }
+
+                sqlOutput.textContent = data.sql || '-- No SQL generated';
+                nosqlOutput.textContent = data.nosql || '// No NoSQL generated';
+
+                // execution detail
+                if (data.sql_result) {
+                    sqlResult.textContent = 'Result Sample: ' + data.sql_result;
+                    sqlResult.style.display = 'block';
+                }
+                if (data.nosql_result) {
+                    nosqlResult.textContent = 'Result Sample: ' + data.nosql_result;
+                    nosqlResult.style.display = 'block';
+                }
+
+                // Match Status
+                if (data.execution_match !== null && data.execution_match !== undefined) {
+                    matchStatus.style.display = 'block';
+                    if (data.execution_match) {
+                        matchStatus.checked = true;
+                        matchStatus.style.backgroundColor = '#dcfce7';
+                        matchStatus.style.color = '#166534';
+                        matchStatus.textContent = '✓ Execution Results Match';
+                    } else {
+                        matchStatus.style.backgroundColor = '#fee2e2';
+                        matchStatus.style.color = '#991b1b';
+                        matchStatus.textContent = '✗ Results Do Not Match';
+                    }
+                }
+
+                resultArea.classList.add('visible');
+
+                // Mode-specific visibility
+                const sqlColumn = document.getElementById('sqlColumn');
+                if (mode === 'sql') {
+                    sqlColumn.style.display = 'none';
+                    document.getElementById('gridContainer').style.gridTemplateColumns = '1fr';
+                } else {
+                    sqlColumn.style.display = 'block';
+                    document.getElementById('gridContainer').style.gridTemplateColumns = '1fr 1fr';
+                }
+
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                loading.classList.remove('visible');
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                // simple feedback
+            });
+        }
+    </script>
+</body>
+
+</html>
