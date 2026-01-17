@@ -1,0 +1,20 @@
+You are an expert database engineer.
+
+Convert the following SQL query into a MongoDB aggregation pipeline.
+
+SQL QUERY:
+{sql}
+
+ROOT COLLECTION:
+{root_collection}
+
+PREDEFINED JOIN PIPELINE (MUST USE IF PRESENT):
+{join_templates}
+
+Rules:
+- Always include the predefined JOIN pipeline stages first.
+- Then add $match, $group, $project, $sort, etc.
+- Output ONLY a valid JSON array.
+- Do NOT include markdown or explanations.
+
+MongoDB Aggregation Pipeline (JSON ONLY):

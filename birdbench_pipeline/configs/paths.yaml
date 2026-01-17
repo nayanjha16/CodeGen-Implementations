@@ -1,0 +1,4 @@
+data_root: data
+raw_birdbench: data/raw/birdbench
+birdbench_databases: data/raw/birdbench/databases
+processed_birdbench: data/processed/birdbench

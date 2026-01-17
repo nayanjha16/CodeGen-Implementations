@@ -1,0 +1,122 @@
+[
+  {
+    "question_id": 1471,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1472,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1473,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1476,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1479,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1480,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1481,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1482,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "LLM did not return valid JSON:\n[\n  {\n    \"$lookup\": {\n      \"from\": \"yearmonth\",\n      \"localField\": \"CustomerID\",\n      \"foreignField\": \"CustomerID\",\n      \"as\": \"yearmonth_data\"\n    }\n  },\n  {\n    \"$unwind\": \"$yearmonth_data\"\n  },\n  {\n    \"$match\": {\n      \"$or\": [\n        { \"Segment\": \"SME\", \"yearmonth_data.Date\": { \"$regex\": \"^2013\" } },\n        { \"Segment\": \"SME\", \"yearmonth_data.Date\": { \"$regex\": \"^2012\" } },\n        { \"Segment\": \"LAM\", \"yearmonth_data.Date\": { \"$regex\": \"^2013\" } },\n        { \"Segment\": \"LAM\", \"yearmonth_data.Date\": { \"$regex\": \"^2012\" } },\n        { \"Segment\": \"KAM\", \"yearmonth_data.Date\": { \"$regex\": \"^2013\" } },\n        { \"Segment\": \"KAM\", \"yearmonth_data.Date\": { \"$regex\": \"^2012\" } }\n      ]\n    }\n  },\n  {\n    \"$group\": {\n      \"_id\": null,\n      \"SME_2013\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"SME\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2013\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      },\n      \"SME_2012\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"SME\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2012\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      },\n      \"LAM_2013\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"LAM\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2013\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      },\n      \"LAM_2012\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"LAM\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2012\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      },\n      \"KAM_2013\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"KAM\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2013\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      },\n      \"KAM_2012\": {\n        \"$sum\": {\n          \"$cond\": [\n            { \"$and\": [{ \"$eq\": [\"$Segment\", \"KAM\"] }, { \"$regexMatch\": { input: \"$yearmonth_data.Date\", regex: \"^2012\" } }] },\n            \"$yearmonth_data.Consumption\",\n            0\n          ]\n        }\n      }\n    }\n  },\n  {\n    \"$project\": {\n      \"SME_Percentage\": {\n        \"$multiply\": [\n          { \"$divide\": [\n            { \"$subtract\": [\"$SME_2013\", \"$SME_2012\"] },\n            \"$SME_2012\"\n          ] },\n          100\n        ]\n      },\n      \"LAM_Percentage\": {\n        \"$multiply\": [\n          { \"$divide\": [\n            { \"$subtract\": [\"$LAM_2013\", \"$LAM_2012\"] },\n            \"$LAM_2012\"\n          ] },\n          100\n        ]\n      },\n      \"KAM_Percentage\": {\n        \"$multiply\": [\n          { \"$divide\": [\n            { \"$subtract\": [\"$KAM_2013\", \"$KAM_2012\"] },\n            \"$KAM_2012\"\n          ] },\n          100\n        ]\n      }\n    }\n  }\n]"
+  },
+  {
+    "question_id": 1483,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1484,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1486,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1490,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1493,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1498,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1500,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1501,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1505,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1506,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1507,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1509,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  }
+]

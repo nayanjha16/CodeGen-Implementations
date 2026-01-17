@@ -1,0 +1,638 @@
+[
+  {
+    "question_id": 1471,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT CAST(SUM(IIF(Currency = 'EUR', 1, 0)) AS FLOAT) / SUM(IIF(Currency = 'CZK', 1, 0)) AS ratio FROM customers",
+    "root_collection": "customers",
+    "initial_mongo_pipeline": [
+      {
+        "$group": {
+          "_id": null,
+          "eurCount": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$Currency",
+                    "EUR"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          },
+          "czkCount": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$Currency",
+                    "CZK"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "$project": {
+          "ratio": {
+            "$divide": [
+              {
+                "$toDouble": "$eurCount"
+              },
+              "$czkCount"
+            ]
+          }
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$group": {
+          "_id": null,
+          "eurCount": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$Currency",
+                    "EUR"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          },
+          "czkCount": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$Currency",
+                    "CZK"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "$project": {
+          "ratio": {
+            "$divide": [
+              {
+                "$toDouble": "$eurCount"
+              },
+              "$czkCount"
+            ]
+          }
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1472,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT T1.CustomerID FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Segment = 'LAM' AND SUBSTR(T2.Date, 1, 4) = '2012' GROUP BY T1.CustomerID ORDER BY SUM(T2.Consumption) ASC LIMIT 1",
+    "root_collection": "customers",
+    "initial_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_data"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_data"
+      },
+      {
+        "$match": {
+          "Segment": "LAM",
+          "$expr": {
+            "$eq": [
+              {
+                "$substr": [
+                  "$yearmonth_data.Date",
+                  0,
+                  4
+                ]
+              },
+              "2012"
+            ]
+          }
+        }
+      },
+      {
+        "$group": {
+          "_id": "$CustomerID",
+          "totalConsumption": {
+            "$sum": "$yearmonth_data.Consumption"
+          }
+        }
+      },
+      {
+        "$sort": {
+          "totalConsumption": 1
+        }
+      },
+      {
+        "$limit": 1
+      },
+      {
+        "$project": {
+          "CustomerID": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_data"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_data"
+      },
+      {
+        "$match": {
+          "Segment": "LAM",
+          "$expr": {
+            "$eq": [
+              {
+                "$substr": [
+                  "$yearmonth_data.Date",
+                  0,
+                  4
+                ]
+              },
+              "2012"
+            ]
+          }
+        }
+      },
+      {
+        "$group": {
+          "_id": "$CustomerID",
+          "totalConsumption": {
+            "$sum": "$yearmonth_data.Consumption"
+          }
+        }
+      },
+      {
+        "$sort": {
+          "totalConsumption": 1
+        }
+      },
+      {
+        "$limit": 1
+      },
+      {
+        "$project": {
+          "CustomerID": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1473,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT AVG(T2.Consumption) / 12 FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1476,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUM(IIF(T1.Currency = 'CZK', T2.Consumption, 0)) - SUM(IIF(T1.Currency = 'EUR', T2.Consumption, 0)) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2012'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1479,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUBSTR(T2.Date, 1, 4) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Currency = 'CZK' GROUP BY SUBSTR(T2.Date, 1, 4) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1480,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUBSTR(T2.Date, 5, 2) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE SUBSTR(T2.Date, 1, 4) = '2013' AND T1.Segment = 'SME' GROUP BY SUBSTR(T2.Date, 5, 2) ORDER BY SUM(T2.Consumption) DESC LIMIT 1",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1481,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT CAST(SUM(IIF(T1.Segment = 'SME', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'LAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) , CAST(SUM(IIF(T1.Segment = 'LAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'KAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) , CAST(SUM(IIF(T1.Segment = 'KAM', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) - CAST(SUM(IIF(T1.Segment = 'SME', T2.Consumption, 0)) AS REAL) / COUNT(T1.CustomerID) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Currency = 'CZK' AND T2.Consumption = ( SELECT MIN(Consumption) FROM yearmonth ) AND T2.Date BETWEEN 201301 AND 201312",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1482,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT CAST((SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2012%', T2.Consumption, 0))) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'SME' AND T2.Date LIKE '2012%', T2.Consumption, 0)), CAST(SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'LAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) , CAST(SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2013%', T2.Consumption, 0)) - SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) AS FLOAT) * 100 / SUM(IIF(T1.Segment = 'KAM' AND T2.Date LIKE '2012%', T2.Consumption, 0)) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1483,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUM(Consumption) FROM yearmonth WHERE CustomerID = 6 AND Date BETWEEN '201308' AND '201311'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1484,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUM(IIF(Country = 'CZE', 1, 0)) - SUM(IIF(Country = 'SVK', 1, 0)) FROM gasstations WHERE Segment = 'Discount'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1486,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUM(Currency = 'CZK') - SUM(Currency = 'EUR') FROM customers WHERE Segment = 'SME'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1490,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT CAST(SUM(IIF(T2.Consumption > 46.73, 1, 0)) AS FLOAT) * 100 / COUNT(T1.CustomerID) FROM customers AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID WHERE T1.Segment = 'LAM'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1493,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT CAST(SUM(IIF(Consumption > 528.3, 1, 0)) AS FLOAT) * 100 / COUNT(CustomerID) FROM yearmonth WHERE Date = '201202'",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1498,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT SUM(Consumption) FROM yearmonth WHERE SUBSTR(Date, 1, 4) = '2012' GROUP BY SUBSTR(Date, 5, 2) ORDER BY SUM(Consumption) DESC LIMIT 1",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1500,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT T3.Description FROM transactions_1k AS T1 INNER JOIN yearmonth AS T2 ON T1.CustomerID = T2.CustomerID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Date = '201309'",
+    "root_collection": "transactions_1k",
+    "initial_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_data"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_data"
+      },
+      {
+        "$lookup": {
+          "from": "products",
+          "localField": "ProductID",
+          "foreignField": "ProductID",
+          "as": "product_data"
+        }
+      },
+      {
+        "$unwind": "$product_data"
+      },
+      {
+        "$match": {
+          "yearmonth_data.Date": "201309"
+        }
+      },
+      {
+        "$project": {
+          "Description": "$product_data.Description"
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_data"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_data"
+      },
+      {
+        "$lookup": {
+          "from": "products",
+          "localField": "ProductID",
+          "foreignField": "ProductID",
+          "as": "product_data"
+        }
+      },
+      {
+        "$unwind": "$product_data"
+      },
+      {
+        "$match": {
+          "yearmonth_data.Date": "201309"
+        }
+      },
+      {
+        "$project": {
+          "Description": "$product_data.Description"
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1501,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT DISTINCT T2.Country FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN yearmonth AS T3 ON T1.CustomerID = T3.CustomerID WHERE T3.Date = '201306'",
+    "root_collection": "transactions_1k",
+    "initial_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": "$gasstation_info"
+      },
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_info"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_info"
+      },
+      {
+        "$match": {
+          "yearmonth_info.Date": "201306"
+        }
+      },
+      {
+        "$group": {
+          "_id": "$gasstation_info.Country"
+        }
+      },
+      {
+        "$project": {
+          "Country": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": "$gasstation_info"
+      },
+      {
+        "$lookup": {
+          "from": "yearmonth",
+          "localField": "CustomerID",
+          "foreignField": "CustomerID",
+          "as": "yearmonth_info"
+        }
+      },
+      {
+        "$unwind": "$yearmonth_info"
+      },
+      {
+        "$match": {
+          "yearmonth_info.Date": "201306"
+        }
+      },
+      {
+        "$group": {
+          "_id": "$gasstation_info.Country"
+        }
+      },
+      {
+        "$project": {
+          "Country": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1505,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT COUNT(*) FROM yearmonth AS T1 INNER JOIN customers AS T2 ON T1.CustomerID = T2.CustomerID WHERE T2.Currency = 'EUR' AND T1.Consumption > 1000.00",
+    "success": false,
+    "error": "'\\n    \"$group\"'"
+  },
+  {
+    "question_id": 1506,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT DISTINCT T3.Description FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID INNER JOIN products AS T3 ON T1.ProductID = T3.ProductID WHERE T2.Country = 'CZE'",
+    "root_collection": "transactions_1k",
+    "initial_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": "$gasstation_info"
+      },
+      {
+        "$lookup": {
+          "from": "products",
+          "localField": "ProductID",
+          "foreignField": "ProductID",
+          "as": "product_info"
+        }
+      },
+      {
+        "$unwind": "$product_info"
+      },
+      {
+        "$match": {
+          "gasstation_info.Country": "CZE"
+        }
+      },
+      {
+        "$group": {
+          "_id": "$product_info.Description"
+        }
+      },
+      {
+        "$project": {
+          "Description": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": "$gasstation_info"
+      },
+      {
+        "$lookup": {
+          "from": "products",
+          "localField": "ProductID",
+          "foreignField": "ProductID",
+          "as": "product_info"
+        }
+      },
+      {
+        "$unwind": "$product_info"
+      },
+      {
+        "$match": {
+          "gasstation_info.Country": "CZE"
+        }
+      },
+      {
+        "$group": {
+          "_id": "$product_info.Description"
+        }
+      },
+      {
+        "$project": {
+          "Description": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1507,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT DISTINCT T1.Time FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.ChainID = 11",
+    "root_collection": "transactions_1k",
+    "initial_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$gasstation_info",
+          "preserveNullAndEmptyArrays": true
+        }
+      },
+      {
+        "$match": {
+          "gasstation_info.ChainID": 11
+        }
+      },
+      {
+        "$group": {
+          "_id": "$Time"
+        }
+      },
+      {
+        "$project": {
+          "Time": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "final_mongo_pipeline": [
+      {
+        "$lookup": {
+          "from": "gasstations",
+          "localField": "GasStationID",
+          "foreignField": "GasStationID",
+          "as": "gasstation_info"
+        }
+      },
+      {
+        "$unwind": {
+          "path": "$gasstation_info",
+          "preserveNullAndEmptyArrays": true
+        }
+      },
+      {
+        "$match": {
+          "gasstation_info.ChainID": 11
+        }
+      },
+      {
+        "$group": {
+          "_id": "$Time"
+        }
+      },
+      {
+        "$project": {
+          "Time": "$_id",
+          "_id": 0
+        }
+      }
+    ],
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1509,
+    "db_id": "debit_card_specializing",
+    "birdbench_sql": "SELECT COUNT(T1.TransactionID) FROM transactions_1k AS T1 INNER JOIN gasstations AS T2 ON T1.GasStationID = T2.GasStationID WHERE T2.Country = 'CZE' AND STRFTIME('%Y', T1.Date) >= '2012'",
+    "success": false,
+    "error": "PlanExecutor error during aggregation :: caused by :: can't convert from BSON type string to Date, full error: {'ok': 0.0, 'errmsg': \"PlanExecutor error during aggregation :: caused by :: can't convert from BSON type string to Date\", 'code': 16006, 'codeName': 'Location16006'}"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "question_id": 1471,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1472,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1473,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1476,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1479,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1480,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1481,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1482,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1483,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1484,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1486,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "retries": 1
+  },
+  {
+    "question_id": 1490,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1493,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1498,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1500,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1501,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1505,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "Failed to auto-correct Mongo pipeline"
+  },
+  {
+    "question_id": 1506,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1507,
+    "db_id": "debit_card_specializing",
+    "success": true,
+    "retries": 0
+  },
+  {
+    "question_id": 1509,
+    "db_id": "debit_card_specializing",
+    "success": false,
+    "error": "cannot nest $ under $in, full error: {'ok': 0.0, 'errmsg': 'cannot nest $ under $in', 'code': 2, 'codeName': 'BadValue'}"
+  }
+]

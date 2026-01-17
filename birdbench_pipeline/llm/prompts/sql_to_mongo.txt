@@ -1,0 +1,26 @@
+You are given:
+
+1. A SQL query
+2. A database schema
+3. A target MongoDB database where each SQL table is a MongoDB collection
+
+TASK:
+Convert the SQL query into a MongoDB aggregation pipeline.
+
+RULES:
+- Use ONLY MongoDB aggregation pipeline syntax
+- Output ONLY valid JSON
+- Do NOT include explanations
+- Do NOT include comments
+- Do NOT include code fences
+- Use aggregation ($match, $group, $project, $lookup if needed)
+- Assume collections have the same names as tables
+- Remove _id unless required
+
+SQL QUERY:
+{sql}
+
+SCHEMA:
+{schema}
+
+OUTPUT:
