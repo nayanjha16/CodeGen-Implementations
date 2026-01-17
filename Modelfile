@@ -1,0 +1,11 @@
+FROM ./phi3-finetuned-q4.gguf
+
+TEMPLATE """<|user|>
+{{.Prompt}}<|end|>
+<|assistant|>
+{{.Response}}<|end|>
+"""
+
+PARAMETER stop <|end|>
+PARAMETER stop <|user|>
+PARAMETER stop <|assistant|>

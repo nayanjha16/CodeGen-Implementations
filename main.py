@@ -19,7 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run_text2sql(root, split, out_dir, method='schema'):
+def run_text2sql(root, split, out_dir, method='schema', max_examples=None):
     logger.info("=" * 80)
     logger.info("📊 TEXT-TO-SQL PIPELINE STARTED")
     logger.info("=" * 80)
@@ -82,7 +82,7 @@ def run_text2sql(root, split, out_dir, method='schema'):
         logger.info("[Phase 4] RETRIEVAL - Extracting relevant subgraph...")
         try:
             _, sub = SchemaRetriever(G).retrieve(ex['question'])
-            logger.info(f"✓ Retrieved relevant subgraph | Question: {ex['question'][:60]}...\n")
+            logger.info(f"✓ Retrieved relevant subgraph | Question: {ex['question']}...\n")
         except Exception as e:
             logger.error(f"❌ Retrieval failed: {e}")
             continue
@@ -100,12 +100,17 @@ def run_text2sql(root, split, out_dir, method='schema'):
         # Phase 6: Save output
         logger.info("[Phase 6] PERSISTENCE - Saving results...")
         output_file = os.path.join(out_dir, f"{ex.get('id', 'q')}.sql")
-        with open(output_file, 'w') as f:
-            f.write(sql)
-        logger.info(f"✓ Results saved to: {output_file}\n")
+        with open(output_file, 'a') as f:
+            f.write(sql + '\n')
+        logger.info(f"✓ Results appended to: {output_file}\n")
         
-        # Stop after first example (as per original code)
-        break
+        logger.info("=" * 80)
+        logger.info(f"✅ Example {idx}/{len(examples)} completed")
+        logger.info("=" * 80)
+        
+        if max_examples and idx >= max_examples:
+            logger.info(f"🛑 Reached max examples limit ({max_examples}). Stopping...")
+            break
     
     logger.info("=" * 80)
     logger.info("✅ TEXT-TO-SQL PIPELINE COMPLETED SUCCESSFULLY")
@@ -119,9 +124,10 @@ if __name__ == '__main__':
     p.add_argument('--split', default='dev', help='Dataset split (default: dev)')
     p.add_argument('--method', default='schema', 
                    help='Graph builder method: schema, dalk, gr, lgraphrag, ggraphrag, hipporag, kgp, lightrag, raptor, tog (default: schema)')
+    p.add_argument('--max_examples', type=int, help='Maximum number of examples to process (default: all)')
     args = p.parse_args()
     
     if args.task == 'text2sql':
-        run_text2sql(args.spider_root, args.split, 'outputs_text2sql', args.method)
+        run_text2sql(args.spider_root, args.split, 'outputs_text2sql', args.method, args.max_examples)
     else:
         logger.error(f"Unknown task: {args.task}")
