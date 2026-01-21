@@ -1,4 +1,23 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Data files
 Data/Spider/database/
 Data/Spider/dev_gold.sql
 Data/Spider/readme.txt
@@ -10,6 +29,8 @@ Data/Spider/train_spider.json
 Data/Spider/train_others.json 
 Data/Spider/train_gold.sql
 Data/Spider/noSQL2SQL*
+
+# Project specific
 WARP.md
 final_model
 merged_model
