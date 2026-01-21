@@ -19,7 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run_text2sql(root, split, out_dir, method='schema', max_examples=None):
+def run_text2sql(root, split, out_dir, method='schema', max_examples=None, nosql_target='mongodb'):
     logger.info("=" * 80)
     logger.info("📊 TEXT-TO-SQL PIPELINE STARTED")
     logger.info("=" * 80)
@@ -42,7 +42,7 @@ def run_text2sql(root, split, out_dir, method='schema', max_examples=None):
     llm = OpenAIClient()
     logger.info(f"  ✓ LLM client initialized")
     
-    gen = SQLGenerator(llm)
+    gen = SQLGenerator(llm, nosql_target=nosql_target)
     logger.info(f"  ✓ SQLGenerator initialized")
     logger.info("✅ All components initialized successfully\n")
     
@@ -97,12 +97,30 @@ def run_text2sql(root, split, out_dir, method='schema', max_examples=None):
             logger.error(f"❌ SQL generation failed: {e}")
             continue
         
+        # Phase 5b: NoSQL Generation
+        logger.info("[Phase 5b] NOSQL GENERATION - Translating SQL to NoSQL...")
+        try:
+            nosql = gen.generate_nosql(sql, sub, target=nosql_target)
+            logger.info(f"✓ NoSQL generated successfully ({nosql_target})")
+            logger.info(f"  NoSQL: {nosql[:100]}...\n")
+        except Exception as e:
+            logger.error(f"❌ NoSQL generation failed: {e}")
+            nosql = None
+        
         # Phase 6: Save output
         logger.info("[Phase 6] PERSISTENCE - Saving results...")
-        output_file = os.path.join(out_dir, f"{ex.get('id', 'q')}.sql")
-        with open(output_file, 'a') as f:
+        sql_file = os.path.join(out_dir, f"{ex.get('id', 'q')}.sql")
+        with open(sql_file, 'a') as f:
             f.write(sql + '\n')
-        logger.info(f"✓ Results appended to: {output_file}\n")
+        logger.info(f"✓ SQL appended to: {sql_file}")
+
+        if nosql:
+            nosql_file = os.path.join(out_dir, f"{ex.get('id', 'q')}.nosql")
+            with open(nosql_file, 'a') as f:
+                f.write(nosql + '\n')
+            logger.info(f"✓ NoSQL appended to: {nosql_file}\n")
+        else:
+            logger.info("⚠️ NoSQL not generated for this example\n")
         
         logger.info("=" * 80)
         logger.info(f"✅ Example {idx}/{len(examples)} completed")
@@ -124,10 +142,12 @@ if __name__ == '__main__':
     p.add_argument('--split', default='dev', help='Dataset split (default: dev)')
     p.add_argument('--method', default='schema', 
                    help='Graph builder method: schema, dalk, gr, lgraphrag, ggraphrag, hipporag, kgp, lightrag, raptor, tog (default: schema)')
+    p.add_argument('--nosql_target', default='mongodb',
+                   help='Target NoSQL dialect (e.g., mongodb, dynamodb, cosmosdb). Default: mongodb')
     p.add_argument('--max_examples', type=int, help='Maximum number of examples to process (default: all)')
     args = p.parse_args()
     
     if args.task == 'text2sql':
-        run_text2sql(args.spider_root, args.split, 'outputs_text2sql', args.method, args.max_examples)
+        run_text2sql(args.spider_root, args.split, 'outputs_text2sql', args.method, args.max_examples, args.nosql_target)
     else:
         logger.error(f"Unknown task: {args.task}")

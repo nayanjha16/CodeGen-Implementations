@@ -1,127 +1,228 @@
+# Graph-Based RAG for Text-to-SQL Generation
 
-## 👾 DIGIMON: Deep Analysis of Graph-Based Retrieval-Augmented Generation (RAG) Systems
+## 👾 Overview
 
-
-<div style="text-align: center;">
-  <a href="https://github.com/JayLZhou/GraphRAG"><img src="https://img.shields.io/badge/DIGIMON-red"/></a>
-  <a href="https://github.com/JayLZhou/GraphRAG"><img src="https://img.shields.io/badge/Graph_RAG-red"/></a>
-  <a href="http://makeapullrequest.com"><img src="https://img.shields.io/github/stars/JayLZhou/GraphRAG"/></a>
-  <a href="http://makeapullrequest.com"><img src="https://img.shields.io/github/forks/JayLZhou/GraphRAG"/></a>
-  <a href="http://makeapullrequest.com"><img src="https://img.shields.io/github/last-commit/JayLZhou/GraphRAG?color=blue"/></a>
-</div>
-
-
-
-<!-- ![Static Badge](https://img.shields.io/badge/DIGIMON-red)
-![Static Badge](https://img.shields.io/badge/LLM-red)
-![Static Badge](https://img.shields.io/badge/Graph_RAG-red)
-![Static Badge](https://img.shields.io/badge/Document_QA-green)
-![Static Badge](https://img.shields.io/badge/Document_Summarization-green) -->
-
-
-<!-- <img src="img.png" alt="Description of the image" width="450" height="350"> -->
+This project implements a **Graph-Based Retrieval-Augmented Generation (RAG) system** for Text-to-SQL generation using the Spider dataset. It provides comprehensive evaluation frameworks for both SQL generation and NoSQL translation.
 
 > **GraphRAG** is a popular 🔥🔥🔥 and powerful 💪💪💪 RAG system! 🚀💡 Inspired by systems like Microsoft's, graph-based RAG is unlocking endless possibilities in AI.
 
-> Our project focuses on **modularizing and decoupling** these methods 🧩 to **unveil the mystery** 🕵️‍♂️🔍✨ behind them and share fun and valuable insights! 🤩💫  Our project🔨 is included in [Awesome Graph-based RAG](https://github.com/DEEP-PolyU/Awesome-GraphRAG).
+> Our project focuses on **modularizing and decoupling** these methods 🧩 to **unveil the mystery** 🕵️‍♂️🔍✨ behind them and share fun and valuable insights! 🤩💫
 
 ![Workflow of GraphRAG](workflow.png)
 
 ---
-### Clone the repository
+
+## 📚 Table of Contents
+- [Setup](#setup)
+- [Quick Start Examples](#quick-start-examples)
+- [Accuracy Evaluation](#accuracy-evaluation)
+- [Graph RAG Methods](#graph-rag-methods)
+- [Results](#results)
+- [Architecture](#architecture)
+
+---
+
+## Setup
+
+### Clone the Repository
 
 ```bash
-# Clone this repository (HTTPS)
 git clone https://github.com/utkarshSinha1910/graphRagTxtToSql.git
 cd graphRagTxtToSql
 ```
 
----
-## Setup (Python + Ollama)
+### Install Python 3.9
 
-Use the commands below to install the exact Python version and Ollama used during development, then install the Python dependencies from `requirements.txt`. This is intentionally simple (no virtualenv steps).
+Install Python 3.9.6 using `pyenv` (recommended):
 
-- Install Python 3.9.6 (macOS) with `pyenv` (recommended to get an exact patch version):
-
-```zsh
+```bash
 brew install pyenv
 pyenv install 3.9.6
 pyenv global 3.9.6
 ```
 
-- Or install Python 3.9 via Homebrew (package name may vary):
+Or install via Homebrew:
 
-```zsh
+```bash
 brew install python@3.9
 ```
 
-- Install Python dependencies from `requirements.txt`:
+### Install Dependencies
 
-```zsh
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-- Install Ollama (macOS):
+### Install Ollama
 
-```zsh
+```bash
 brew install ollama
 ```
 
-- Verify installations and versions:
+### Verify Installation
 
-```zsh
-python3 --version   # should show 3.9.6 if installed
+```bash
+python3 --version   # should show 3.9.6
 ollama --version    # recommended: 0.12.11
 ```
 
-Notes:
-- Ollama is a native CLI/tool (not a Python package). See https://ollama.com for downloads and docs.
-- If you prefer not to use Ollama, set `OPENAI_API_KEY` and use the `OpenAIClient` in `Core/LLM/OpenAIClient.py`.
+**Notes:**
+- Ollama is a native CLI tool. See [ollama.com](https://ollama.com) for docs
+- Alternatively, use OpenAI by setting `OPENAI_API_KEY` and using `Core/LLM/OpenAIClient.py`
 
-## Running locally (Ollama / phi3)
-
-If you want to run models locally using Ollama, here are concise commands and examples for macOS (`zsh`). Replace `phi3` with the model you will use.
-
-- Pull the model locally (if required):
+### Pull Required Models
 
 ```bash
-ollama pull phi3
+ollama pull phi3                  # For SQL generation
+ollama pull phi3-finetuned        # Fine-tuned model
+ollama pull qwen2.5-coder:3b      # For NoSQL translation
 ```
 
-You can also check which models are already available locally and pull/verify `phi3` as follows:
+---
+
+## Quick Start Examples
+
+### 1. Run Main Text-to-SQL Application
 
 ```bash
-# list locally available models
-ollama ls
-
-# pull the phi3 model from Ollama's model hub
-ollama pull phi3
-
-# verify the model is available locally
-ollama ls | grep phi3
-```
-
-- Start the Ollama server (serves an HTTP API; default port commonly `11434`):
-
-```bash
+# Start Ollama server (in separate terminal)
 ollama serve
-# runs in foreground; use nohup or & to background if needed
-```
-Run this on the another terminal
-```bash
+
+# Run text-to-SQL with different graph methods
 python3 main.py --task text2sql --spider_root Data/Spider --split dev --method gr
 python3 main.py --task text2sql --spider_root Data/Spider --split dev --method dalk
 python3 main.py --task text2sql --spider_root Data/Spider --split dev --method raptor
 ```
 
+### 2. Launch Streamlit Web UI
+
+```bash
+streamlit run ui.py
+```
+
+### 3. Evaluate SQL Accuracy
+
+```bash
+# Quick evaluation (20 examples with cache)
+python3 quick_sql_eval.py --max-examples 20
+
+# Full evaluation (50 examples)
+python3 quick_sql_eval.py --max-examples 50
+
+# Show detailed results
+python3 quick_sql_eval.py --max-examples 20 --show-details
+
+# Test with sample queries
+python3 test_sql_accuracy_matrix.py
+```
+
+### 4. Validate NoSQL Translations
+
+```bash
+# Semantic validation (50 examples)
+python3 validate_nosql_semantic.py --max-examples 50
+
+# Detailed validation results
+python3 validate_nosql_semantic.py --max-examples 50 --show-details
+
+# Regenerate without cache
+python3 validate_nosql_semantic.py --max-examples 50 --no-cache
+```
+
 ---
 
+## Accuracy Evaluation
 
+### Overview
 
-## Representative Methods
+Comprehensive evaluation framework for:
+1. **SQL Accuracy** - Text-to-SQL generation on Spider dataset
+2. **NoSQL Accuracy** - SQL-to-NoSQL semantic validation
 
-We select the following Graph RAG methods:
+### Files
+
+**SQL Accuracy Evaluation:**
+- `sql_accuracy_matrix.py` - Core SQL accuracy matrix class
+- `quick_sql_eval.py` - SQL evaluation with caching on Spider dataset
+- `test_sql_accuracy_matrix.py` - Test suite with sample queries
+
+**NoSQL Semantic Validation:**
+- `nosql_semantic_validator.py` - Logic-based semantic validation
+- `validate_nosql_semantic.py` - NoSQL validation runner on noSQL2SQL dataset
+
+### Accuracy Levels
+
+Both evaluation systems use 5-level classification:
+1. **EXACT_MATCH** - Identical after normalization
+2. **SEMANTICALLY_EQUIVALENT** - 95%+ similarity, functionally same
+3. **MINOR_DIFFERENCES** - 70-95% similarity, small issues
+4. **MAJOR_DIFFERENCES** - 40-70% similarity, significant changes
+5. **INCORRECT** - <40% similarity, wrong query
+
+### Results (20 SQL Examples)
+
+**SQL Generation Accuracy:**
+- Strict Accuracy: **20.0%** (4/20 exact matches)
+- Acceptable Accuracy: **35.0%** (7/20 exact + semantic)
+- Average Similarity: **62.0%**
+- Average Component Accuracy: **84.0%**
+
+**Component-wise Performance:**
+- ✅ SELECT clause: 100%
+- ✅ FROM clause: 100%
+- ✅ LIMIT: 95%
+- ✅ ORDER BY: 90%
+- ⚠️ GROUP BY: 85%
+- ⚠️ DISTINCT: 85%
+- ⚠️ Aggregations: 80%
+- ⚠️ WHERE conditions: 75%
+- ⚠️ Table names: 70%
+- ❌ JOINs: 60% (needs improvement)
+
+### Results (50 NoSQL Examples)
+
+**NoSQL Semantic Validation:**
+- Correct Translations: **38.0%** (19/50)
+- Acceptable: **80.0%** (40/50)
+- Average Validation Score: **90.44%**
+
+**Validation Criteria Pass Rates:**
+- ✅ Collection names: 100%
+- ✅ Sort direction: 100%
+- ✅ Aggregation handling: 100%
+- ✅ Sort operations: 98%
+- ✅ GROUP BY handling: 98%
+- ✅ Filter/WHERE conditions: 96%
+- ✅ LIMIT values: 90%
+- ⚠️ JOIN handling: 68%
+- ⚠️ Projection/SELECT: 64%
+
+**Note:** NoSQL validation uses semantic logic checking (not reference comparison), validating if generated NoSQL correctly implements SQL query intent.
+
+### Output Files
+- `spider_sql_cache.json` - Cached SQL query pairs
+- `spider_sql_accuracy_results.json` - Detailed SQL results
+- `nosql_generation_cache.json` - Cached NoSQL translations
+- `nosql_validation_results.json` - NoSQL semantic validation results
+
+### Models Used
+
+**SQL Generation:**
+- Model: `phi3-finetuned`
+- Task: Natural language → SQL
+- Dataset: Spider (dev split)
+
+**NoSQL Generation:**
+- Model: `qwen2.5-coder:3b`
+- Task: SQL → MongoDB NoSQL
+- Dataset: noSQL2SQL (9,428 query pairs)
+
+---
+
+## Graph RAG Methods
+
+### Representative Methods
 
 | Method | Description| Link | Graph Type|
 | --- |--- |--- | :---: | 
@@ -135,10 +236,9 @@ We select the following Graph RAG methods:
 | FastGraphRAG | CircleMind Project  | [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/circlemind-ai/fast-graphrag)| TKG |
 | LightRAG | High Star Project  | [![arXiv](https://img.shields.io/badge/arXiv-2410.05779-b31b1b.svg)](https://arxiv.org/abs/2410.05779) [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/HKUDS/LightRAG)| RKG |
 
+### Implemented Methods
 
-## Implemented Methods (in this repo)
-
-This repository implements several concise heuristic graph builders (see `Core/Graph/GraphBuilder.py`). Below is a compact summary of the available builders and their key behaviors.
+This repository implements several graph builders (see `Core/Graph/GraphBuilder.py`):
 
 | Method | Short description | Graph Type | Key behavior |
 |---|---:|:---:|---|
@@ -153,16 +253,17 @@ This repository implements several concise heuristic graph builders (see `Core/G
 | `raptor` | PageRank-based pruning of semantic graph | Tree-like / Pruned Graph | Builds weighted semantic graph, runs PageRank and prunes weak edges |
 | `tog` | Tree-of-Graphs backbone (MST) | Chunk Tree / KG backbone | Builds MST over semantic similarities and converts to bidirectional tree |
 
-##  Graph Types
-Based on the entity and relation, we categorize the graph into the following types:
+### Graph Types
 
-+ **Chunk Tree**: A tree structure formed by document content and summary.
-+ **Passage Graph**: A relational network composed of passages, tables, and other elements within documents.
-+ **KG**: knowledge graph (KG) is constructed by extracting entities and relationships from each chunk, which contains only entities and relations, is commonly represented as triples.
-+ **TKG**: A textual knowledge graph (TKG) is a specialized KG (following the same construction step as KG), which enriches entities with detailed descriptions and type information.
-+ **RKG**: A rich knowledge graph (RKG), which further incorporates keywords associated with relations.
+Based on entity and relation, graphs are categorized as:
 
-The criteria for the classification of graph types are as follows:
+- **Chunk Tree**: Tree structure formed by document content and summary
+- **Passage Graph**: Relational network of passages, tables, and document elements
+- **KG**: Knowledge graph with entities and relationships (triples)
+- **TKG**: Textual KG with entity descriptions and type information
+- **RKG**: Rich KG with keywords associated with relations
+
+**Classification Criteria:**
 
 |Graph Attributes | Chunk Tree |Passage Graph | KG  | TKG | RKG |
 | --- |--- |--- |--- | --- | --- |
@@ -175,19 +276,120 @@ The criteria for the classification of graph types are as follows:
 |Relation Description|❌| ❌| ❌|✅|✅|
 |Edge Weight| ❌|❌|✅|✅|✅|
 
+---
 
+## Architecture
 
-## 🏹 Our future plans
-- [ ] Detailed readme
-- [ ] Support RoG, PathRAG, etc.
-- [ ] Provide a docker image for easy deployment. 
-- [ ] Support more LLMs, such as AZURE. 
+### Code Organization
 
-## 🧭 Cite Our Paper
+```
+Core/
+  ├── Chunk/              # Schema chunking
+  ├── Graph/              # Graph building methods
+  ├── LLM/                # LLM clients (Ollama, OpenAI)
+  └── Retriever/          # Schema retrieval
 
-If you find this work useful, please consider citing our papers:
+Data/
+  └── Spider/             # Spider dataset
+      ├── database/       # 200+ databases
+      └── noSQL2SQL/      # 9,428 SQL-NoSQL pairs
 
-### In-depth Analysis of Graph-based RAG in a Unified Framework
+Evaluation Files:
+  ├── sql_accuracy_matrix.py           # SQL evaluation framework
+  ├── quick_sql_eval.py                # SQL evaluation runner
+  ├── test_sql_accuracy_matrix.py      # SQL test suite
+  ├── nosql_semantic_validator.py      # NoSQL semantic validation
+  └── validate_nosql_semantic.py       # NoSQL validation runner
+```
+
+### Using the Accuracy Matrix
+
+**SQL Evaluation:**
+```python
+from sql_accuracy_matrix import SQLAccuracyMatrix
+
+matrix = SQLAccuracyMatrix()
+result = matrix.evaluate_query(
+    generated="SELECT * FROM users WHERE age > 18",
+    gold="SELECT * FROM users WHERE age > 18",
+    question="Get adult users",
+    db_id="user_db"
+)
+matrix.print_detailed_report()
+matrix.export_results()
+```
+
+**NoSQL Semantic Validation:**
+```python
+from nosql_semantic_validator import NoSQLSemanticValidator
+
+validator = NoSQLSemanticValidator()
+result = validator.validate_translation(
+    sql="SELECT * FROM users WHERE age > 18",
+    nosql='{"collection": "users", "filter": {"age": {"$gt": 18}}}',
+    index=1
+)
+validator.print_detailed_report()
+validator.export_results()
+```
+
+### Caching System
+
+Both evaluation scripts use caching for efficiency:
+- Auto-saves after every 5 examples
+- Loads cached results on next run
+- Use `--no-cache` flag to regenerate
+- Cache files in JSON format
+
+### Data Sources
+
+**Spider Dataset:**
+- Location: `Data/Spider/`
+- Files: `dev.json`, `train_spider.json`, `tables.json`
+- Size: 10,181 examples (dev: ~1,000, train: ~9,000)
+- Databases: 200+ databases
+
+**noSQL2SQL Dataset:**
+- Location: `Data/Spider/noSQL2SQL/`
+- Size: 9,428 SQL-NoSQL query pairs
+- Format: One-to-one mapping
+
+---
+
+## Troubleshooting
+
+### Slow Generation
+- Use cached results with `--max-examples` limit
+- LLM inference: ~2-5 seconds per query
+- 50 queries ≈ 2-5 minutes total
+
+### Connection Issues
+- Ensure Ollama is running: `ollama serve`
+- Check models: `ollama list`
+- Pull models: `ollama pull qwen2.5-coder:3b`
+
+### Parse Errors
+- NoSQL validator handles both JSON and string formats
+- Failed parses still get similarity comparison
+- Check `parsing_success_rate` in summary
+
+---
+
+## Future Plans
+
+- [ ] Detailed readme enhancements
+- [ ] Support RoG, PathRAG methods
+- [ ] Docker image for easy deployment
+- [ ] Additional LLM support (Azure, etc.)
+- [ ] Execution-based evaluation
+- [ ] Visualization dashboard
+- [ ] Batch evaluation with parallel processing
+
+---
+
+## Citation
+
+If you find this work useful, please cite:
 
 ```
 @article{zhou2025depth,
@@ -196,6 +398,12 @@ If you find this work useful, please consider citing our papers:
   journal={arXiv preprint arXiv:2503.04338},
   year={2025}
 }
- ```
+```
+
+---
+
+## License
+
+See [LICENSE](LICENSE) file for details.
 
 

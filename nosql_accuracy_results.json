@@ -1,0 +1,2812 @@
+{
+  "summary": {
+    "total_queries": 50,
+    "accuracy_counts": {
+      "EXACT_MATCH": 0,
+      "SEMANTICALLY_EQUIVALENT": 0,
+      "MINOR_DIFFERENCES": 0,
+      "MAJOR_DIFFERENCES": 12,
+      "INCORRECT": 38
+    },
+    "accuracy_percentages": {
+      "EXACT_MATCH": 0.0,
+      "SEMANTICALLY_EQUIVALENT": 0.0,
+      "MINOR_DIFFERENCES": 0.0,
+      "MAJOR_DIFFERENCES": 24.0,
+      "INCORRECT": 76.0
+    },
+    "avg_similarity_score": 0.19846572496727283,
+    "avg_component_accuracy": 0.785,
+    "component_wise_accuracy": {
+      "collection_match": 1.0,
+      "filter_match": 0.74,
+      "projection_match": 0.76,
+      "sort_match": 0.84,
+      "limit_match": 0.92,
+      "aggregation_match": 0.02,
+      "filter_fields_match": 1.0,
+      "projection_fields_match": 1.0
+    },
+    "parsing_success_rate": 6.0,
+    "strict_accuracy": 0.0,
+    "acceptable_accuracy": 0.0
+  },
+  "individual_results": [
+    {
+      "index": 1,
+      "sql_query": "SELECT movie_title FROM movies WHERE movie_release_year = 1945 ORDER BY movie_popularity DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  { $match: { movie_release_year: 1945 } },\n  { $sort: { movie_popularity: -1 } },\n  { $project: { _id: 0, movie_title: 1 } }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"MOVIE_RELEASE_YEAR\":1945},\"projection\":{\"movie_title\":1,\"movie_release_year\":1,\"movie_popularity\":1,\"_id\":0},\"sort\":{\"MOVIE_POPULARITY\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_release_year: 1945 } }, { $sort: { movie_popularity: -1 } }, { $project: { _id: 0, movie_title: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'movie_release_year':1945},'projection':{'movie_title':1,'movie_release_year':1,'movie_popularity':1,'_id':0},'sort':{'movie_popularity':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.44508670520231214,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": false,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "MOVIE_RELEASE_YEAR"
+        ],
+        "projection_fields": [
+          "movie_title",
+          "movie_release_year",
+          "movie_popularity"
+        ],
+        "sort_fields": [
+          "MOVIE_POPULARITY"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 2,
+      "sql_query": "SELECT movie_title, movie_release_year, director_name FROM movies ORDER BY movie_popularity DESC LIMIT 1",
+      "generated_nosql": "```json\n{\n  \"pipeline\": [\n    {\n      \"$sort\": { \"movie_popularity\": -1 }\n    },\n    {\n      \"$limit\": 1\n    },\n    {\n      \"$project\": {\n        \"movie_title\": 1,\n        \"movie_release_year\": 1,\n        \"director_name\": 1\n      }\n    }\n  ]\n}\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movie_title\":1,\"movie_release_year\":1,\"director_name\":1,\"movie_popularity\":1,\"_id\":0},\"sort\":{\"MOVIE_POPULARITY\":-1},\"limit\":1}",
+      "generated_normalized": "```json { 'pipeline': [ { '$sort': { 'movie_popularity': -1 } }, { '$limit': 1 }, { '$project': { 'movie_title': 1, 'movie_release_year': 1, 'director_name': 1 } } ] } ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movie_title':1,'movie_release_year':1,'director_name':1,'movie_popularity':1,'_id':0},'sort':{'movie_popularity':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.4942528735632184,
+      "component_accuracy": 0.5,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": false,
+        "limit_match": false,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": null,
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movie_title",
+          "movie_release_year",
+          "director_name",
+          "movie_popularity"
+        ],
+        "sort_fields": [
+          "MOVIE_POPULARITY"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": true
+    },
+    {
+      "index": 3,
+      "sql_query": "SELECT movie_title, movie_release_year FROM movies ORDER BY LENGTH(movie_popularity) DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $project: {\n            movie_title: 1,\n            movie_release_year: 1,\n            length_of_movie_popularity: { $size: \"$movie_popularity\" }\n        }\n    },\n    {\n        $sort: { length_of_movie_popularity: -1 }\n    },\n    {\n        $limit: 1\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movie_title\":1,\"movie_release_year\":1,\"movie_popularity\":1,\"_id\":0},\"sort\":{\"LENGTH(MOVIE_POPULARITY)\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $project: { movie_title: 1, movie_release_year: 1, length_of_movie_popularity: { $size: '$movie_popularity' } } }, { $sort: { length_of_movie_popularity: -1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movie_title':1,'movie_release_year':1,'movie_popularity':1,'_id':0},'sort':{'length(movie_popularity)':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.599483204134367,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movie_title",
+          "movie_release_year",
+          "movie_popularity"
+        ],
+        "sort_fields": [
+          "LENGTH(MOVIE_POPULARITY)"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 4,
+      "sql_query": "SELECT movie_title FROM movies GROUP BY movie_title ORDER BY COUNT(movie_title) DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $group: { _id: \"$movie_title\", count: { $sum: 1 } }\n    },\n    {\n        $sort: { count: -1 }\n    },\n    {\n        $project: { movie_title: 1, _id: 0 }\n    },\n    {\n        $limit: 1\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movie_title\":1,\"_id\":0},\"sort\":{\"MOVIE_TITLE\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $group: { _id: '$movie_title', count: { $sum: 1 } } }, { $sort: { count: -1 } }, { $project: { movie_title: 1, _id: 0 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movie_title':1,'_id':0},'sort':{'movie_title':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.41924398625429554,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movie_title"
+        ],
+        "sort_fields": [
+          "MOVIE_TITLE"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 5,
+      "sql_query": "SELECT AVG(movie_popularity) FROM movies WHERE director_name = 'Stanley Kubrick'",
+      "generated_nosql": "```json\ndb.movies.aggregate([\n  {\n    $match: { \"director_name\": \"stanley kubrick\" }\n  },\n  {\n    $group: {\n      _id: null,\n      avg_movie_popularity: { $avg: \"$movie_popularity\" }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"DIRECTOR_NAME\":\"STANLEY\"},\"projection\":{\"movie_popularity\":1,\"director_name\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```json db.movies.aggregate([ { $match: { 'director_name': 'stanley kubrick' } }, { $group: { _id: null, avg_movie_popularity: { $avg: '$movie_popularity' } } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'director_name':'stanley'},'projection':{'movie_popularity':1,'director_name':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.4077669902912621,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "DIRECTOR_NAME"
+        ],
+        "projection_fields": [
+          "movie_popularity",
+          "director_name"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 6,
+      "sql_query": "SELECT AVG(T2.rating_score) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_title = 'When Will I Be Loved'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_title: 'when will i be loved'\n    }\n  },\n  {\n    $lookup: {\n      from: 'ratings',\n      localField: 'movie_id',\n      foreignField: 'movie_id',\n      as: 'rating_details'\n    }\n  },\n  {\n    $project: {\n      average_rating: {\n        $avg: '$rating_details.rating_score'\n      }\n    }\n  },\n  {\n    $sort: {\n      average_rating: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_TITLE\":\"WHEN\"},\"projection\":{\"ratings.rating_score\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'when will i be loved' } }, { $lookup: { from: 'ratings', localfield: 'movie_id', foreignfield: 'movie_id', as: 'rating_details' } }, { $project: { average_rating: { $avg: '$rating_details.rating_score' } } }, { $sort: { average_rating: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_title':'when'},'projection':{'ratings.rating_score':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.296,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.rating_score",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 7,
+      "sql_query": "SELECT T3.user_avatar_image_url, T3.rating_date_utc FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id INNER JOIN ratings_users AS T3 ON T3.user_id = T2.user_id WHERE T3.user_id = 41579158 ORDER BY T3.rating_date_utc DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $lookup: {\n      from: \"ratings\",\n      localField: \"movie_id\",\n      foreignField: \"movie_id\",\n      as: \"ratings\"\n    }\n  },\n  {\n    $lookup: {\n      from: \"ratings_users\",\n      localField: \"_id\", // Assuming ratings_users has a unique _id field\n      foreignField: \"user_id\",\n      as: \"ratings_users\"\n    }\n  },\n  {\n    $unwind: \"$ratings_users\"\n  },\n  {\n    $match: {\n      \"ratings_users.user_id\": 41579158\n    }\n  },\n  {\n    $sort: {\n      \"ratings_users.rating_date_utc\": -1 // DESC\n    }\n  },\n  {\n    $limit: 1\n  },\n  {\n    $project: {\n      \"user_avatar_image_url\": 1,\n      \"rating_date_utc\": 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T3.USER_ID\":41579158},\"projection\":{\"ratings_users.user_avatar_image_url\":1,\"ratings_users.rating_date_utc\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings_users.user_id\":1,\"ratings.user_id\":1,\"_id\":0},\"sort\":{\"T3.RATING_DATE_UTC\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $lookup: { from: 'ratings', localfield: 'movie_id', foreignfield: 'movie_id', as: 'ratings' } }, { $lookup: { from: 'ratings_users', localfield: '_id', // assuming ratings_users has a unique _id field foreignfield: 'user_id', as: 'ratings_users' } }, { $unwind: '$ratings_users' }, { $match: { 'ratings_users.user_id': 41579158 } }, { $sort: { 'ratings_users.rating_date_utc': -1 // desc } }, { $limit: 1 }, { $project: { 'user_avatar_image_url': 1, 'rating_date_utc': 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t3.user_id':41579158},'projection':{'ratings_users.user_avatar_image_url':1,'ratings_users.rating_date_utc':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings_users.user_id':1,'ratings.user_id':1,'_id':0},'sort':{'t3.rating_date_utc':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.02743142144638404,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T3.USER_ID"
+        ],
+        "projection_fields": [
+          "ratings_users.user_avatar_image_url",
+          "ratings_users.rating_date_utc",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings_users.user_id",
+          "ratings.user_id"
+        ],
+        "sort_fields": [
+          "T3.RATING_DATE_UTC"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 8,
+      "sql_query": "SELECT CAST(SUM(CASE WHEN user_subscriber = 1 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM ratings",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $project: {\n            count: { $sum: { $cond: [ { $eq: [ \"$user_subscriber\", 1 ] }, 1, 0 ] } },\n            total: { $count: {} }\n        }\n    },\n    {\n        $project: {\n            percentage: { $divide: [{ $multiply: [ \"$count\", 100 ] }, \"$total\"] }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"user_subscriber\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $project: { count: { $sum: { $cond: [ { $eq: [ '$user_subscriber', 1 ] }, 1, 0 ] } }, total: { $count: {} } } }, { $project: { percentage: { $divide: [{ $multiply: [ '$count', 100 ] }, '$total'] } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'user_subscriber':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.30144927536231886,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "user_subscriber"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 9,
+      "sql_query": "SELECT T1.movie_title FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_trialist = 1 AND T2.rating_timestamp_utc LIKE '2020-04%'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      user_trialist: 1,\n      rating_timestamp_utc: { $regex: /^2020-04/, $options: \"i\" }\n    }\n  },\n  {\n    $project: {\n      movie_title: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T2.USER_TRIALIST\":1},\"projection\":{\"movies.movie_title\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings.user_trialist\":1,\"ratings.rating_timestamp_utc\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { user_trialist: 1, rating_timestamp_utc: { $regex: /^2020-04/, $options: 'i' } } }, { $project: { movie_title: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t2.user_trialist':1},'projection':{'movies.movie_title':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings.user_trialist':1,'ratings.rating_timestamp_utc':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.02557544757033248,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T2.USER_TRIALIST"
+        ],
+        "projection_fields": [
+          "movies.movie_title",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings.user_trialist",
+          "ratings.rating_timestamp_utc"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 10,
+      "sql_query": "SELECT T1.user_id FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_title = 'Love Will Tear Us Apart' AND T1.rating_score = 1",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            movie_title: \"love will tear us apart\",\n            rating_score: 1\n        }\n    },\n    {\n        $group: {\n            _id: \"$user_id\"\n        }\n    },\n    {\n        $project: {\n            user_id: 1,\n            _id: 0\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.MOVIE_TITLE\":\"LOVE\"},\"projection\":{\"ratings.user_id\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_title\":1,\"ratings.rating_score\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { movie_title: 'love will tear us apart', rating_score: 1 } }, { $group: { _id: '$user_id' } }, { $project: { user_id: 1, _id: 0 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.movie_title':'love'},'projection':{'ratings.user_id':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_title':1,'ratings.rating_score':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.020151133501259445,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.user_id",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_title",
+          "ratings.rating_score"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 11,
+      "sql_query": "SELECT DISTINCT T2.movie_title, T2.movie_popularity FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.rating_score = 5",
+      "generated_nosql": "```json\n{\n  \"$match\": {\n    \"rating_score\": 5\n  },\n  \"$lookup\": {\n    \"from\": \"movies\",\n    \"localField\": \"movie_id\",\n    \"foreignField\": \"_id\",\n    \"as\": \"movie_info\"\n  },\n  \"$unwind\": \"$movie_info\",\n  \"$project\": {\n    \"movie_title\": 1,\n    \"movie_popularity\": 1\n  },\n  \"$sort\": {\n    \"movie_title\": 1\n  }\n}\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T1.RATING_SCORE\":5},\"projection\":{\"movies.movie_title\":1,\"movies.movie_popularity\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"ratings.rating_score\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```json { '$match': { 'rating_score': 5 }, '$lookup': { 'from': 'movies', 'localfield': 'movie_id', 'foreignfield': '_id', 'as': 'movie_info' }, '$unwind': '$movie_info', '$project': { 'movie_title': 1, 'movie_popularity': 1 }, '$sort': { 'movie_title': 1 } } ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t1.rating_score':5},'projection':{'movies.movie_title':1,'movies.movie_popularity':1,'ratings.movie_id':1,'movies.movie_id':1,'ratings.rating_score':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.0794979079497908,
+      "component_accuracy": 0.625,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": null,
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T1.RATING_SCORE"
+        ],
+        "projection_fields": [
+          "movies.movie_title",
+          "movies.movie_popularity",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "ratings.rating_score"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": true
+    },
+    {
+      "index": 12,
+      "sql_query": "SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE CAST(SUBSTR(T1.rating_timestamp_utc, 1, 4) AS INTEGER) = 2020 AND CAST(SUBSTR(T1.rating_timestamp_utc, 6, 2) AS INTEGER) > 4",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            rating_timestamp_utc: { \n                $gte: new Date(\"2020-05-01T00:00:00Z\"), \n                $lt: new Date(\"2021-04-30T23:59:59Z\") \n            }\n        }\n    },\n    {\n        $lookup: {\n            from: \"movies\",\n            localField: \"movie_id\",\n            foreignField: \"_id\",\n            as: \"movie_info\"\n        }\n    },\n    {\n        $unwind: \"$movie_info\"\n    },\n    {\n        $project: {\n            movie_title: 1\n        }\n    },\n    {\n        $sort: {\n            rating_timestamp_utc: 1\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.movie_title\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"ratings.rating_timestamp_utc\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { rating_timestamp_utc: { $gte: new date('2020-05-01t00:00:00z'), $lt: new date('2021-04-30t23:59:59z') } } }, { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: '_id', as: 'movie_info' } }, { $unwind: '$movie_info' }, { $project: { movie_title: 1 } }, { $sort: { rating_timestamp_utc: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.movie_title':1,'ratings.movie_id':1,'movies.movie_id':1,'ratings.rating_timestamp_utc':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.21973929236499068,
+      "component_accuracy": 0.625,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "ratings.rating_timestamp_utc"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 13,
+      "sql_query": "SELECT T2.movie_title, T1.user_id, T1.rating_score, T1.critic FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.critic IS NOT NULL",
+      "generated_nosql": "```json\ndb.ratings.aggregate([\n  {\n    $match: { critic: { $ne: null } }\n  },\n  {\n    $lookup: {\n      from: \"movies\",\n      localField: \"movie_id\",\n      foreignField: \"_id\",\n      as: \"movie_details\"\n    }\n  },\n  {\n    $project: {\n      movie_title: \"$movie_details.title\",\n      user_id: 1,\n      rating_score: 1\n    }\n  },\n  {\n    $sort: { user_id: 1, rating_score: -1 }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.movie_title\":1,\"ratings.user_id\":1,\"ratings.rating_score\":1,\"ratings.critic\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```json db.ratings.aggregate([ { $match: { critic: { $ne: null } } }, { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: '_id', as: 'movie_details' } }, { $project: { movie_title: '$movie_details.title', user_id: 1, rating_score: 1 } }, { $sort: { user_id: 1, rating_score: -1 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.movie_title':1,'ratings.user_id':1,'ratings.rating_score':1,'ratings.critic':1,'ratings.movie_id':1,'movies.movie_id':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.00784313725490196,
+      "component_accuracy": 0.625,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.user_id",
+          "ratings.rating_score",
+          "ratings.critic",
+          "ratings.movie_id",
+          "movies.movie_id"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 14,
+      "sql_query": "SELECT CAST(SUM(CASE WHEN T2.rating_score = 5 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_title = 'Welcome to the Dollhouse'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_title: \"welcome to the dollhouse\"\n    }\n  },\n  {\n    $lookup: {\n      from: \"ratings\",\n      localField: \"movie_id\",\n      foreignField: \"movie_id\",\n      as: \"ratings\"\n    }\n  },\n  {\n    $project: {\n      rating_count: { $sum: { $cond: [{ $eq: [\"$ratings.rating_score\", 5] }, 1, 0] } },\n      total_rating_count: { $count: \"$_id\" }\n    }\n  },\n  {\n    $project: {\n      percentage: { $multiply: [{$divide: [\"$rating_count\", \"$total_rating_count\"]}, 100] }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_TITLE\":\"WELCOME\"},\"projection\":{\"ratings.rating_score\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'welcome to the dollhouse' } }, { $lookup: { from: 'ratings', localfield: 'movie_id', foreignfield: 'movie_id', as: 'ratings' } }, { $project: { rating_count: { $sum: { $cond: [{ $eq: ['$ratings.rating_score', 5] }, 1, 0] } }, total_rating_count: { $count: '$_id' } } }, { $project: { percentage: { $multiply: [{$divide: ['$rating_count', '$total_rating_count']}, 100] } } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_title':'welcome'},'projection':{'ratings.rating_score':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.30236220472440944,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.rating_score",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 15,
+      "sql_query": "SELECT CAST(SUM(CASE WHEN T1.movie_release_year = 2021 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(*) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $match: { movie_release_year: 2021 }\n    },\n    {\n        $group: {\n            _id: null,\n            count_total: { $sum: 1 },\n            sum_2021: { $sum: { $cond: [{ $eq: ['$movie_release_year', 2021] }, 1, 0] } }\n        }\n    },\n    {\n        $project: {\n            percentage: { $multiply: [{ $divide: ['$sum_2021', '$count_total'] }, 100] }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movies.movie_release_year\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_release_year: 2021 } }, { $group: { _id: null, count_total: { $sum: 1 }, sum_2021: { $sum: { $cond: [{ $eq: ['$movie_release_year', 2021] }, 1, 0] } } } }, { $project: { percentage: { $multiply: [{ $divide: ['$sum_2021', '$count_total'] }, 100] } } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movies.movie_release_year':1,'movies.movie_id':1,'ratings.movie_id':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.16956521739130434,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_release_year",
+          "movies.movie_id",
+          "ratings.movie_id"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 16,
+      "sql_query": "SELECT director_name FROM movies WHERE movie_title = 'Sex, Drink and Bloodshed'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      \"movie_title\": \"sex, drink and bloodshed\"\n    }\n  },\n  {\n    $project: {\n      \"director_name\": 1,\n      \"_id\": 0\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"MOVIE_TITLE\":\"SEX,\"},\"projection\":{\"director_name\":1,\"movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { 'movie_title': 'sex, drink and bloodshed' } }, { $project: { 'director_name': 1, '_id': 0 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'movie_title':'sex,'},'projection':{'director_name':1,'movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.4928571428571429,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "director_name",
+          "movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 17,
+      "sql_query": "SELECT list_title FROM lists ORDER BY list_followers DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n    {\n        $sort: {list_followers: -1}\n    },\n    {\n        $limit: 1\n    }\n]).project({list_title: 1})\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{},\"projection\":{\"list_title\":1,\"list_followers\":1,\"_id\":0},\"sort\":{\"LIST_FOLLOWERS\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $sort: {list_followers: -1} }, { $limit: 1 } ]).project({list_title: 1}) ```",
+      "gold_normalized": "{'collection':'lists','filter':{},'projection':{'list_title':1,'list_followers':1,'_id':0},'sort':{'list_followers':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.3292181069958848,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": false,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [
+          "list_title",
+          "list_followers"
+        ],
+        "sort_fields": [
+          "LIST_FOLLOWERS"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 18,
+      "sql_query": "SELECT list_url FROM lists WHERE list_update_timestamp_utc LIKE '2012%' AND list_followers BETWEEN 1 AND 2 ORDER BY list_update_timestamp_utc DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n  {\n    $match: {\n      \"list_update_timestamp_utc\": /^2012\\//,\n      \"list_followers\": { $gte: 1, $lte: 2 }\n    }\n  },\n  {\n    $sort: {\n      \"list_update_timestamp_utc\": -1\n    }\n  },\n  {\n    $project: {\n      list_url: 1\n    }\n  },\n  {\n    $limit: 1\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{},\"projection\":{\"list_url\":1,\"list_update_timestamp_utc\":1,\"list_followers\":1,\"_id\":0},\"sort\":{\"LIST_UPDATE_TIMESTAMP_UTC\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $match: { 'list_update_timestamp_utc': /^2012\\//, 'list_followers': { $gte: 1, $lte: 2 } } }, { $sort: { 'list_update_timestamp_utc': -1 } }, { $project: { list_url: 1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{},'projection':{'list_url':1,'list_update_timestamp_utc':1,'list_followers':1,'_id':0},'sort':{'list_update_timestamp_utc':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.556390977443609,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [
+          "list_url",
+          "list_update_timestamp_utc",
+          "list_followers"
+        ],
+        "sort_fields": [
+          "LIST_UPDATE_TIMESTAMP_UTC"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 19,
+      "sql_query": "SELECT list_id FROM lists_users WHERE user_id = 85981819 ORDER BY list_creation_date_utc ASC LIMIT 1",
+      "generated_nosql": "```json\ndb.lists_users.find(\n  { user_id: 85981819 },\n  {\n    list_id: 1,\n    _id: 0\n  }\n).sort({ list_creation_date_utc: 1 }).limit(1)\n```",
+      "gold_nosql": "{\"collection\":\"lists_users\",\"filter\":{\"USER_ID\":85981819},\"projection\":{\"list_id\":1,\"user_id\":1,\"list_creation_date_utc\":1,\"_id\":0},\"sort\":{\"LIST_CREATION_DATE_UTC\":1},\"limit\":1}",
+      "generated_normalized": "```json db.lists_users.find( { user_id: 85981819 }, { list_id: 1, _id: 0 } ).sort({ list_creation_date_utc: 1 }).limit(1) ```",
+      "gold_normalized": "{'collection':'lists_users','filter':{'user_id':85981819},'projection':{'list_id':1,'user_id':1,'list_creation_date_utc':1,'_id':0},'sort':{'list_creation_date_utc':1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.528052805280528,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": true,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists_users",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists_users",
+        "filter_fields": [
+          "USER_ID"
+        ],
+        "projection_fields": [
+          "list_id",
+          "user_id",
+          "list_creation_date_utc"
+        ],
+        "sort_fields": [
+          "LIST_CREATION_DATE_UTC"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 20,
+      "sql_query": "SELECT COUNT(*) FROM ratings WHERE movie_id = 1269 AND rating_score <= 2 AND user_eligible_for_trial = 1 AND user_has_payment_method = 1",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            movie_id: \"1269\",\n            rating_score: { $lte: 2 },\n            user_eligible_for_trial: true,\n            user_has_payment_method: true\n        }\n    },\n    {\n        $group: {\n            _id: null,\n            count: { $sum: 1 }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"MOVIE_ID\":1269},\"projection\":{\"movie_id\":1,\"rating_score\":1,\"user_eligible_for_trial\":1,\"user_has_payment_method\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { movie_id: '1269', rating_score: { $lte: 2 }, user_eligible_for_trial: true, user_has_payment_method: true } }, { $group: { _id: null, count: { $sum: 1 } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'movie_id':1269},'projection':{'movie_id':1,'rating_score':1,'user_eligible_for_trial':1,'user_has_payment_method':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.5051020408163265,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "MOVIE_ID"
+        ],
+        "projection_fields": [
+          "movie_id",
+          "rating_score",
+          "user_eligible_for_trial",
+          "user_has_payment_method"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 21,
+      "sql_query": "SELECT movie_title, movie_popularity FROM movies WHERE movie_release_year = 2021 AND director_name = 'Steven Spielberg'",
+      "generated_nosql": "```json\n{\n  \"pipeline\": [\n    {\n      \"$match\": {\n        \"movie_release_year\": 2021,\n        \"director_name\": \"steven spielberg\"\n      }\n    },\n    {\n      \"$project\": {\n        \"movie_title\": 1,\n        \"movie_popularity\": 1\n      }\n    }\n  ]\n}\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"MOVIE_RELEASE_YEAR\":2021},\"projection\":{\"movie_title\":1,\"movie_popularity\":1,\"movie_release_year\":1,\"director_name\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```json { 'pipeline': [ { '$match': { 'movie_release_year': 2021, 'director_name': 'steven spielberg' } }, { '$project': { 'movie_title': 1, 'movie_popularity': 1 } } ] } ```",
+      "gold_normalized": "{'collection':'movies','filter':{'movie_release_year':2021},'projection':{'movie_title':1,'movie_popularity':1,'movie_release_year':1,'director_name':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.49014084507042255,
+      "component_accuracy": 0.625,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": null,
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "MOVIE_RELEASE_YEAR"
+        ],
+        "projection_fields": [
+          "movie_title",
+          "movie_popularity",
+          "movie_release_year",
+          "director_name"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": true
+    },
+    {
+      "index": 22,
+      "sql_query": "SELECT movie_release_year, director_name FROM movies WHERE movie_release_year IS NOT NULL ORDER BY movie_release_year ASC LIMIT 1",
+      "generated_nosql": "```json\ndb.movies.aggregate([\n    {\n        $match: {\n            movie_release_year: { $ne: null }\n        }\n    },\n    {\n        $sort: {\n            movie_release_year: 1\n        }\n    },\n    {\n        $project: {\n            movie_release_year: 1,\n            director_name: 1\n        }\n    },\n    {\n        $limit: 1\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movie_release_year\":1,\"director_name\":1,\"_id\":0},\"sort\":{\"MOVIE_RELEASE_YEAR\":1},\"limit\":1}",
+      "generated_normalized": "```json db.movies.aggregate([ { $match: { movie_release_year: { $ne: null } } }, { $sort: { movie_release_year: 1 } }, { $project: { movie_release_year: 1, director_name: 1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movie_release_year':1,'director_name':1,'_id':0},'sort':{'movie_release_year':1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.4365781710914454,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movie_release_year",
+          "director_name"
+        ],
+        "sort_fields": [
+          "MOVIE_RELEASE_YEAR"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 23,
+      "sql_query": "SELECT user_id FROM lists_users WHERE user_subscriber = 1 GROUP BY user_id HAVING MAX(SUBSTR(list_creation_date_utc, 1, 4)) - MIN(SUBSTR(list_creation_date_utc, 1, 4)) >= 10",
+      "generated_nosql": "```javascript\ndb.lists_users.aggregate([\n  {\n    $match: {\n      user_subscriber: 1\n    }\n  },\n  {\n    $group: {\n      _id: \"$user_id\",\n      max_year: { $max: { $substr: [\"$list_creation_date_utc\", 0, 4] } },\n      min_year: { $min: { $substr: [\"$list_creation_date_utc\", 0, 4] } }\n    }\n  },\n  {\n    $project: {\n      user_id: \"$_id\",\n      max_year: 1,\n      min_year: 1\n    }\n  },\n  {\n    $match: {\n      $expr: { $gte: [{ $subtract: [\"$max_year\", \"$min_year\"] }, 10] }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists_users\",\"filter\":{\"USER_SUBSCRIBER\":1},\"projection\":{\"user_id\":1,\"user_subscriber\":1,\"list_creation_date_utc\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.lists_users.aggregate([ { $match: { user_subscriber: 1 } }, { $group: { _id: '$user_id', max_year: { $max: { $substr: ['$list_creation_date_utc', 0, 4] } }, min_year: { $min: { $substr: ['$list_creation_date_utc', 0, 4] } } } }, { $project: { user_id: '$_id', max_year: 1, min_year: 1 } }, { $match: { $expr: { $gte: [{ $subtract: ['$max_year', '$min_year'] }, 10] } } } ]) ```",
+      "gold_normalized": "{'collection':'lists_users','filter':{'user_subscriber':1},'projection':{'user_id':1,'user_subscriber':1,'list_creation_date_utc':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.3387387387387387,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "lists_users",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "lists_users",
+        "filter_fields": [
+          "USER_SUBSCRIBER"
+        ],
+        "projection_fields": [
+          "user_id",
+          "user_subscriber",
+          "list_creation_date_utc"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 24,
+      "sql_query": "SELECT COUNT(T2.user_id) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_title = 'Pavee Lackeen: The Traveller Girl' AND T2.rating_score = 4",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_title: \"pavee lackeen: the traveller girl\",\n      rating_score: 4\n    }\n  },\n  {\n    $group: {\n      _id: null,\n      count: { $sum: 1 }\n    }\n  },\n  {\n    $project: {\n      count: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_TITLE\":\"PAVEE\"},\"projection\":{\"ratings.user_id\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_title\":1,\"ratings.rating_score\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'pavee lackeen: the traveller girl', rating_score: 4 } }, { $group: { _id: null, count: { $sum: 1 } } }, { $project: { count: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_title':'pavee'},'projection':{'ratings.user_id':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_title':1,'ratings.rating_score':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.00975609756097561,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.user_id",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_title",
+          "ratings.rating_score"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 25,
+      "sql_query": "SELECT T2.user_eligible_for_trial, T1.list_followers FROM lists AS T1 INNER JOIN lists_users AS T2 ON T1.user_id = T1.user_id AND T1.list_id = T2.list_id WHERE T1.list_title = 'World War 2 and Kids'",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n  {\n    $match: {\n      list_title: \"world war 2 and kids\"\n    }\n  },\n  {\n    $lookup: {\n      from: \"lists_users\",\n      localField: \"_id\",\n      foreignField: \"list_id\",\n      as: \"list_users\"\n    }\n  },\n  {\n    $unwind: \"$list_users\"\n  },\n  {\n    $project: {\n      user_eligible_for_trial: \"$list_users.user_eligible_for_trial\",\n      list_followers: \"$list_users.count\"\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{\"T1.LIST_TITLE\":\"WORLD\"},\"projection\":{\"lists_users.user_eligible_for_trial\":1,\"lists.list_followers\":1,\"lists.user_id\":1,\"lists.list_id\":1,\"lists_users.list_id\":1,\"lists.list_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $match: { list_title: 'world war 2 and kids' } }, { $lookup: { from: 'lists_users', localfield: '_id', foreignfield: 'list_id', as: 'list_users' } }, { $unwind: '$list_users' }, { $project: { user_eligible_for_trial: '$list_users.user_eligible_for_trial', list_followers: '$list_users.count' } } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{'t1.list_title':'world'},'projection':{'lists_users.user_eligible_for_trial':1,'lists.list_followers':1,'lists.user_id':1,'lists.list_id':1,'lists_users.list_id':1,'lists.list_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.010256410256410256,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [
+          "T1.LIST_TITLE"
+        ],
+        "projection_fields": [
+          "lists_users.user_eligible_for_trial",
+          "lists.list_followers",
+          "lists.user_id",
+          "lists.list_id",
+          "lists_users.list_id",
+          "lists.list_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 26,
+      "sql_query": "SELECT T2.movie_release_year, T1.user_id FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_id = ( SELECT movie_id FROM movies WHERE director_name = 'Quentin Tarantino' ORDER BY movie_release_year ASC LIMIT 2, 1 ) AND T1.rating_score = 4",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {\n      \"movie_id\": { \n        \"$in\": [ \n          db.movies.aggregate([\n            {\n              $match: { director_name: 'quentin tarantino' }\n            },\n            {\n              $sort: { movie_release_year: 1 }\n            },\n            {\n              $skip: 2\n            },\n            {\n              $limit: 1\n            }\n          ]).toArray()[0].movie_id \n        ]\n      },\n      \"rating_score\": 4\n    }\n  },\n  {\n    $project: {\n      \"movie_release_year\": 1,\n      \"user_id\": 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T1.MOVIE_ID\":\"(\"},\"projection\":{\"movies.movie_release_year\":1,\"ratings.user_id\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movie_id\":1,\"director_name\":1,\"movie_release_year\":1,\"_id\":0},\"sort\":{\"MOVIE_RELEASE_YEAR\":1},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { 'movie_id': { '$in': [ db.movies.aggregate([ { $match: { director_name: 'quentin tarantino' } }, { $sort: { movie_release_year: 1 } }, { $skip: 2 }, { $limit: 1 } ]).toarray()[0].movie_id ] }, 'rating_score': 4 } }, { $project: { 'movie_release_year': 1, 'user_id': 1 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t1.movie_id':'('},'projection':{'movies.movie_release_year':1,'ratings.user_id':1,'ratings.movie_id':1,'movies.movie_id':1,'movie_id':1,'director_name':1,'movie_release_year':1,'_id':0},'sort':{'movie_release_year':1},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.1016949152542373,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": false,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T1.MOVIE_ID"
+        ],
+        "projection_fields": [
+          "movies.movie_release_year",
+          "ratings.user_id",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movie_id",
+          "director_name",
+          "movie_release_year"
+        ],
+        "sort_fields": [
+          "MOVIE_RELEASE_YEAR"
+        ],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 27,
+      "sql_query": "SELECT T2.director_url FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.user_id = 2452551 AND T1.critic_likes = 39",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            user_id: 2452551,\n            critic_likes: 39\n        }\n    },\n    {\n        $lookup: {\n            from: \"movies\",\n            localField: \"movie_id\",\n            foreignField: \"movie_id\",\n            as: \"movie_info\"\n        }\n    },\n    {\n        $project: {\n            director_url: { $arrayElemAt: [\"$movie_info.director_url\", 0] }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T1.USER_ID\":2452551},\"projection\":{\"movies.director_url\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"ratings.user_id\":1,\"ratings.critic_likes\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { user_id: 2452551, critic_likes: 39 } }, { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: 'movie_id', as: 'movie_info' } }, { $project: { director_url: { $arrayelemat: ['$movie_info.director_url', 0] } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t1.user_id':2452551},'projection':{'movies.director_url':1,'ratings.movie_id':1,'movies.movie_id':1,'ratings.user_id':1,'ratings.critic_likes':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.11088295687885011,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T1.USER_ID"
+        ],
+        "projection_fields": [
+          "movies.director_url",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "ratings.user_id",
+          "ratings.critic_likes"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 28,
+      "sql_query": "SELECT AVG(T1.rating_score), T2.director_name FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_title = 'When Will I Be Loved'",
+      "generated_nosql": "```json\n[\n  {\n    \"$match\": {\n      \"movie_title\": \"when will i be loved\"\n    }\n  },\n  {\n    \"$lookup\": {\n      \"from\": \"movies\",\n      \"localField\": \"movie_id\",\n      \"foreignField\": \"movie_id\",\n      \"as\": \"movie_info\"\n    }\n  },\n  {\n    \"$unwind\": \"$movie_info\"\n  },\n  {\n    \"$group\": {\n      \"_id\": null,\n      \"average_rating\": { \"$avg\": \"$movie_info.rating_score\" },\n      \"director_name\": { \"$first\": \"$movie_info.director_name\" }\n    }\n  },\n  {\n    \"$project\": {\n      \"average_rating\": 1,\n      \"director_name\": 1\n    }\n  }\n]\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.MOVIE_TITLE\":\"WHEN\"},\"projection\":{\"ratings.rating_score\":1,\"movies.director_name\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```json [ { '$match': { 'movie_title': 'when will i be loved' } }, { '$lookup': { 'from': 'movies', 'localfield': 'movie_id', 'foreignfield': 'movie_id', 'as': 'movie_info' } }, { '$unwind': '$movie_info' }, { '$group': { '_id': null, 'average_rating': { '$avg': '$movie_info.rating_score' }, 'director_name': { '$first': '$movie_info.director_name' } } }, { '$project': { 'average_rating': 1, 'director_name': 1 } } ] ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.movie_title':'when'},'projection':{'ratings.rating_score':1,'movies.director_name':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.03761755485893417,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": null,
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.rating_score",
+          "movies.director_name",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 29,
+      "sql_query": "SELECT T1.list_movie_number, T2.user_has_payment_method FROM lists AS T1 INNER JOIN lists_users AS T2 ON T1.list_id = T2.list_id ORDER BY T1.list_movie_number DESC LIMIT 1",
+      "generated_nosql": "```json\ndb.lists.aggregate([\n    {\n        $lookup: {\n            from: \"lists_users\",\n            localField: \"list_id\",\n            foreignField: \"list_id\",\n            as: \"list_user\"\n        }\n    },\n    {\n        $project: {\n            list_movie_number: 1,\n            user_has_payment_method: \"$list_user.user_has_payment_method\"\n        }\n    },\n    {\n        $sort: { list_movie_number: -1 }\n    },\n    {\n        $limit: 1\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{},\"projection\":{\"lists.list_movie_number\":1,\"lists_users.user_has_payment_method\":1,\"lists.list_id\":1,\"lists_users.list_id\":1,\"_id\":0},\"sort\":{\"T1.LIST_MOVIE_NUMBER\":-1},\"limit\":1}",
+      "generated_normalized": "```json db.lists.aggregate([ { $lookup: { from: 'lists_users', localfield: 'list_id', foreignfield: 'list_id', as: 'list_user' } }, { $project: { list_movie_number: 1, user_has_payment_method: '$list_user.user_has_payment_method' } }, { $sort: { list_movie_number: -1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{},'projection':{'lists.list_movie_number':1,'lists_users.user_has_payment_method':1,'lists.list_id':1,'lists_users.list_id':1,'_id':0},'sort':{'t1.list_movie_number':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.17425742574257425,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [
+          "lists.list_movie_number",
+          "lists_users.user_has_payment_method",
+          "lists.list_id",
+          "lists_users.list_id"
+        ],
+        "sort_fields": [
+          "T1.LIST_MOVIE_NUMBER"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 30,
+      "sql_query": "SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id ORDER BY T1.critic_likes DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {}\n  },\n  {\n    $lookup: {\n      from: \"movies\",\n      localField: \"movie_id\",\n      foreignField: \"_id\",\n      as: \"movie\"\n    }\n  },\n  {\n    $project: {\n      \"movie.movie_title\": 1,\n      critic_likes: 1\n    }\n  },\n  {\n    $sort: {\n      critic_likes: -1\n    }\n  },\n  {\n    $limit: 1\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.movie_title\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"ratings.critic_likes\":1,\"_id\":0},\"sort\":{\"T1.CRITIC_LIKES\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: {} }, { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: '_id', as: 'movie' } }, { $project: { 'movie.movie_title': 1, critic_likes: 1 } }, { $sort: { critic_likes: -1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.movie_title':1,'ratings.movie_id':1,'movies.movie_id':1,'ratings.critic_likes':1,'_id':0},'sort':{'t1.critic_likes':-1},'limit':1}",
+      "accuracy_level": "MAJOR_DIFFERENCES",
+      "similarity_score": 0.4009009009009009,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "ratings.critic_likes"
+        ],
+        "sort_fields": [
+          "T1.CRITIC_LIKES"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 31,
+      "sql_query": "SELECT MAX(T2.movie_popularity), MIN(T1.rating_timestamp_utc) FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_release_year BETWEEN 1920 AND 1929 AND T1.rating_score = 1 AND T1.user_has_payment_method = 1",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            \"movie_id\": { $exists: true },\n            \"rating_score\": 1,\n            \"user_has_payment_method\": 1,\n            \"movie_release_year\": { $gte: 1920, $lte: 1929 }\n        }\n    },\n    {\n        $group: {\n            _id: null,\n            max_movie_popularity: { $max: \"$T2.movie_popularity\" },\n            min_rating_timestamp_utc: { $min: \"$rating_timestamp_utc\" }\n        }\n    },\n    {\n        $project: {\n            max_movie_popularity: 1,\n            min_rating_timestamp_utc: 1\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.movie_popularity\":1,\"ratings.rating_timestamp_utc\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_release_year\":1,\"ratings.rating_score\":1,\"ratings.user_has_payment_method\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { 'movie_id': { $exists: true }, 'rating_score': 1, 'user_has_payment_method': 1, 'movie_release_year': { $gte: 1920, $lte: 1929 } } }, { $group: { _id: null, max_movie_popularity: { $max: '$t2.movie_popularity' }, min_rating_timestamp_utc: { $min: '$rating_timestamp_utc' } } }, { $project: { max_movie_popularity: 1, min_rating_timestamp_utc: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.movie_popularity':1,'ratings.rating_timestamp_utc':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_release_year':1,'ratings.rating_score':1,'ratings.user_has_payment_method':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.011834319526627219,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_popularity",
+          "ratings.rating_timestamp_utc",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_release_year",
+          "ratings.rating_score",
+          "ratings.user_has_payment_method"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 32,
+      "sql_query": "SELECT COUNT(T2.movie_title), T1.critic FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.director_name = 'Francis Ford Coppola' AND T2.movie_popularity > 1000",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $lookup: {\n            from: \"movies\",\n            localField: \"movie_id\",\n            foreignField: \"movie_id\",\n            as: \"movie_info\"\n        }\n    },\n    {\n        $match: {\n            \"movie_info.director_name\": \"francis ford coppola\",\n            \"movie_info.movie_popularity\": { $gt: 1000 }\n        }\n    },\n    {\n        $group: {\n            _id: null,\n            count: { $sum: 1 },\n            critic: { $first: \"$critic\" }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.DIRECTOR_NAME\":\"FRANCIS\"},\"projection\":{\"movies.movie_title\":1,\"ratings.critic\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.director_name\":1,\"movies.movie_popularity\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: 'movie_id', as: 'movie_info' } }, { $match: { 'movie_info.director_name': 'francis ford coppola', 'movie_info.movie_popularity': { $gt: 1000 } } }, { $group: { _id: null, count: { $sum: 1 }, critic: { $first: '$critic' } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.director_name':'francis'},'projection':{'movies.movie_title':1,'ratings.critic':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.director_name':1,'movies.movie_popularity':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.10726643598615918,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.DIRECTOR_NAME"
+        ],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.critic",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.director_name",
+          "movies.movie_popularity"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 33,
+      "sql_query": "SELECT T2.user_avatar_image_url FROM ratings AS T1 INNER JOIN ratings_users AS T2 ON T1.user_id = T2.user_id WHERE T2.user_id = 1103 AND rating_score = 5 AND T2.rating_date_utc = '2020-04-19'",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n    {\n        $match: {\n            user_id: \"1103\",\n            rating_score: 5,\n            rating_date_utc: \"2020-04-19\"\n        }\n    },\n    {\n        $lookup: {\n            from: \"ratings_users\",\n            localField: \"user_id\",\n            foreignField: \"user_id\",\n            as: \"user_data\"\n        }\n    },\n    {\n        $unwind: \"$user_data\"\n    },\n    {\n        $project: {\n            user_avatar_image_url: \"$user_data.user_avatar_image_url\",\n            _id: 0\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.USER_ID\":1103},\"projection\":{\"ratings_users.user_avatar_image_url\":1,\"ratings.user_id\":1,\"ratings_users.user_id\":1,\"rating_score\":1,\"ratings_users.rating_date_utc\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { user_id: '1103', rating_score: 5, rating_date_utc: '2020-04-19' } }, { $lookup: { from: 'ratings_users', localfield: 'user_id', foreignfield: 'user_id', as: 'user_data' } }, { $unwind: '$user_data' }, { $project: { user_avatar_image_url: '$user_data.user_avatar_image_url', _id: 0 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.user_id':1103},'projection':{'ratings_users.user_avatar_image_url':1,'ratings.user_id':1,'ratings_users.user_id':1,'rating_score':1,'ratings_users.rating_date_utc':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.020942408376963352,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.USER_ID"
+        ],
+        "projection_fields": [
+          "ratings_users.user_avatar_image_url",
+          "ratings.user_id",
+          "ratings_users.user_id",
+          "rating_score",
+          "ratings_users.rating_date_utc"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 34,
+      "sql_query": "SELECT T1.list_followers, T2.user_subscriber = 1 FROM lists AS T1 INNER JOIN lists_users AS T2 ON T1.user_id = T2.user_id AND T2.list_id = T2.list_id WHERE T2.user_id = 4208563 ORDER BY T1.list_followers DESC LIMIT 1",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n  {\n    $match: {\n      user_id: 4208563\n    }\n  },\n  {\n    $lookup: {\n      from: \"lists_users\",\n      localField: \"_id\", // Assuming 'list_id' is the field that references the _id in lists_users collection\n      foreignField: \"list_id\",\n      as: \"user_subscriber\"\n    }\n  },\n  {\n    $project: {\n      list_followers: 1,\n      user_subscriber: { $eq: [\"$user_subscriber.user_subscriber\", true] }\n    }\n  },\n  {\n    $sort: { list_followers: -1 }\n  },\n  {\n    $limit: 1\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{\"T2.USER_ID\":4208563},\"projection\":{\"lists.list_followers\":1,\"lists_users.user_subscriber\":1,\"lists.user_id\":1,\"lists_users.user_id\":1,\"lists_users.list_id\":1,\"_id\":0},\"sort\":{\"T1.LIST_FOLLOWERS\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $match: { user_id: 4208563 } }, { $lookup: { from: 'lists_users', localfield: '_id', // assuming 'list_id' is the field that references the _id in lists_users collection foreignfield: 'list_id', as: 'user_subscriber' } }, { $project: { list_followers: 1, user_subscriber: { $eq: ['$user_subscriber.user_subscriber', true] } } }, { $sort: { list_followers: -1 } }, { $limit: 1 } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{'t2.user_id':4208563},'projection':{'lists.list_followers':1,'lists_users.user_subscriber':1,'lists.user_id':1,'lists_users.user_id':1,'lists_users.list_id':1,'_id':0},'sort':{'t1.list_followers':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.030165912518853696,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [
+          "T2.USER_ID"
+        ],
+        "projection_fields": [
+          "lists.list_followers",
+          "lists_users.user_subscriber",
+          "lists.user_id",
+          "lists_users.user_id",
+          "lists_users.list_id"
+        ],
+        "sort_fields": [
+          "T1.LIST_FOLLOWERS"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 35,
+      "sql_query": "SELECT DISTINCT T1.movie_release_year, T1.movie_title FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_release_year = ( SELECT movie_release_year FROM movies GROUP BY movie_release_year ORDER BY COUNT(movie_id) DESC LIMIT 1 ) AND T2.rating_score = 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $lookup: {\n            from: \"ratings\",\n            localField: \"movie_id\",\n            foreignField: \"movie_id\",\n            as: \"ratingDocs\"\n        }\n    },\n    {\n        $match: {\n            \"movie_release_year\": db.movies.distinct(\"movie_release_year\").sort({ count: -1 })[0],\n            \"ratingDocs.rating_score\": 1\n        }\n    },\n    {\n        $project: {\n            _id: 0,\n            movie_title: \"$title\",\n            movie_release_year: \"$release_year\"\n        }\n    },\n    {\n        $sort: {\n            movie_release_year: 1\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_RELEASE_YEAR\":\"(\"},\"projection\":{\"movies.movie_release_year\":1,\"movies.movie_title\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movie_release_year\":1,\"movie_id\":1,\"_id\":0},\"sort\":{\"MOVIE_RELEASE_YEAR\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $lookup: { from: 'ratings', localfield: 'movie_id', foreignfield: 'movie_id', as: 'ratingdocs' } }, { $match: { 'movie_release_year': db.movies.distinct('movie_release_year').sort({ count: -1 })[0], 'ratingdocs.rating_score': 1 } }, { $project: { _id: 0, movie_title: '$title', movie_release_year: '$release_year' } }, { $sort: { movie_release_year: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_release_year':'('},'projection':{'movies.movie_release_year':1,'movies.movie_title':1,'movies.movie_id':1,'ratings.movie_id':1,'movie_release_year':1,'movie_id':1,'_id':0},'sort':{'movie_release_year':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.0364741641337386,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": false,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_RELEASE_YEAR"
+        ],
+        "projection_fields": [
+          "movies.movie_release_year",
+          "movies.movie_title",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movie_release_year",
+          "movie_id"
+        ],
+        "sort_fields": [
+          "MOVIE_RELEASE_YEAR"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 36,
+      "sql_query": "SELECT COUNT(T2.user_id) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_release_year = 1924 AND T1.director_name = 'Erich von Stroheim' AND T2.rating_score = 5 AND T2.user_has_payment_method = 1",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_release_year: 1924,\n      director_name: 'erich von stroheim',\n      rating_score: 5,\n      user_has_payment_method: true\n    }\n  },\n  {\n    $group: {\n      _id: null,\n      count: { $sum: 1 }\n    }\n  },\n  {\n    $project: {\n      count: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_RELEASE_YEAR\":1924},\"projection\":{\"ratings.user_id\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_release_year\":1,\"movies.director_name\":1,\"ratings.rating_score\":1,\"ratings.user_has_payment_method\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_release_year: 1924, director_name: 'erich von stroheim', rating_score: 5, user_has_payment_method: true } }, { $group: { _id: null, count: { $sum: 1 } } }, { $project: { count: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_release_year':1924},'projection':{'ratings.user_id':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_release_year':1,'movies.director_name':1,'ratings.rating_score':1,'ratings.user_has_payment_method':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.09125475285171103,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_RELEASE_YEAR"
+        ],
+        "projection_fields": [
+          "ratings.user_id",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_release_year",
+          "movies.director_name",
+          "ratings.rating_score",
+          "ratings.user_has_payment_method"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 37,
+      "sql_query": "SELECT AVG(T1.list_movie_number), T2.user_avatar_image_url FROM lists AS T1 INNER JOIN lists_users AS T2 ON T1.list_id = T2.list_id AND T1.user_id = T2.user_id WHERE T2.user_id = 8516503",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n  {\n    $lookup: {\n      from: \"lists_users\",\n      localField: \"list_id\",\n      foreignField: \"list_id\",\n      as: \"users\"\n    }\n  },\n  {\n    $match: {\n      \"users.user_id\": 8516503\n    }\n  },\n  {\n    $project: {\n      list_movie_number: 1,\n      user_avatar_image_url: \"$users.0.user_avatar_image_url\",\n      _id: 0\n    }\n  },\n  {\n    $group: {\n      _id: null,\n      avg_list_movie_number: { $avg: \"$list_movie_number\" }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{\"T2.USER_ID\":8516503},\"projection\":{\"lists.list_movie_number\":1,\"lists_users.user_avatar_image_url\":1,\"lists.list_id\":1,\"lists_users.list_id\":1,\"lists.user_id\":1,\"lists_users.user_id\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $lookup: { from: 'lists_users', localfield: 'list_id', foreignfield: 'list_id', as: 'users' } }, { $match: { 'users.user_id': 8516503 } }, { $project: { list_movie_number: 1, user_avatar_image_url: '$users.0.user_avatar_image_url', _id: 0 } }, { $group: { _id: null, avg_list_movie_number: { $avg: '$list_movie_number' } } } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{'t2.user_id':8516503},'projection':{'lists.list_movie_number':1,'lists_users.user_avatar_image_url':1,'lists.list_id':1,'lists_users.list_id':1,'lists.user_id':1,'lists_users.user_id':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.1821138211382114,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [
+          "T2.USER_ID"
+        ],
+        "projection_fields": [
+          "lists.list_movie_number",
+          "lists_users.user_avatar_image_url",
+          "lists.list_id",
+          "lists_users.list_id",
+          "lists.user_id",
+          "lists_users.user_id"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 38,
+      "sql_query": "SELECT COUNT(T2.user_id), T2.rating_url FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_title = 'The Magnificent Ambersons' AND T2.rating_score <= 2",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $match: { movie_title: \"the magnificent ambersons\", rating_score: { $lte: 2 } }\n    },\n    {\n        $group: {\n            _id: null,\n            count_user_id: { $sum: 1 },\n            rating_url: { $first: \"$rating_url\" }\n        }\n    },\n    {\n        $project: { count_user_id: 1, rating_url: 1 }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_TITLE\":\"THE\"},\"projection\":{\"ratings.user_id\":1,\"ratings.rating_url\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_title\":1,\"ratings.rating_score\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'the magnificent ambersons', rating_score: { $lte: 2 } } }, { $group: { _id: null, count_user_id: { $sum: 1 }, rating_url: { $first: '$rating_url' } } }, { $project: { count_user_id: 1, rating_url: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_title':'the'},'projection':{'ratings.user_id':1,'ratings.rating_url':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_title':1,'ratings.rating_score':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.011928429423459244,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.user_id",
+          "ratings.rating_url",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_title",
+          "ratings.rating_score"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 39,
+      "sql_query": "SELECT T1.list_followers FROM lists AS T1 INNER JOIN lists_users AS T2 ON T1.user_id = T2.user_id AND T1.list_id = T2.list_id WHERE T2.list_creation_date_utc BETWEEN '2016-02-01' AND '2016-02-29' AND T2.user_eligible_for_trial = 1",
+      "generated_nosql": "```javascript\ndb.lists.aggregate([\n    {\n        $match: {\n            \"user_id\": { \"$exists\": true },\n            \"list_creation_date_utc\": { \"$gte\": new Date(\"2016-02-01\"), \"$lte\": new Date(\"2016-02-29\") },\n            \"user_eligible_for_trial\": 1\n        }\n    },\n    {\n        $lookup: {\n            from: \"lists_users\",\n            localField: \"_id\",\n            foreignField: \"list_id\",\n            as: \"listUsers\"\n        }\n    },\n    {\n        $unwind: \"$listUsers\"\n    },\n    {\n        $project: {\n            list_followers: 1,\n            _id: 0\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"lists\",\"filter\":{},\"projection\":{\"lists.list_followers\":1,\"lists.user_id\":1,\"lists_users.user_id\":1,\"lists.list_id\":1,\"lists_users.list_id\":1,\"lists_users.list_creation_date_utc\":1,\"lists_users.user_eligible_for_trial\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.lists.aggregate([ { $match: { 'user_id': { '$exists': true }, 'list_creation_date_utc': { '$gte': new date('2016-02-01'), '$lte': new date('2016-02-29') }, 'user_eligible_for_trial': 1 } }, { $lookup: { from: 'lists_users', localfield: '_id', foreignfield: 'list_id', as: 'listusers' } }, { $unwind: '$listusers' }, { $project: { list_followers: 1, _id: 0 } } ]) ```",
+      "gold_normalized": "{'collection':'lists','filter':{},'projection':{'lists.list_followers':1,'lists.user_id':1,'lists_users.user_id':1,'lists.list_id':1,'lists_users.list_id':1,'lists_users.list_creation_date_utc':1,'lists_users.user_eligible_for_trial':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.021604938271604937,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "lists",
+        "filter_fields": [],
+        "projection_fields": [
+          "lists.list_followers",
+          "lists.user_id",
+          "lists_users.user_id",
+          "lists.list_id",
+          "lists_users.list_id",
+          "lists_users.list_creation_date_utc",
+          "lists_users.user_eligible_for_trial"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 40,
+      "sql_query": "SELECT T2.rating_url FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_id = 22030372 AND T2.rating_score = 5 AND T1.movie_title = 'Riff-Raff'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $match: {\n            movie_title: \"riff-raf\",\n            ratings.user_id: 22030372,\n            ratings.rating_score: 5\n        }\n    },\n    {\n        $project: {\n            rating_url: 1\n        }\n    },\n    {\n        $sort: {\n            movie_title: 1 // Assuming you want to sort by movie title in ascending order\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T2.USER_ID\":22030372},\"projection\":{\"ratings.rating_url\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings.user_id\":1,\"ratings.rating_score\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'riff-raf', ratings.user_id: 22030372, ratings.rating_score: 5 } }, { $project: { rating_url: 1 } }, { $sort: { movie_title: 1 // assuming you want to sort by movie title in ascending order } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t2.user_id':22030372},'projection':{'ratings.rating_url':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings.user_id':1,'ratings.rating_score':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.14227642276422764,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T2.USER_ID"
+        ],
+        "projection_fields": [
+          "ratings.rating_url",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings.user_id",
+          "ratings.rating_score",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 41,
+      "sql_query": "SELECT T2.director_name FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_release_year BETWEEN 1960 AND 1985 GROUP BY T2.director_name HAVING COUNT(T2.movie_id) > 10",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {\n      \"movie_release_year\": { $gte: 1960, $lte: 1985 }\n    }\n  },\n  {\n    $group: {\n      _id: \"$director_name\",\n      movie_count: { $sum: 1 }\n    }\n  },\n  {\n    $match: {\n      movie_count: { $gt: 10 }\n    }\n  },\n  {\n    $project: {\n      director_name: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.director_name\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_release_year\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { 'movie_release_year': { $gte: 1960, $lte: 1985 } } }, { $group: { _id: '$director_name', movie_count: { $sum: 1 } } }, { $match: { movie_count: { $gt: 10 } } }, { $project: { director_name: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.director_name':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_release_year':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.2535211267605634,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.director_name",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_release_year"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 42,
+      "sql_query": "SELECT COUNT(T2.user_id) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_trialist = 0 AND T2.rating_score <= 2 AND T1.movie_title = 'The South'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $match: {\n            movie_title: \"the south\",\n            user_trialist: 0,\n            rating_score: { $lte: 2 }\n        }\n    },\n    {\n        $group: {\n            _id: null,\n            count: { $sum: 1 }\n        }\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T2.USER_TRIALIST\":0},\"projection\":{\"ratings.user_id\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings.user_trialist\":1,\"ratings.rating_score\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'the south', user_trialist: 0, rating_score: { $lte: 2 } } }, { $group: { _id: null, count: { $sum: 1 } } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t2.user_trialist':0},'projection':{'ratings.user_id':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings.user_trialist':1,'ratings.rating_score':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.0784313725490196,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T2.USER_TRIALIST"
+        ],
+        "projection_fields": [
+          "ratings.user_id",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings.user_trialist",
+          "ratings.rating_score",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 43,
+      "sql_query": "SELECT T2.critic_likes FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_trialist = 0 AND T2.rating_score = 5 AND T1.movie_title = 'Apocalypse Now'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      \"user_trialist\": 0,\n      \"rating_score\": 5,\n      \"movie_title\": \"apocalypse now\"\n    }\n  },\n  {\n    $project: {\n      critic_likes: 1,\n      _id: 0\n    }\n  },\n  {\n    $sort: {\n      \"_id\": 1 // Assuming movie_id is the primary key and needs to be sorted in ascending order\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T2.USER_TRIALIST\":0},\"projection\":{\"ratings.critic_likes\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings.user_trialist\":1,\"ratings.rating_score\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { 'user_trialist': 0, 'rating_score': 5, 'movie_title': 'apocalypse now' } }, { $project: { critic_likes: 1, _id: 0 } }, { $sort: { '_id': 1 // assuming movie_id is the primary key and needs to be sorted in ascending order } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t2.user_trialist':0},'projection':{'ratings.critic_likes':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings.user_trialist':1,'ratings.rating_score':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.0735009671179884,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T2.USER_TRIALIST"
+        ],
+        "projection_fields": [
+          "ratings.critic_likes",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings.user_trialist",
+          "ratings.rating_score",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 44,
+      "sql_query": "SELECT AVG(T2.rating_score), T1.director_name FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_title = 'The Crowd'",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_title: \"the crowd\"\n    }\n  },\n  {\n    $lookup: {\n      from: \"ratings\",\n      localField: \"movie_id\",\n      foreignField: \"movie_id\",\n      as: \"ratings_docs\"\n    }\n  },\n  {\n    $project: {\n      _id: 0,\n      average_rating_score: { $avg: \"$ratings_docs.rating_score\" },\n      director_name: 1\n    }\n  },\n  {\n    $sort: {\n      director_name: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T1.MOVIE_TITLE\":\"THE\"},\"projection\":{\"ratings.rating_score\":1,\"movies.director_name\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'the crowd' } }, { $lookup: { from: 'ratings', localfield: 'movie_id', foreignfield: 'movie_id', as: 'ratings_docs' } }, { $project: { _id: 0, average_rating_score: { $avg: '$ratings_docs.rating_score' }, director_name: 1 } }, { $sort: { director_name: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t1.movie_title':'the'},'projection':{'ratings.rating_score':1,'movies.director_name':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.018518518518518517,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T1.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.rating_score",
+          "movies.director_name",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 45,
+      "sql_query": "SELECT MIN(movie_release_year) FROM movies WHERE director_name = ( SELECT T2.director_name FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_release_year BETWEEN 1960 AND 1985 GROUP BY T2.director_name ORDER BY COUNT(T2.director_name) DESC LIMIT 1 )",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: { director_name: { $exists: true }, movie_release_year: { $gte: 1960, $lte: 1985 } }\n  },\n  {\n    $group: {\n      _id: \"$director_name\",\n      count: { $sum: 1 }\n    }\n  },\n  {\n    $sort: { count: -1 }\n  },\n  {\n    $limit: 1\n  },\n  {\n    $lookup: {\n      from: \"movies\",\n      localField: \"_id\",\n      foreignField: \"director_name\",\n      as: \"result\"\n    }\n  },\n  {\n    $unwind: \"$result\"\n  },\n  {\n    $project: { movie_release_year: 1, _id: 0 }\n  },\n  {\n    $sort: { movie_release_year: 1 }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"DIRECTOR_NAME\":\"(\"},\"projection\":{\"movie_release_year\":1,\"director_name\":1,\"movies.director_name\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_release_year\":1,\"_id\":0},\"sort\":{\"T2.DIRECTOR_NAME\":-1},\"limit\":1}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { director_name: { $exists: true }, movie_release_year: { $gte: 1960, $lte: 1985 } } }, { $group: { _id: '$director_name', count: { $sum: 1 } } }, { $sort: { count: -1 } }, { $limit: 1 }, { $lookup: { from: 'movies', localfield: '_id', foreignfield: 'director_name', as: 'result' } }, { $unwind: '$result' }, { $project: { movie_release_year: 1, _id: 0 } }, { $sort: { movie_release_year: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'director_name':'('},'projection':{'movie_release_year':1,'director_name':1,'movies.director_name':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_release_year':1,'_id':0},'sort':{'t2.director_name':-1},'limit':1}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.06552706552706553,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": true,
+        "has_limit": true,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "DIRECTOR_NAME"
+        ],
+        "projection_fields": [
+          "movie_release_year",
+          "director_name",
+          "movies.director_name",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_release_year"
+        ],
+        "sort_fields": [
+          "T2.DIRECTOR_NAME"
+        ],
+        "limit_value": 1
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 46,
+      "sql_query": "SELECT T1.movie_title, MAX(T2.rating_score) FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T1.movie_popularity BETWEEN 400 AND 500 GROUP BY T1.movie_title",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n    {\n        $match: {\n            movie_popularity: { $gte: 400, $lte: 500 }\n        }\n    },\n    {\n        $group: {\n            _id: \"$movie_title\",\n            max_rating_score: { $max: \"$rating_score\" }\n        }\n    },\n    {\n        $sort: { movie_title: 1 } // Sort by movie_title in ascending order\n    }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{},\"projection\":{\"movies.movie_title\":1,\"ratings.rating_score\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"movies.movie_popularity\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_popularity: { $gte: 400, $lte: 500 } } }, { $group: { _id: '$movie_title', max_rating_score: { $max: '$rating_score' } } }, { $sort: { movie_title: 1 } // sort by movie_title in ascending order } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{},'projection':{'movies.movie_title':1,'ratings.rating_score':1,'movies.movie_id':1,'ratings.movie_id':1,'movies.movie_popularity':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.2394678492239468,
+      "component_accuracy": 0.5,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": false,
+        "sort_match": false,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": true,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.rating_score",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "movies.movie_popularity"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 47,
+      "sql_query": "SELECT T2.rating_url FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_id = 45579900 AND T1.movie_title = 'The Vertical Ray of the Sun' AND T2.critic_likes = 20",
+      "generated_nosql": "```javascript\ndb.movies.aggregate([\n  {\n    $match: {\n      movie_title: \"the vertical ray of the sun\",\n      user_id: 45579900,\n      critic_likes: 20\n    }\n  },\n  {\n    $project: {\n      rating_url: 1\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"movies\",\"filter\":{\"T2.USER_ID\":45579900},\"projection\":{\"ratings.rating_url\":1,\"movies.movie_id\":1,\"ratings.movie_id\":1,\"ratings.user_id\":1,\"movies.movie_title\":1,\"ratings.critic_likes\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.movies.aggregate([ { $match: { movie_title: 'the vertical ray of the sun', user_id: 45579900, critic_likes: 20 } }, { $project: { rating_url: 1 } } ]) ```",
+      "gold_normalized": "{'collection':'movies','filter':{'t2.user_id':45579900},'projection':{'ratings.rating_url':1,'movies.movie_id':1,'ratings.movie_id':1,'ratings.user_id':1,'movies.movie_title':1,'ratings.critic_likes':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.10945273631840796,
+      "component_accuracy": 0.875,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "movies",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "movies",
+        "filter_fields": [
+          "T2.USER_ID"
+        ],
+        "projection_fields": [
+          "ratings.rating_url",
+          "movies.movie_id",
+          "ratings.movie_id",
+          "ratings.user_id",
+          "movies.movie_title",
+          "ratings.critic_likes"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 48,
+      "sql_query": "SELECT AVG(T2.movie_popularity) FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.director_name = 'Christopher Nolan'",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {\n      \"movie_director\": \"chrisopher nolan\"\n    }\n  },\n  {\n    $group: {\n      _id: null,\n      average_movie_popularity: { $avg: \"$movie_popularity\" }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.DIRECTOR_NAME\":\"CHRISTOPHER\"},\"projection\":{\"movies.movie_popularity\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.director_name\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { 'movie_director': 'chrisopher nolan' } }, { $group: { _id: null, average_movie_popularity: { $avg: '$movie_popularity' } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.director_name':'christopher'},'projection':{'movies.movie_popularity':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.director_name':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.046753246753246755,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.DIRECTOR_NAME"
+        ],
+        "projection_fields": [
+          "movies.movie_popularity",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.director_name"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 49,
+      "sql_query": "SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id INNER JOIN lists AS T3 ON T3.user_id = T1.user_id WHERE T1.rating_timestamp_utc BETWEEN '2013-01-01' AND '2013-12-31' AND T3.list_title = '100 Greatest Living American Filmmakers'",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {\n      rating_timestamp_utc: { $gte: ISODate('2013-01-01T00:00:00.000Z'), $lte: ISODate('2013-12-31T23:59:59.999Z') },\n      user_id: { $in: db.lists.distinct('user_id', { list_title: '100 Greatest Living American Filmmakers' }) }\n    }\n  },\n  {\n    $lookup: {\n      from: 'movies',\n      localField: 'movie_id',\n      foreignField: '_id',\n      as: 'movie_details'\n    }\n  },\n  {\n    $project: {\n      _id: 0,\n      movie_title: { $arrayElemAt: ['$movie_details.movie_title', 0] }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{},\"projection\":{\"movies.movie_title\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"lists.user_id\":1,\"ratings.user_id\":1,\"ratings.rating_timestamp_utc\":1,\"lists.list_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { rating_timestamp_utc: { $gte: isodate('2013-01-01t00:00:00.000z'), $lte: isodate('2013-12-31t23:59:59.999z') }, user_id: { $in: db.lists.distinct('user_id', { list_title: '100 greatest living american filmmakers' }) } } }, { $lookup: { from: 'movies', localfield: 'movie_id', foreignfield: '_id', as: 'movie_details' } }, { $project: { _id: 0, movie_title: { $arrayelemat: ['$movie_details.movie_title', 0] } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{},'projection':{'movies.movie_title':1,'ratings.movie_id':1,'movies.movie_id':1,'lists.user_id':1,'ratings.user_id':1,'ratings.rating_timestamp_utc':1,'lists.list_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.02275960170697013,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": false,
+        "projection_match": true,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": false,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [
+          "movies.movie_title",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "lists.user_id",
+          "ratings.user_id",
+          "ratings.rating_timestamp_utc",
+          "lists.list_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    },
+    {
+      "index": 50,
+      "sql_query": "SELECT AVG(T1.rating_score), T2.movie_release_year FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_title = 'Pavee Lackeen: The Traveller Girl'",
+      "generated_nosql": "```javascript\ndb.ratings.aggregate([\n  {\n    $match: {\n      \"movie_title\": \"pavee lackeen: the traveller girl\"\n    }\n  },\n  {\n    $group: {\n      _id: null,\n      \"avg_rating_score\": { $avg: \"$rating_score\" },\n      \"movie_release_year\": { $first: \"$movie_release_year\" }\n    }\n  }\n])\n```",
+      "gold_nosql": "{\"collection\":\"ratings\",\"filter\":{\"T2.MOVIE_TITLE\":\"PAVEE\"},\"projection\":{\"ratings.rating_score\":1,\"movies.movie_release_year\":1,\"ratings.movie_id\":1,\"movies.movie_id\":1,\"movies.movie_title\":1,\"_id\":0},\"sort\":{},\"limit\":0}",
+      "generated_normalized": "```javascript db.ratings.aggregate([ { $match: { 'movie_title': 'pavee lackeen: the traveller girl' } }, { $group: { _id: null, 'avg_rating_score': { $avg: '$rating_score' }, 'movie_release_year': { $first: '$movie_release_year' } } } ]) ```",
+      "gold_normalized": "{'collection':'ratings','filter':{'t2.movie_title':'pavee'},'projection':{'ratings.rating_score':1,'movies.movie_release_year':1,'ratings.movie_id':1,'movies.movie_id':1,'movies.movie_title':1,'_id':0},'sort':{},'limit':0}",
+      "accuracy_level": "INCORRECT",
+      "similarity_score": 0.02159827213822894,
+      "component_accuracy": 0.75,
+      "component_comparison": {
+        "collection_match": true,
+        "filter_match": true,
+        "projection_match": false,
+        "sort_match": true,
+        "limit_match": true,
+        "aggregation_match": false,
+        "filter_fields_match": true,
+        "projection_fields_match": true
+      },
+      "generated_components": {
+        "has_collection": false,
+        "has_filter": true,
+        "has_projection": false,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": true,
+        "collection_name": "ratings",
+        "filter_fields": [],
+        "projection_fields": [],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "gold_components": {
+        "has_collection": true,
+        "has_filter": true,
+        "has_projection": true,
+        "has_sort": false,
+        "has_limit": false,
+        "has_aggregation": false,
+        "collection_name": "ratings",
+        "filter_fields": [
+          "T2.MOVIE_TITLE"
+        ],
+        "projection_fields": [
+          "ratings.rating_score",
+          "movies.movie_release_year",
+          "ratings.movie_id",
+          "movies.movie_id",
+          "movies.movie_title"
+        ],
+        "sort_fields": [],
+        "limit_value": null
+      },
+      "parsed_successfully": false
+    }
+  ]
+}

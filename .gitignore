@@ -9,6 +9,7 @@ Data/Spider/tables.json
 Data/Spider/train_spider.json 
 Data/Spider/train_others.json 
 Data/Spider/train_gold.sql
+Data/Spider/noSQL2SQL*
 WARP.md
 final_model
 merged_model

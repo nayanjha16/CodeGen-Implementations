@@ -81,6 +81,12 @@ with col3:
 
 # User input
 question = st.text_input("Enter your question:", placeholder="e.g., What are the names of all students?")
+nosql_target = st.selectbox(
+    "Select target NoSQL dialect:",
+    ["mongodb", "dynamodb", "cosmosdb"],
+    index=0,
+    help="Choose how the SQL should be translated."
+)
 
 if st.button("Generate SQL", type="primary"):
     if not question.strip():
@@ -93,10 +99,18 @@ if st.button("Generate SQL", type="primary"):
 
                 # Generate SQL
                 sql = generator.generate_sql(question, subgraph)
+                # Generate NoSQL from SQL
+                nosql = generator.generate_nosql(sql, subgraph, target=nosql_target)
 
                 # Display results
-                st.success("SQL Query Generated!")
-                st.code(sql, language="sql")
+                st.success("SQL and NoSQL Generated!")
+                col_sql, col_nosql = st.columns(2)
+                with col_sql:
+                    st.subheader("SQL")
+                    st.code(sql, language="sql")
+                with col_nosql:
+                    st.subheader(f"NoSQL ({nosql_target})")
+                    st.code(nosql, language="javascript")
 
             except Exception as e:
                 st.error(f"❌ Error generating SQL: {e}")
