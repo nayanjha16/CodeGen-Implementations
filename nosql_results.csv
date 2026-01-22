@@ -1,0 +1,51 @@
+index,validation_level,validation_percentage,issues
+1,MOSTLY_CORRECT,0.8888888888888888,"Limit mismatch: SQL has 1, NoSQL has None"
+2,MINOR_ISSUES,0.6666666666666666,"SQL selects specific columns but NoSQL has no projection; SQL has ORDER BY but NoSQL has no sort; Limit mismatch: SQL has 1, NoSQL has None"
+3,CORRECT,1.0,
+4,CORRECT,1.0,
+5,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+6,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+7,CORRECT,1.0,
+8,CORRECT,1.0,
+9,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+10,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+11,MINOR_ISSUES,0.7777777777777778,SQL has WHERE clause but NoSQL has no filter; SQL selects specific columns but NoSQL has no projection
+12,CORRECT,1.0,
+13,CORRECT,1.0,
+14,CORRECT,1.0,
+15,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+16,CORRECT,1.0,
+17,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+18,CORRECT,1.0,
+19,MINOR_ISSUES,0.7777777777777778,"SQL selects specific columns but NoSQL has no projection; Limit mismatch: SQL has 1, NoSQL has None"
+20,CORRECT,1.0,
+21,MINOR_ISSUES,0.7777777777777778,SQL has WHERE clause but NoSQL has no filter; SQL selects specific columns but NoSQL has no projection
+22,CORRECT,1.0,
+23,CORRECT,1.0,
+24,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+25,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+26,MINOR_ISSUES,0.7777777777777778,"Limit mismatch: SQL has 2, NoSQL has 1; SQL has JOINs but NoSQL doesn't use $lookup"
+27,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+28,CORRECT,1.0,
+29,CORRECT,1.0,
+30,CORRECT,1.0,
+31,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+32,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+33,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+34,CORRECT,1.0,
+35,MINOR_ISSUES,0.6666666666666666,"SQL selects specific columns but NoSQL has no projection; Limit mismatch: SQL has 1, NoSQL has None; SQL has GROUP BY but NoSQL doesn't use $group"
+36,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+37,CORRECT,1.0,
+38,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+39,CORRECT,1.0,
+40,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+41,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+42,MINOR_ISSUES,0.7777777777777778,SQL selects specific columns but NoSQL has no projection; SQL has JOINs but NoSQL doesn't use $lookup
+43,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+44,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+45,CORRECT,1.0,
+46,MINOR_ISSUES,0.7777777777777778,SQL selects specific columns but NoSQL has no projection; SQL has JOINs but NoSQL doesn't use $lookup
+47,MOSTLY_CORRECT,0.8888888888888888,SQL has JOINs but NoSQL doesn't use $lookup
+48,MINOR_ISSUES,0.7777777777777778,SQL selects specific columns but NoSQL has no projection; SQL has JOINs but NoSQL doesn't use $lookup
+49,MOSTLY_CORRECT,0.8888888888888888,SQL selects specific columns but NoSQL has no projection
+50,MINOR_ISSUES,0.7777777777777778,SQL selects specific columns but NoSQL has no projection; SQL has JOINs but NoSQL doesn't use $lookup

@@ -1,0 +1,51 @@
+question,db_id,accuracy_level,similarity_score,component_accuracy
+How many singers do we have?,concert_singer,EXACT_MATCH,1.0,1.0
+What is the total number of singers?,concert_singer,EXACT_MATCH,1.0,1.0
+"Show name, country, age for all singers ordered by age from the oldest to the youngest.",concert_singer,INCORRECT,0.0866721177432543,0.4
+"What are the names, countries, and ages for every singer in descending order of age?",concert_singer,INCORRECT,0.4935064935064935,0.9
+"What is the average, minimum, and maximum age of all singers from France?",concert_singer,INCORRECT,0.04022346368715084,0.8
+"What is the average, minimum, and maximum age for all French singers?",concert_singer,SEMANTICALLY_EQUIVALENT,0.958904109589041,1.0
+Show the name and the release year of the song by the youngest singer.,concert_singer,MAJOR_DIFFERENCES,0.5206611570247934,0.6
+What are the names and release years for all the songs of the youngest singer?,concert_singer,INCORRECT,0.08440999138673558,0.4
+What are all distinct countries where singers above age 20 are from?,concert_singer,SEMANTICALLY_EQUIVALENT,0.9702970297029703,1.0
+What are  the different countries with singers above age 20?,concert_singer,EXACT_MATCH,1.0,1.0
+Show all countries and the number of singers in each country.,concert_singer,EXACT_MATCH,1.0,1.0
+How many singers are from each country?,concert_singer,MINOR_DIFFERENCES,0.8244274809160306,0.9
+List all song names by singers above the average age.,concert_singer,MAJOR_DIFFERENCES,0.5420560747663551,0.7
+What are all the song names by singers who are older than average?,concert_singer,INCORRECT,0.35356200527704484,0.9
+Show location and name for all stadiums with a capacity between 5000 and 10000.,concert_singer,MAJOR_DIFFERENCES,0.5517241379310345,0.9
+What are the locations and names of all stations with capacity between 5000 and 10000?,concert_singer,SEMANTICALLY_EQUIVALENT,0.9864864864864865,0.9
+What is the average and the maximum capacity of all stadiums?,concert_singer,MINOR_DIFFERENCES,0.8775510204081632,0.9
+What is the average and maximum capacities for all stations?,concert_singer,MINOR_DIFFERENCES,0.875,1.0
+What is the name and capacity for the stadium with highest average attendance?,concert_singer,INCORRECT,0.16020671834625322,0.6
+What is the name and capacity for the stadium with the highest average attendance?,concert_singer,INCORRECT,0.07580174927113703,0.9
+How many concerts are there in year 2014 or 2015?,concert_singer,SEMANTICALLY_EQUIVALENT,0.9682539682539683,1.0
+How many concerts occurred in 2014 or 2015?,concert_singer,SEMANTICALLY_EQUIVALENT,0.9682539682539683,1.0
+Show the stadium name and the number of concerts in each stadium.,concert_singer,MAJOR_DIFFERENCES,0.6039603960396039,0.7
+"For each stadium, how many concerts play there?",concert_singer,INCORRECT,0.01919055234346168,0.8
+Show the stadium name and capacity with most number of concerts in year 2014 or after.,concert_singer,MAJOR_DIFFERENCES,0.7671232876712328,0.9
+What is the name and capacity of the stadium  with the most concerts after 2013?,concert_singer,MAJOR_DIFFERENCES,0.76,0.9
+Which year has most number of concerts?,concert_singer,INCORRECT,0.46464646464646464,1.0
+What is the year that had the most concerts?,concert_singer,EXACT_MATCH,1.0,1.0
+Show the stadium names without any concert.,concert_singer,MINOR_DIFFERENCES,0.9176470588235294,0.9
+What are the names of the stadiums without any concerts?,concert_singer,INCORRECT,0.432,0.8
+Show countries where a singer above age 40 and a singer below 30 are from.,concert_singer,MINOR_DIFFERENCES,0.9073170731707317,0.9
+Show names for all stadiums except for stadiums having a concert in year 2014.,concert_singer,MAJOR_DIFFERENCES,0.5436893203883495,0.9
+What are the names of all stadiums that did not have a concert in 2014?,concert_singer,INCORRECT,0.296137339055794,0.7
+Show the name and theme for all concerts and the number of singers in each concert.,concert_singer,MINOR_DIFFERENCES,0.8852459016393442,0.9
+"What are the names, themes, and number of singers for each and every concert?",concert_singer,INCORRECT,0.25813953488372093,0.8
+List singer names and number of concerts for each singer.,concert_singer,MINOR_DIFFERENCES,0.8853754940711462,0.9
+What are the names of the singers and number of concerts for each person?,concert_singer,MAJOR_DIFFERENCES,0.7615062761506276,0.9
+List all singer names in concerts in year 2014.,concert_singer,MAJOR_DIFFERENCES,0.6338028169014085,0.9
+What are the names of the singers who performed in a concert in 2014?,concert_singer,INCORRECT,0.3914209115281501,0.9
+what is the name and nation of the singer who have a song having 'Hey' in its name?,concert_singer,MINOR_DIFFERENCES,0.8531468531468531,1.0
+What is the name and country of origin of every singer who has a song with the word 'Hey' in its title?,concert_singer,INCORRECT,0.48034934497816595,0.5
+Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.,concert_singer,INCORRECT,0.2396694214876033,0.7
+What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?,concert_singer,INCORRECT,0.01347743165924984,0.7
+Find the number of concerts happened in the stadium with the highest capacity.,concert_singer,MAJOR_DIFFERENCES,0.5647840531561462,0.7
+What are the number of concerts that occurred in the stadium with the largest capacity?,concert_singer,MAJOR_DIFFERENCES,0.7254901960784313,0.7
+Find the number of pets whose weight is heavier than 10.,pets_1,EXACT_MATCH,1.0,1.0
+How many pets have a greater weight than 10?,pets_1,EXACT_MATCH,1.0,1.0
+Find the weight of the youngest dog.,pets_1,MAJOR_DIFFERENCES,0.5614035087719298,0.8
+How much does the youngest dog weigh?,pets_1,MAJOR_DIFFERENCES,0.6386554621848739,0.6
+Find the maximum weight for each type of pet. List the maximum weight and pet type.,pets_1,INCORRECT,0.22281167108753316,0.6
