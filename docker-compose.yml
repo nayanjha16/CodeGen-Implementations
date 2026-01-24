@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  inference-engine:
+    image: vllm/vllm-openai:latest
+    container_name: inference-engine
+    ports:
+      - "8000:8000"
+    shm_size: '4gb'
+
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    command: --model Qwen/Qwen2.5-Coder-3B-Instruct-GPTQ-Int4 --quantization gptq --dtype float16 --gpu-memory-utilization 0.85 --max-model-len 8192 --swap-space 1 --enforce-eager --enable-lora --lora-modules mql-adapter=/root/adapters/mql-adapter --max-lora-rank 64
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./Qwen2.5-Coder-3B-Instruct-mql-adapter:/root/adapters/mql-adapter
+    restart: on-failure
+
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+  backend-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-api
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_URI=mongodb://mongo-db:27017
+      - INFERENCE_URL=http://inference-engine:8000/v1
+    depends_on:
+      - mongo-db
+      - inference-engine
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+      - ./services:/app/services
+
+  frontend-ui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend-api:8080
+    depends_on:
+      - backend-api
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  mongo_data:

@@ -1,0 +1,21 @@
+How many schools are there?
+Show all scoos // Though scools is mispelled as scoos, the SLM inferred it as schools
+How many schools are there in Alameda? // Though I did not specify Alameda as a county, the SLM inferred it as such
+Show all schools in Alameda
+What schools are there in California? // Though it is specified as CA in the db, the SLM inferred it to be California. The different ordering you saw is expected - neither SQL DISTINCT nor MongoDB $group guarantee order. The comparison uses sets (order-independent), which is the correct approach.
+  {
+    "question_id": 1483,
+    "db_id": "debit_card_specializing",
+    "question": "How much did customer 6 consume in total between August and November 2013?",
+    "evidence": "Between August And November 2013 refers to Between 201308 And 201311; The first 4 strings of the Date values in the yearmonth table can represent year; The 5th and 6th string of the date can refer to month.",
+    "SQL": "SELECT SUM(Consumption) FROM yearmonth WHERE CustomerID = 6 AND Date BETWEEN '201308' AND '201311'",
+    "difficulty": "simple"
+  }
+  {
+    "question_id": 1116,
+    "db_id": "european_football_2",
+    "question": "List down most tallest players' name.",
+    "evidence": "tallest refers to rank based on the height in descending order; Most tallest players refers to rank = 1 ",
+    "SQL": "SELECT player_name FROM (SELECT player_name, height, DENSE_RANK() OVER (ORDER BY height DESC) as rank FROM Player) WHERE rank = 1",
+    "difficulty": "simple"
+  }

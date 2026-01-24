@@ -1,0 +1,5 @@
+How many schools are there?
+Show all scoos
+How many schools are there in Alameda?
+Show all schools in Alameda
+What schools are there in California?

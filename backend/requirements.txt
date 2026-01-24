@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pymongo
+httpx
+python-dotenv
+pydantic
+sqlalchemy
+sentence-transformers
+# For migration logic if integrated here
+pandas

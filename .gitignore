@@ -1,44 +1,7 @@
-# Data
 data/
-*.sqlite
-*.db
-
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual Environments
-venv/
-env/
-ENV/
+*.pyc
 .env
-.venv/
+.DS_Store
 
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Logs
-*.log
+Qwen2.5-Coder-3B-Instruct-mql-adapter/
