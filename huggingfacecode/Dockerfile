@@ -1,5 +1,5 @@
 # Dockerfile for NL-to-NoSQL Converter on HuggingFace Spaces
-# Fixed for proper port handling and startup sequence
+# Fixed for proper Streamlit routing
 
 FROM python:3.10-slim
 
@@ -31,30 +31,30 @@ ENV TRANSFORMERS_CACHE=/tmp/transformers_cache
 ENV HF_HOME=/tmp/hf_home
 ENV PYTHONUNBUFFERED=1
 
-# Expose port
+# Expose port 7860 (HuggingFace standard)
 EXPOSE 7860
 
-# Health check
+# Health check for Streamlit
 HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=3 \
     CMD curl -f http://localhost:7860/_stcore/health || exit 1
 
-# Create startup script with proper process management
+# Create startup script - Run everything on port 7860
 RUN echo '#!/bin/bash\n\
 set -e\n\
 \n\
-# Kill any existing processes on port 7860\n\
-echo "Cleaning up port 7860..."\n\
+# Kill any existing processes\n\
 fuser -k 7860/tcp 2>/dev/null || true\n\
+fuser -k 8000/tcp 2>/dev/null || true\n\
 sleep 2\n\
 \n\
-echo "Starting backend server..."\n\
-python app_server.py &\n\
+echo "Starting backend server on port 8000..."\n\
+python app_server.py --port 8000 &\n\
 BACKEND_PID=$!\n\
 echo "Backend PID: $BACKEND_PID"\n\
 \n\
 echo "Waiting for backend to be ready..."\n\
 for i in {1..45}; do\n\
-    if curl -s http://localhost:7860/health > /dev/null 2>&1; then\n\
+    if curl -s http://localhost:8000/health > /dev/null 2>&1; then\n\
         echo "Backend is ready!"\n\
         break\n\
     fi\n\
@@ -70,9 +70,9 @@ done\n\
 # Wait a bit more to ensure backend is fully ready\n\
 sleep 3\n\
 \n\
-echo "Starting Streamlit on port 8501..."\n\
+echo "Starting Streamlit on port 7860 (main port)..."\n\
 streamlit run src/streamlit_app.py \\\n\
-    --server.port=8501 \\\n\
+    --server.port=7860 \\\n\
     --server.address=0.0.0.0 \\\n\
     --server.headless=true \\\n\
     --server.enableCORS=false \\\n\

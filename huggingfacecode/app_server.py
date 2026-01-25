@@ -87,9 +87,12 @@ def sanitize_adapter_config(adapter_path: str) -> None:
         # Parameters that might cause compatibility issues
         problematic_params = [
             'alora_invocation_tokens',  # From newer PEFT versions
+            'arrow_config',  # Another incompatible parameter
+            'corda_config',  # Yet another incompatible parameter
             'use_rslora',
             'use_dora',
             'layer_replication',
+            'ephemeral_gpu_offload',
         ]
         
         modified = False
@@ -103,8 +106,8 @@ def sanitize_adapter_config(adapter_path: str) -> None:
             # Backup original
             backup_path = config_path + ".backup"
             if not os.path.exists(backup_path):
-                with open(backup_path, 'w') as f:
-                    json.dump(config, f, indent=2)
+                import shutil
+                shutil.copy(config_path, backup_path)
             
             # Save sanitized config
             with open(config_path, 'w') as f:
@@ -197,18 +200,19 @@ async def load_models():
             print(f"❌ Failed to load Text-to-SQL adapter: {e}")
             print("   Trying alternative loading method...")
             
-            # Alternative: Load adapter manually
+            # Alternative: Load adapter manually with safetensors
             from peft import LoraConfig, get_peft_model
+            from safetensors.torch import load_file
             
             config_path = os.path.join(TEXT2SQL_ADAPTER, "adapter_config.json")
             with open(config_path, 'r') as f:
                 config_dict = json.load(f)
             
-            # Create minimal config
+            # Create minimal config with only supported parameters
             lora_config = LoraConfig(
                 r=config_dict.get('r', 16),
                 lora_alpha=config_dict.get('lora_alpha', 32),
-                target_modules=config_dict.get('target_modules', ['q_proj', 'v_proj']),
+                target_modules=config_dict.get('target_modules', ['q_proj', 'k_proj', 'v_proj', 'o_proj']),
                 lora_dropout=config_dict.get('lora_dropout', 0.05),
                 bias=config_dict.get('bias', 'none'),
                 task_type=config_dict.get('task_type', 'CAUSAL_LM')
@@ -216,11 +220,19 @@ async def load_models():
             
             text2sql_model = get_peft_model(base_model, lora_config)
             
-            # Load weights
-            adapter_weights = torch.load(
-                os.path.join(TEXT2SQL_ADAPTER, "adapter_model.bin"),
-                map_location=DEVICE
-            )
+            # Try to load weights - check for both .safetensors and .bin
+            weights_path_safetensors = os.path.join(TEXT2SQL_ADAPTER, "adapter_model.safetensors")
+            weights_path_bin = os.path.join(TEXT2SQL_ADAPTER, "adapter_model.bin")
+            
+            if os.path.exists(weights_path_safetensors):
+                print(f"   Loading from safetensors...")
+                adapter_weights = load_file(weights_path_safetensors)
+            elif os.path.exists(weights_path_bin):
+                print(f"   Loading from .bin...")
+                adapter_weights = torch.load(weights_path_bin, map_location=DEVICE)
+            else:
+                raise FileNotFoundError(f"No adapter weights found in {TEXT2SQL_ADAPTER}")
+            
             text2sql_model.load_state_dict(adapter_weights, strict=False)
             text2sql_model.eval()
             models["text2sql"] = text2sql_model
@@ -248,6 +260,7 @@ async def load_models():
             print("   Trying alternative loading method...")
             
             from peft import LoraConfig, get_peft_model
+            from safetensors.torch import load_file
             
             config_path = os.path.join(SQL2MONGO_ADAPTER, "adapter_config.json")
             with open(config_path, 'r') as f:
@@ -256,7 +269,7 @@ async def load_models():
             lora_config = LoraConfig(
                 r=config_dict.get('r', 16),
                 lora_alpha=config_dict.get('lora_alpha', 32),
-                target_modules=config_dict.get('target_modules', ['q_proj', 'v_proj']),
+                target_modules=config_dict.get('target_modules', ['q_proj', 'k_proj', 'v_proj', 'o_proj']),
                 lora_dropout=config_dict.get('lora_dropout', 0.05),
                 bias=config_dict.get('bias', 'none'),
                 task_type=config_dict.get('task_type', 'CAUSAL_LM')
@@ -264,10 +277,19 @@ async def load_models():
             
             sql2mongo_model = get_peft_model(base_model, lora_config)
             
-            adapter_weights = torch.load(
-                os.path.join(SQL2MONGO_ADAPTER, "adapter_model.bin"),
-                map_location=DEVICE
-            )
+            # Try to load weights - check for both .safetensors and .bin
+            weights_path_safetensors = os.path.join(SQL2MONGO_ADAPTER, "adapter_model.safetensors")
+            weights_path_bin = os.path.join(SQL2MONGO_ADAPTER, "adapter_model.bin")
+            
+            if os.path.exists(weights_path_safetensors):
+                print(f"   Loading from safetensors...")
+                adapter_weights = load_file(weights_path_safetensors)
+            elif os.path.exists(weights_path_bin):
+                print(f"   Loading from .bin...")
+                adapter_weights = torch.load(weights_path_bin, map_location=DEVICE)
+            else:
+                raise FileNotFoundError(f"No adapter weights found in {SQL2MONGO_ADAPTER}")
+            
             sql2mongo_model.load_state_dict(adapter_weights, strict=False)
             sql2mongo_model.eval()
             models["sql2mongo"] = sql2mongo_model
@@ -325,7 +347,7 @@ def generate_text(model, prompt: str, max_tokens: int = 512) -> str:
 SCHEMAS = {
     "employees_db": "employees(id, name, department, salary, hire_date)",
     "products_db": "products(id, name, category, price, stock)",
-    "users_db": "users(db": "users(id, username, email, age, country)",
+    "users_db": "users(id, username, email, age, country)",
     "orders_db": "orders(id, customer_id, product_id, quantity, order_date, total)",
     "students_db": "students(id, name, major, gpa, enrollment_year)",
 }
@@ -488,14 +510,23 @@ async def schema_translation(request: SchemaTranslationRequest):
 # ==================== MAIN ====================
 
 if __name__ == "__main__":
+    import sys
+    
+    # Check for port argument
+    port = 8000  # Default to 8000 for container (Streamlit uses 7860)
+    for i, arg in enumerate(sys.argv):
+        if arg == "--port" and i + 1 < len(sys.argv):
+            port = int(sys.argv[i + 1])
+    
     print("\n" + "="*60)
     print("🚀 STARTING BACKEND SERVER")
+    print(f"   Port: {port}")
     print("="*60 + "\n")
     
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=7860,
+        port=port,
         log_level="info",
         access_log=True
     )

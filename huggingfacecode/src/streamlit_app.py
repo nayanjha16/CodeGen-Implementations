@@ -19,9 +19,9 @@ st.set_page_config(
 
 # ==================== BACKEND CONFIGURATION ====================
 
-# Backend runs on same container at port 7860
-# But backend uses /api/* routes, Streamlit uses /_stcore/* routes
-BACKEND_URL = "http://localhost:7860"
+# Backend runs on port 8000 in container
+# Streamlit runs on port 7860 (HuggingFace standard)
+BACKEND_URL = "http://localhost:8000"
 
 # ==================== CHECK BACKEND ====================
 
